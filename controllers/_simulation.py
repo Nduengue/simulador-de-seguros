@@ -15,7 +15,7 @@ class Simulation_Controller(Resource):
                 "insurance_id",
                 "insurance_type_id",
                 "policy_type_id",
-                "coverage_ids",
+                "option_ids",
                 "aggravation_ids",
                 "company_ids",
             ],
@@ -32,11 +32,11 @@ class Simulation_Controller(Resource):
         user = res["user"]
 
         from models import Rate
-        from models import Coverage
+        from models import Option
         from models import Aggravation
         from models import Company
         from models import Insurance
-        
+
         age = None
         # get insurance
         insurance = Insurance.get(insurance_id)
@@ -51,23 +51,23 @@ class Simulation_Controller(Resource):
             company = Company.get(company_id)
             if not company:
                 continue
-            # get coverage rates
-            coverage_rates = []
-            for coverage_id in datas["coverage_ids"]:
-                rate = Rate.get_by_coverage(
+            # get option rates
+            option_rates = []
+            for option_id in datas["option_ids"]:
+                rate = Rate.get_by_option(
                     company_id,
                     category_id,
                     insurance_id,
                     insurance_type_id,
                     policy_type_id,
-                    coverage_id,
+                    option_id,
                     age,
                 )
-                # get coverage
-                coverage = Coverage.get(coverage_id)
-                coverage_rates.append(
+                # get option
+                option = Option.get(option_id)
+                option_rates.append(
                     {
-                        "name": coverage.name if coverage else None,
+                        "name": option.name if option else None,
                         "rate": rate.value if rate else None,
                     }
                 )
@@ -94,17 +94,17 @@ class Simulation_Controller(Resource):
             company_simulations.append(
                 {
                     "company": company.to_dict(),
-                    "coverages": coverage_rates,
+                    "options": option_rates,
                     "aggravations": aggravation_rates,
                 }
             )
-        
+
         response = {
             "status": "success",
             "user": user,
             "company_simulations": company_simulations,
         }, 200
-        
+
         print(response)
 
         return response

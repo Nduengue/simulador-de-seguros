@@ -1,5 +1,5 @@
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import Column, String, Integer, Boolean, DateTime, desc
+from sqlalchemy import Column, String, Integer, Boolean, DateTime, and_, desc
 from .db_connection import Base, DB_Session, engine, logger, Base
 from .methods import current_date_time
 
@@ -16,13 +16,12 @@ class Insurance(Base):
     deleted = Column(Boolean, default=False)
 
     def to_dict(self):
-        from .domain import Domain
         from .route import Route
+
         # get insurance route
         route = Route.get_by_insurance(self.id)
         return {
             "id": self.id,
-            "domain": (Domain.get(self.domain_id).domain if self.domain_id else None),
             "name": self.name,
             "icon": self.icon,
             "route": route.name if route else None,
@@ -49,18 +48,17 @@ class Insurance(Base):
             return insurance
 
     @staticmethod  # done
-    def put(name, domain_id, icon=None):
+    def put(name, icon=None):
         with DB_Session() as db_session:
             insurance = Insurance.get(name)
             if insurance:
                 return {
                     "status": "error",
-                    "message": "Insurance already exists",
+                    "message": "Seguro já registrado.",
                     "insurance": insurance.to_dict(),
                 }
             insurance = Insurance(
                 name=name,
-                domain_id=domain_id,
                 icon=icon,
                 created_at=current_date_time(),
             )
@@ -70,7 +68,7 @@ class Insurance(Base):
             return {"status": "success", "insurance": insurance.to_dict()}
 
     @staticmethod  # done
-    def post(domain_id=None, category_id=None):
+    def post(category_id=None):
         with DB_Session() as db_session:
             from .ciip import Ciip
 
@@ -78,10 +76,12 @@ class Insurance(Base):
                 db_session.query(Insurance)
                 .outerjoin(Ciip, Insurance.id == Ciip.insurance_id)
                 .filter(
-                    (Ciip.category_id == category_id if category_id else True),
-                    Insurance.domain_id == domain_id if domain_id else True,
+                    (
+                        and_(Ciip.category_id == category_id, Ciip.deleted == False)
+                        if category_id
+                        else True
+                    ),
                     Insurance.deleted == False,
-                    Ciip.deleted == False,
                 )
                 .order_by(desc(Insurance.id))
                 .all()

@@ -64,19 +64,19 @@ class Condition(Base):
             }
 
     @staticmethod  # done
-    def post(coverage_id=None):
+    def post(option_id=None):
         with DB_Session() as db_session:
-            from .coverage__rate_condition import Coverage_RateCondition
+            from .orc import ORC
 
             categories = (
                 db_session.query(Condition)
                 .outerjoin(
-                    Coverage_RateCondition,
-                    Condition.id == Coverage_RateCondition.condition_id,
+                    ORC,
+                    Condition.id == ORC.condition_id,
                 )
                 .filter(
-                    Coverage_RateCondition.coverage_id == coverage_id,
-                    Coverage_RateCondition.deleted == False,
+                    ORC.option_id == option_id,
+                    ORC.deleted == False,
                     Condition.deleted == False,
                 )
                 .order_by(desc(Condition.id))

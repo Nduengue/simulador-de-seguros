@@ -44,11 +44,15 @@ class Company(Base):
     def put(name, email):
         with DB_Session() as db_session:
             # verify if company exists
-            company = db_session.query(Company).filter(Company.name == name).first()
+            company = (
+                db_session.query(Company)
+                .filter(Company.name == name, Company.deleted == False)
+                .first()
+            )
             if company:
                 return {
                     "status": "error",
-                    "message": "Segurado já existe.",
+                    "message": "Seguradora já existente.",
                     "company": company.to_dict(),
                 }
             company = Company(name=name, email=email, created_at=current_date_time())
@@ -58,7 +62,7 @@ class Company(Base):
             company = db_session.query(Company).order_by(Company.id.desc()).first()
             return {
                 "status": "success",
-                "message": "Segurado registada com sucesso.",
+                "message": "Seguradora registada com sucesso.",
                 "company": company.to_dict(),
             }
 

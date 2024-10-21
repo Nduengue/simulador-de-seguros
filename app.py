@@ -9,7 +9,6 @@ api = Api(app)
 
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-
 # ==============================================================================
 api.add_resource(Category_Controller, "/category")
 
@@ -26,34 +25,22 @@ api.add_resource(Ciip_Controller, "/ciip")
 api.add_resource(PolicyType_Controller, "/policy_type")
 
 # ==============================================================================
-api.add_resource(Ciip_PolicyType_Controller, "/ciip__policy_type")
-
-# ==============================================================================
-api.add_resource(Coverage_Controller, "/coverage")
-
-# ==============================================================================
-api.add_resource(Cpt_Coverage_Controller, "/cpt_coverage")
+api.add_resource(Ciip_Pt_Controler, "/ciip_pt")
 
 # ==============================================================================
 api.add_resource(Option_Controller, "/option")
 
 # ==============================================================================
-api.add_resource(Option_Coverage_Controller, "/option_coverage")
+api.add_resource(OType_Controller, "/o_type")
 
 # ==============================================================================
-api.add_resource(Aggravation_Controller, "/aggravation")
+api.add_resource(Cpt_Option_Controller, "/cpt_option")
 
 # ==============================================================================
-api.add_resource(Cpt_Aggravation_Controller, "/cpt_aggravation")
+api.add_resource(OptionGroup_Controller, "/option_group")
 
 # ==============================================================================
-api.add_resource(Aggravation_Rate_Controller, "/aggravation_rate")
-
-# ==============================================================================
-api.add_resource(Domain_Controller, "/domain")
-
-# ==============================================================================
-api.add_resource(Aggravation_Aggravation_Controller, "/aggravation_aggravation")
+api.add_resource(OGO_Controller, "/ogo")
 
 # ==============================================================================
 api.add_resource(Company_Controller, "/company")
@@ -65,13 +52,13 @@ api.add_resource(Condition_Controller, "/condition")
 api.add_resource(Rate_Controller, "/rate")
 
 # ==============================================================================
-api.add_resource(Coverage_RateCondition_Controller, "/coverage_rate_condition")
+api.add_resource(ORC_Controler, "/option_rate_condition")
 
 # ==============================================================================
 api.add_resource(Simulation_Controller, "/simulation")
 
 # ==============================================================================
-api.add_resource(Coverage_Coverage_Controller, "/coverage_coverage")
+api.add_resource(Option_Option_Controller, "/option_option")
 
 # ==============================================================================
 api.add_resource(Route_Controller, "/route")
@@ -86,4 +73,4 @@ def page_not_found(e):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5005, debug=True)
+    app.run(host="0.0.0.0", port=5008, debug=True)

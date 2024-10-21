@@ -1,6 +1,14 @@
 from flask_restful import abort
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import Column, ForeignKey, Integer, Boolean, DateTime, String
+from sqlalchemy import (
+    Column,
+    ForeignKey,
+    String,
+    Integer,
+    Boolean,
+    DateTime,
+    and_,
+)
 from .db_connection import Base, DB_Session, engine, logger, Base
 from .methods import current_date_time
 
@@ -9,24 +17,23 @@ class Option(Base):
     __tablename__ = "option"
 
     id = Column(Integer, primary_key=True)
-    insurance_id = Column(Integer, ForeignKey("insurance.id"))
+    o_type_id = Column(Integer, ForeignKey("o_type.id"))
     name = Column(String)
+    description = Column(String)
+    abbreviation = Column(String)
     required = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True))
     updated_at = Column(DateTime(timezone=True))
     deleted = Column(Boolean, default=False)
 
     def to_dict(self):
-        from models import Coverage
-
-        coverages = Coverage.post(option_id=self.id)
-        coverages = [coverage.to_dict() for coverage in coverages]
         return {
             "id": self.id,
-            "insurance_id": self.insurance_id,
+            "o_type_id": self.o_type_id,
             "name": self.name,
+            "description": self.description,
+            "abbreviation": self.abbreviation,
             "required": self.required,
-            "coverages": coverages,
         }
 
     @staticmethod
@@ -42,54 +49,158 @@ class Option(Base):
             )
             return option
 
-    @staticmethod  # done
-    def put(insurance_id, name):
+    @staticmethod
+    def put(name, o_type_id=None, abbreviation=None, required=False, description=None):
         with DB_Session() as db_session:
-            # verify if category insurance exists
+            # verify if option name already exists for the same policy type
             option = (
                 db_session.query(Option)
                 .filter(
-                    Option.insurance_id == insurance_id,
+                    Option.o_type_id == o_type_id,
                     Option.name == name,
                     Option.deleted == False,
                 )
                 .first()
             )
-            if option:
-                return option
-            # verify if category and insurance exists
-            from .insurance import Insurance
 
-            if not Insurance.get(insurance_id):
-                abort(404, message="Seguro não encontrado.")
+            if option:
+                return {
+                    "status": "error",
+                    "message": "Opção já existente.",
+                    "option": option.to_dict(),
+                }
+            # verify if option type exists
+            from models.o_type import OType
+            if o_type_id:
+                o_type = OType.get(o_type_id)
+                if not o_type:
+                    abort(404, message="Tipo de opção não encontrada.")
 
             datetime = current_date_time()
-            option = Option(
-                insurance_id=insurance_id,
+            new_option = Option(
+                o_type_id=o_type_id,
                 name=name,
+                description=description,
+                abbreviation=abbreviation,
+                required=required,
                 created_at=datetime,
             )
-            db_session.add(option)
+            db_session.add(new_option)
             db_session.commit()
-            # get last inserted id by created_at
             option = (
                 db_session.query(Option).filter(Option.created_at == datetime).first()
             )
-            return option
+
+            response = {
+                "status": "success",
+                "option": option.to_dict(),
+            }
+
+            return response
 
     @staticmethod
-    def post(insurance_id):
+    def post(
+        category_id=None,
+        insurance_id=None,
+        insurance_type_id=None,
+        policy_type_id=None,
+        option_group_id=None,
+    ):
         with DB_Session() as db_session:
+            from models import Cpt_Option
+            from models import Ciip_Pt
+            from models import Ciip
+            from models import OGO
+
             options = (
                 db_session.query(Option)
+                .outerjoin(Cpt_Option, Option.id == Cpt_Option.option_id)
+                .outerjoin(
+                    Ciip_Pt,
+                    Cpt_Option.ciip_pt_id == Ciip_Pt.id,
+                )
+                .outerjoin(Ciip, Ciip_Pt.ciip_id == Ciip.id)
+                .outerjoin(OGO, Option.id == OGO.option_id)
                 .filter(
-                    Option.insurance_id == insurance_id,
+                    (
+                        and_(
+                            Ciip_Pt.policy_type_id == policy_type_id,
+                            Ciip_Pt.deleted == False,
+                            Cpt_Option.deleted == False,
+                        )
+                        if policy_type_id
+                        else True
+                    ),
+                    (
+                        and_(
+                            Ciip.category_id == category_id,
+                            Ciip.deleted == False,
+                        )
+                        if category_id
+                        else True
+                    ),
+                    (Ciip.insurance_id == insurance_id if insurance_id else True),
+                    (
+                        Ciip.insurance_type_id == insurance_type_id
+                        if insurance_type_id
+                        else True
+                    ),
+                    (
+                        and_(
+                            OGO.option_group_id == option_group_id,
+                            OGO.deleted == False,
+                        )
+                        if option_group_id
+                        else True
+                    ),
                     Option.deleted == False,
                 )
                 .order_by(Option.id)
                 .all()
             )
             return options
+
+    @staticmethod
+    def delete(id):
+        with DB_Session() as db_session:
+            option = (
+                db_session.query(Option)
+                .filter(Option.id == id, Option.deleted == False)
+                .first()
+            )
+            if option:
+                option.deleted = True
+                db_session.commit()
+            return {"status": "success"}
+
+    @staticmethod
+    def patch(id, name):
+        with DB_Session() as db_session:
+            option = (
+                db_session.query(Option)
+                .filter(
+                    Option.id != id,
+                    Option.name == name,
+                    Option.deleted == False,
+                )
+                .first()
+            )
+            if option:
+                return {
+                    "status": "error",
+                    "message": "Coverage already exists",
+                    "option": option.to_dict(),
+                }
+            option = (
+                db_session.query(Option)
+                .filter(Option.id == id, Option.deleted == False)
+                .first()
+            )
+            if option:
+                option.name = name
+                option.updated_at = current_date_time()
+                db_session.commit()
+            return {"status": "success", "option": option.to_dict()}
 
 
 try:

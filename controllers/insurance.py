@@ -12,16 +12,16 @@ class Insurance_Controller(Resource):
 
     def post(self):
         datas = request.get_json()
-        domain_id = datas.get("domain_id", None)
         category_id = datas.get("category_id", None)
-        insurances = Insurance.post(domain_id, category_id)
+        insurances = Insurance.post(category_id)
         insurances = [insurance.to_dict() for insurance in insurances]
         return {"status": "success", "insurances": insurances}
 
     def put(self):
         datas = request.get_json()
-        missing_fields(datas, ["name", "domain_id"])
-        res = Insurance.put(datas["name"], datas["domain_id"])
+        missing_fields(datas, ["name"])
+        icon = datas.get("icon", None)
+        res = Insurance.put(datas["name"], icon)
         return res
 
     def delete(self):

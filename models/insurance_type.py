@@ -15,11 +15,7 @@ class InsuranceType(Base):
     deleted = Column(Boolean, default=False)
 
     def to_dict(self):
-        return {
-            "id": self.id,
-            "name": self.name,
-            "icon": self.icon
-        }
+        return {"id": self.id, "name": self.name, "icon": self.icon}
 
     @staticmethod  # done
     def get(get_str):
@@ -39,7 +35,7 @@ class InsuranceType(Base):
             return insurance_type
 
     @staticmethod  # done
-    def put(name):
+    def put(name, icon=None):
         with DB_Session() as db_session:
             insurance_type = InsuranceType.get(name)
             if insurance_type:
@@ -50,6 +46,7 @@ class InsuranceType(Base):
                 }
             insurance_type = InsuranceType(
                 name=name,
+                icon=icon,
                 created_at=current_date_time(),
             )
             db_session.add(insurance_type)
@@ -72,8 +69,9 @@ class InsuranceType(Base):
                     (Ciip.insurance_id == insurance_id if insurance_id else True),
                     (Ciip.category_id == category_id if category_id else True),
                     InsuranceType.deleted == False,
-                    Ciip.deleted == False,
+                    Ciip.deleted == False if insurance_id or category_id else True,
                 )
+                .order_by(InsuranceType.id)
                 .all()
             )
             return insurance_types

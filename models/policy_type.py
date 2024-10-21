@@ -1,5 +1,5 @@
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import Column, ForeignKey, String, Integer, Boolean, DateTime, and_
+from sqlalchemy import Column, String, Integer, Boolean, DateTime
 from .db_connection import Base, DB_Session, engine, logger, Base
 from .methods import current_date_time
 
@@ -74,15 +74,13 @@ class PolicyType(Base):
     @staticmethod  # done
     def post(category_id=None, insurance_id=None, insurance_type_id=None):
         with DB_Session() as db_session:
-            from models import Ciip_PolicyType
+            from models import Ciip_Pt
             from models import Ciip
 
             policy_types = (
                 db_session.query(PolicyType)
-                .outerjoin(
-                    Ciip_PolicyType, PolicyType.id == Ciip_PolicyType.policy_type_id
-                )
-                .outerjoin(Ciip, Ciip_PolicyType.ciip_id == Ciip.id)
+                .outerjoin(Ciip_Pt, PolicyType.id == Ciip_Pt.policy_type_id)
+                .outerjoin(Ciip, Ciip_Pt.ciip_id == Ciip.id)
                 .filter(
                     (Ciip.category_id == category_id if category_id else True),
                     (Ciip.insurance_id == insurance_id if insurance_id else True),

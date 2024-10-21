@@ -1,12 +1,14 @@
 from .imports import *
 from models import InsuranceType
 
+
 class InsuranceType_Controller(Resource):
 
     def put(self):
         datas = request.get_json()
         missing_fields(datas, ["name"])
-        res = InsuranceType.put(datas["name"])
+        icon = datas.get("icon", None)
+        res = InsuranceType.put(datas["name"], icon)
         return res
 
     def post(self):
@@ -18,5 +20,3 @@ class InsuranceType_Controller(Resource):
             insurance_type.to_dict() for insurance_type in insurance_types
         ]
         return {"status": "success", "insurance_types": insurance_types}
-
-

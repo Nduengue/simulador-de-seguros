@@ -17,7 +17,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 engine = create_engine(
-    f'postgresql://insurance_simulator_user:{quote("J@m@is,478..")}@127.0.0.1:5432/insurance_simulator',
+    f'postgresql://simulator_user:{quote("J@m@is,78..")}@127.0.0.1:5432/simulator',
     echo=True,
 )
 DB_Session = sessionmaker(bind=engine)

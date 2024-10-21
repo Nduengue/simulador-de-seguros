@@ -5,8 +5,8 @@ from .db_connection import Base, DB_Session, engine, logger, Base
 from .methods import current_date_time
 
 
-class Ciip_PolicyType(Base):
-    __tablename__ = "ciip__policy_type"
+class Ciip_Pt(Base):
+    __tablename__ = "ciip_pt"
 
     id = Column(Integer, primary_key=True)
     ciip_id = Column(Integer, ForeignKey("ciip.id"))
@@ -18,31 +18,31 @@ class Ciip_PolicyType(Base):
     @staticmethod
     def get(id):
         with DB_Session() as db_session:
-            ciip__policy_type = (
-                db_session.query(Ciip_PolicyType)
+            ciip_pt = (
+                db_session.query(Ciip_Pt)
                 .filter(
-                    Ciip_PolicyType.id == id,
-                    Ciip_PolicyType.deleted == False,
+                    Ciip_Pt.id == id,
+                    Ciip_Pt.deleted == False,
                 )
                 .first()
             )
-            return ciip__policy_type
+            return ciip_pt
 
     @staticmethod  # done
     def put(ciip_id, policy_type_id):
         with DB_Session() as db_session:
             # verify if category insurance exists
-            ciip__policy_type = (
-                db_session.query(Ciip_PolicyType)
+            ciip_pt = (
+                db_session.query(Ciip_Pt)
                 .filter(
-                    Ciip_PolicyType.ciip_id == ciip_id,
-                    Ciip_PolicyType.policy_type_id == policy_type_id,
-                    Ciip_PolicyType.deleted == False,
+                    Ciip_Pt.ciip_id == ciip_id,
+                    Ciip_Pt.policy_type_id == policy_type_id,
+                    Ciip_Pt.deleted == False,
                 )
                 .first()
             )
-            if ciip__policy_type:
-                return ciip__policy_type
+            if ciip_pt:
+                return ciip_pt
             # verify if category and insurance exists
             from .ciip import Ciip
             from .policy_type import PolicyType
@@ -53,20 +53,18 @@ class Ciip_PolicyType(Base):
                 abort(404, message="Tipo de apólice não encontrado")
 
             datetime = current_date_time()
-            ciip__policy_type = Ciip_PolicyType(
+            ciip_pt = Ciip_Pt(
                 ciip_id=ciip_id,
                 policy_type_id=policy_type_id,
                 created_at=datetime,
             )
-            db_session.add(ciip__policy_type)
+            db_session.add(ciip_pt)
             db_session.commit()
             # get last inserted id by created_at
-            ciip__policy_type = (
-                db_session.query(Ciip_PolicyType)
-                .filter(Ciip_PolicyType.created_at == datetime)
-                .first()
+            ciip_pt = (
+                db_session.query(Ciip_Pt).filter(Ciip_Pt.created_at == datetime).first()
             )
-            return ciip__policy_type
+            return ciip_pt
 
 
 try:

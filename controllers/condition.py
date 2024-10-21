@@ -13,8 +13,8 @@ class Condition_Controller(Resource):
 
     def post(self):
         datas = request.get_json()
-        coverage_id = datas.get("coverage_id", None)
-        conditions = Condition.post(coverage_id)
+        option_id = datas.get("option_id", None)
+        conditions = Condition.post(option_id)
         conditions = [condition.to_dict() for condition in conditions]
         return {"conditions": conditions}
 
