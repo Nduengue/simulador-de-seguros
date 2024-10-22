@@ -13,16 +13,22 @@ class Option_Controller(Resource):
 
     def post(self):
         datas = request.get_json()
+        o_type_id = datas.get("o_type_id", None)
         category_id = datas.get("category_id", None)
         insurance_id = datas.get("insurance_id", None)
         insurance_type_id = datas.get("insurance_type_id", None)
         policy_type_id = datas.get("policy_type_id", None)
-        option_id = datas.get("option_id", None)
+        option_group_id = datas.get("option_group_id", None)
         options = Option.post(
-            category_id, insurance_id, insurance_type_id, policy_type_id, option_id
+            o_type_id,
+            category_id,
+            insurance_id,
+            insurance_type_id,
+            policy_type_id,
+            option_group_id,
         )
         options = [option.to_dict() for option in options]
-        return {"options": options}
+        return options, 200
 
     def put(self):
         datas = request.get_json()
@@ -31,12 +37,16 @@ class Option_Controller(Resource):
         abbreviation = datas.get("abbreviation", None)
         required = datas.get("required", False)
         description = datas.get("description", None)
+        auto_select = datas.get("auto_select", False)
+        selected = datas.get("selected", False)
         res = Option.put(
             datas["name"],
             o_type_id,
             abbreviation,
             required,
             description,
+            auto_select,
+            selected,
         )
         return res
 

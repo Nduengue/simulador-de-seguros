@@ -34,9 +34,6 @@ api.add_resource(Option_Controller, "/option")
 api.add_resource(OType_Controller, "/o_type")
 
 # ==============================================================================
-api.add_resource(Cpt_Option_Controller, "/cpt_option")
-
-# ==============================================================================
 api.add_resource(OptionGroup_Controller, "/option_group")
 
 # ==============================================================================
@@ -52,7 +49,7 @@ api.add_resource(Condition_Controller, "/condition")
 api.add_resource(Rate_Controller, "/rate")
 
 # ==============================================================================
-api.add_resource(ORC_Controler, "/option_rate_condition")
+api.add_resource(ORC_Controler, "/orc")
 
 # ==============================================================================
 api.add_resource(Simulation_Controller, "/simulation")
@@ -65,6 +62,9 @@ api.add_resource(Route_Controller, "/route")
 
 # ==============================================================================
 api.add_resource(MtDatas_Controller, "/mt_datas")
+
+# ==============================================================================
+api.add_resource(MtSimulator_Controller, "/simulator/mt/save")
 
 
 @app.errorhandler(404)

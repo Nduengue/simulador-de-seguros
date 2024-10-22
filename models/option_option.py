@@ -38,13 +38,15 @@ class Option_Option(Base):
             return option_option
 
     @staticmethod
-    # recieve other_ids in a list of integers
-    def put_all(option_id, other_ids):
+    # recieve option_ids in a list of integers
+    def put_all(option_ids):
         option_options = []
-        for other_id in other_ids:
-            # save option_option by Coverage put method
-            option_option = Option_Option.put(option_id, other_id)
-            option_options.append(option_option.to_dict())
+        for option_id in option_ids:
+            for toggle_id in option_ids:
+                if option_id != toggle_id:
+                    # save option_option by Aggravation put method
+                    option_option = Option_Option.put(option_id, toggle_id)
+                    option_options.append(option_option.to_dict())
         return option_options
 
     @staticmethod  # done
@@ -93,7 +95,7 @@ class Option_Option(Base):
                 )
                 .all()
             )
-            return [int(option_option.other_id) for option_option in option_options]
+            return [option_option.other_id for option_option in option_options]
 
 
 try:

@@ -22,11 +22,15 @@ class Option(Base):
     description = Column(String)
     abbreviation = Column(String)
     required = Column(Boolean, default=False)
+    auto_select = Column(Boolean, default=False)
+    selected = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True))
     updated_at = Column(DateTime(timezone=True))
     deleted = Column(Boolean, default=False)
 
     def to_dict(self):
+        from .option_option import Option_Option
+
         return {
             "id": self.id,
             "o_type_id": self.o_type_id,
@@ -34,6 +38,9 @@ class Option(Base):
             "description": self.description,
             "abbreviation": self.abbreviation,
             "required": self.required,
+            "auto_select": self.auto_select,
+            "selected": self.selected,
+            "taggle_ids": Option_Option.post(self.id),
         }
 
     @staticmethod
@@ -50,7 +57,15 @@ class Option(Base):
             return option
 
     @staticmethod
-    def put(name, o_type_id=None, abbreviation=None, required=False, description=None):
+    def put(
+        name,
+        o_type_id=None,
+        abbreviation=None,
+        required=False,
+        description=None,
+        auto_select=False,
+        selected=False,
+    ):
         with DB_Session() as db_session:
             # verify if option name already exists for the same policy type
             option = (
@@ -71,6 +86,7 @@ class Option(Base):
                 }
             # verify if option type exists
             from models.o_type import OType
+
             if o_type_id:
                 o_type = OType.get(o_type_id)
                 if not o_type:
@@ -83,6 +99,8 @@ class Option(Base):
                 description=description,
                 abbreviation=abbreviation,
                 required=required,
+                auto_select=auto_select,
+                selected=selected,
                 created_at=datetime,
             )
             db_session.add(new_option)
@@ -100,6 +118,7 @@ class Option(Base):
 
     @staticmethod
     def post(
+        o_type_id=None,
         category_id=None,
         insurance_id=None,
         insurance_type_id=None,
@@ -107,26 +126,29 @@ class Option(Base):
         option_group_id=None,
     ):
         with DB_Session() as db_session:
-            from models import Cpt_Option
+            from models import OType
             from models import Ciip_Pt
             from models import Ciip
+            from models import ORC
             from models import OGO
 
             options = (
                 db_session.query(Option)
-                .outerjoin(Cpt_Option, Option.id == Cpt_Option.option_id)
-                .outerjoin(
-                    Ciip_Pt,
-                    Cpt_Option.ciip_pt_id == Ciip_Pt.id,
-                )
+                .outerjoin(OType, Option.o_type_id == OType.id)
+                .outerjoin(ORC, Option.id == ORC.option_id)
+                .outerjoin(Ciip_Pt, ORC.ciip_pt_id == Ciip_Pt.id)
                 .outerjoin(Ciip, Ciip_Pt.ciip_id == Ciip.id)
                 .outerjoin(OGO, Option.id == OGO.option_id)
                 .filter(
                     (
+                        and_(OType.id == o_type_id, OType.deleted == False)
+                        if o_type_id
+                        else True
+                    ),
+                    (
                         and_(
                             Ciip_Pt.policy_type_id == policy_type_id,
                             Ciip_Pt.deleted == False,
-                            Cpt_Option.deleted == False,
                         )
                         if policy_type_id
                         else True

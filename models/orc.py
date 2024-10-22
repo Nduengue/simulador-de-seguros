@@ -9,6 +9,8 @@ class ORC(Base):
     __tablename__ = "orc"
 
     id = Column(Integer, primary_key=True)
+    ciip_pt_id = Column(Integer, ForeignKey("ciip_pt.id"))
+    company_id = Column(Integer, ForeignKey("company.id"))
     option_id = Column(Integer, ForeignKey("option.id"))
     rate_id = Column(Integer, ForeignKey("rate.id"))
     condition_id = Column(Integer, ForeignKey("condition.id"))
@@ -18,14 +20,16 @@ class ORC(Base):
     deleted = Column(Boolean, default=False)
 
     @staticmethod  # done
-    def put(option_id, rate_id, condition_id=None):
+    def put(ciip_pt_id, company_id, option_id, rate_id, condition_id=None):
         with DB_Session() as db_session:
             # verify if category insurance exists
             orc = (
                 db_session.query(ORC)
                 .filter(
-                    ORC.rate_id == rate_id,
+                    ORC.ciip_pt_id == ciip_pt_id,
+                    ORC.company_id == company_id,
                     ORC.option_id == option_id,
+                    ORC.rate_id == rate_id,
                     ORC.condition_id == condition_id,
                     ORC.deleted == False,
                 )
@@ -34,11 +38,17 @@ class ORC(Base):
             if orc:
                 return orc
             # verify if category and insurance exists
+            from .ciip_pt import Ciip_Pt
+            from .company import Company
             from .option import Option
             from .rate import Rate
             from .condition import Condition
 
-            if not Option.get(option_id):
+            if not Ciip_Pt.get(ciip_pt_id):
+                abort(404, message="Ciip_Pt não encontrado.")
+            elif not Company.get(company_id):
+                abort(404, message="Seguradora não encontrada.")
+            elif option_id and not Option.get(option_id):
                 abort(404, message="Opção não encontrada.")
             elif not Rate.get(rate_id):
                 abort(404, message="Taxa não encontrada.")
@@ -47,8 +57,10 @@ class ORC(Base):
 
             datetime = current_date_time()
             orc = ORC(
-                rate_id=rate_id,
+                ciip_pt_id=ciip_pt_id,
+                company_id=company_id,
                 option_id=option_id,
+                rate_id=rate_id,
                 condition_id=condition_id,
                 created_at=datetime,
             )

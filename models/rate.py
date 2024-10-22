@@ -46,18 +46,13 @@ class Rate(Base):
             return rate
 
     @staticmethod  # done
-    def put(company_id, value):
+    def put(value):
         with DB_Session() as db_session:
             # verify if rate exists
-            from .company_rate import Company_Rate
-
             rate = (
                 db_session.query(Rate)
-                .outerjoin(Company_Rate, Rate.id == Company_Rate.rate_id)
                 .filter(
-                    Company_Rate.company_id == company_id,
                     Rate.value == value,
-                    Company_Rate.deleted == False,
                     Rate.deleted == False,
                 )
                 .first()
@@ -73,33 +68,26 @@ class Rate(Base):
             db_session.commit()
             # get last rate inserted id by created_at
             rate = db_session.query(Rate).filter(Rate.created_at == datetime).first()
-            # save company_rate
-            Company_Rate.put(company_id, rate.id)
             return rate
 
     @staticmethod  # done
-    def post(company_id=None):
+    def post(option_id, company_id=None):
         with DB_Session() as db_session:
-            from .company_rate import Company_Rate
+            from models import ORC
 
-            categories = (
+            rates = (
                 db_session.query(Rate)
-                .outerjoin(Company_Rate, Rate.id == Company_Rate.rate_id)
+                .outerjoin(ORC, ORC.rate_id == Rate.id)
                 .filter(
-                    (
-                        and_(
-                            Company_Rate.company_id == company_id,
-                            Company_Rate.deleted == False,
-                        )
-                        if company_id
-                        else True
-                    ),
+                    ORC.option_id == option_id,
+                    ORC.company_id == company_id if company_id else True,
+                    ORC.deleted == False,
                     Rate.deleted == False,
                 )
                 .order_by(desc(Rate.id))
                 .all()
             )
-            return categories
+            return rates
 
     @staticmethod  # done
     def get_by_option(
@@ -113,26 +101,23 @@ class Rate(Base):
     ):
         with DB_Session() as db_session:
             from models import ORC
-            from models import Option
             from models import Condition
-            from models import Cpt_Option
             from models import Ciip_Pt
             from models import Ciip
 
             rate = (
                 db_session.query(Rate)
                 .outerjoin(ORC, ORC.rate_id == Rate.id)
-                .outerjoin(Option, ORC.option_id == Option.id)
                 .outerjoin(Condition, ORC.condition_id == Condition.id)
-                .outerjoin(Cpt_Option, Option.id == Cpt_Option.option_id)
-                .outerjoin(
-                    Ciip_Pt,
-                    Cpt_Option.ciip_pt_id == Ciip_Pt.id,
-                )
+                .outerjoin(Ciip_Pt, ORC.ciip_pt_id == Ciip_Pt.id)
                 .outerjoin(Ciip, Ciip_Pt.ciip_id == Ciip.id)
                 .filter(
-                    Rate.company_id == company_id,
-                    Option.id == option_id,
+                    ORC.company_id == company_id,
+                    (
+                        ORC.option_id == option_id
+                        if type(option_id) == int
+                        else (Condition.second_value == option_id)
+                    ),
                     (
                         and_(
                             cast(Condition.first_value, Integer) <= age,
@@ -146,11 +131,9 @@ class Rate(Base):
                     Ciip.insurance_id == insurance_id,
                     Ciip.insurance_type_id == insurance_type_id,
                     Ciip_Pt.policy_type_id == policy_type_id,
-                    ORC.deleted == False,
-                    Option.deleted == False,
-                    Cpt_Option.deleted == False,
                     Ciip_Pt.deleted == False,
                     Ciip.deleted == False,
+                    ORC.deleted == False,
                     Rate.deleted == False,
                 )
                 .first()

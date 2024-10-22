@@ -20,6 +20,6 @@ class Rate_Controller(Resource):
 
     def put(self):
         datas = request.get_json()
-        missing_fields(datas, ["company_id", "value"])
-        rate = Rate.put(datas["company_id"], datas["value"])
+        missing_fields(datas, ["value"])
+        rate = Rate.put(datas["value"])
         return {"status": "success", "rate": rate.to_dict()}
