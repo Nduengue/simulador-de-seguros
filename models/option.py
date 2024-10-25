@@ -145,80 +145,35 @@ class Option(Base):
                 )
                 .all()
             )
-
             return [{"id": og.id, "name": og.name} for og in ogs]
 
     @staticmethod
     def post(
-        category_id=None,
         insurance_id=None,
-        insurance_type_id=None,
-        policy_type_id=None,
         option_group_id=None,
         option_group_name=None,
     ):
         with DB_Session() as db_session:
-            from models import Ciip_Pt
-            from models import Ciip
-            from models import ORC
             from models import OGO
             from models import OptionGroup
 
             options = (
                 db_session.query(Option)
-                .outerjoin(ORC, Option.id == ORC.option_id)
-                .outerjoin(Ciip_Pt, ORC.ciip_pt_id == Ciip_Pt.id)
-                .outerjoin(Ciip, Ciip_Pt.ciip_id == Ciip.id)
                 .outerjoin(OGO, Option.id == OGO.option_id)
                 .outerjoin(OptionGroup, OGO.option_group_id == OptionGroup.id)
                 .filter(
+                    OptionGroup.insurance_id == insurance_id if insurance_id else True,
+                    OptionGroup.id == option_group_id if option_group_id else True,
                     (
-                        and_(
-                            Ciip_Pt.policy_type_id == policy_type_id,
-                            Ciip_Pt.deleted == False,
-                        )
-                        if policy_type_id
-                        else True
-                    ),
-                    (
-                        and_(
-                            Ciip.category_id == category_id,
-                            Ciip.deleted == False,
-                        )
-                        if category_id
-                        else True
-                    ),
-                    (
-                        and_(
-                            Ciip.insurance_id == insurance_id,
-                            OptionGroup.insurance_id == insurance_id,
-                            OptionGroup.deleted == False,
-                        )
-                        if insurance_id
-                        else True
-                    ),
-                    (
-                        Ciip.insurance_type_id == insurance_type_id
-                        if insurance_type_id
-                        else True
-                    ),
-                    (
-                        and_(
-                            OGO.option_group_id == option_group_id,
-                            OGO.deleted == False,
-                        )
-                        if option_group_id
-                        else True
-                    ),
-                    (
-                        and_(
-                            OptionGroup.name == option_group_name,
-                            OptionGroup.deleted == False,
-                        )
+                        OptionGroup.name == option_group_name
                         if option_group_name
                         else True
                     ),
-                    Option.deleted == False,
+                    (
+                        OptionGroup.deleted == False
+                        if insurance_id or option_group_id or option_group_name
+                        else True
+                    ),
                 )
                 .order_by(Option.id)
                 .all()
@@ -266,6 +221,21 @@ class Option(Base):
                 option.updated_at = current_date_time()
                 db_session.commit()
             return {"status": "success", "option": option.to_dict()}
+
+    @staticmethod
+    def get_options(ids):
+        ids = sorted(ids)
+        options = []
+        for opt_id in ids:
+            option = Option.get(opt_id)
+            if option:
+                options.append({"id": option.id, "name": option.name})
+        return options
+
+    @staticmethod
+    def get_options_og_id(ids, option_group_id):
+        options = Option.get_options(ids)
+        return {"options": options, "option_group_id": option_group_id}
 
 
 try:

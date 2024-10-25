@@ -30,7 +30,7 @@ class OptionGroup(Base):
         }
 
     @staticmethod
-    def get(get_attr):
+    def get(get_attr, insurance_id=None):
         with DB_Session() as db_session:
             option_group = (
                 db_session.query(OptionGroup)
@@ -40,6 +40,7 @@ class OptionGroup(Base):
                         if isinstance(get_attr, int)
                         else OptionGroup.name == get_attr
                     ),
+                    OptionGroup.insurance_id == insurance_id if insurance_id else True,
                     OptionGroup.deleted == False,
                 )
                 .first()

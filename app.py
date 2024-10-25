@@ -64,7 +64,7 @@ api.add_resource(MtSimulator_Controller, "/simulator/mt/save")
 api.add_resource(LifeDatas_Controller, "/life_datas")
 
 # ==============================================================================
-api.add_resource(Simulation_Controller, "/simulation")
+api.add_resource(LifeSimulator_Controller, "/simulator/life/save")
 
 
 @app.errorhandler(404)

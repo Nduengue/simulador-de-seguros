@@ -15,7 +15,7 @@ from .methods import *
 from .ogo import OGO_Controller
 from .option_group import OptionGroup_Controller
 from .policy_type import PolicyType_Controller
-from ._simulation import Simulation_Controller
+from .life_simulator import LifeSimulator_Controller
 from .rate import Rate_Controller
 from .route import Route_Controller
 from .mt_datas import MtDatas_Controller

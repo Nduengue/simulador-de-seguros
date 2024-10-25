@@ -1,7 +1,5 @@
 from .imports import *
-from models import Option
-from models import Rate
-from models import Company
+from models import OptionGroup, Option, Rate, Company
 
 
 class MtSimulator_Controller(Resource):
@@ -28,9 +26,8 @@ class MtSimulator_Controller(Resource):
             ],
         )
 
-        # option groups ids
-        from models import OptionGroup
-        from models import Option
+        user = datas.get("user", {"id": -1, "name": None, "birth_day": None})
+        duration = datas.get("duration", None)
 
         # Filtro de dados
         if (
@@ -67,28 +64,15 @@ class MtSimulator_Controller(Resource):
             datas["policy_type_id"],
         ]
 
-        def get_options(ids):
-            ids = sorted(ids)
-            options = []
-            for opt_id in ids:
-                option = Option.get(opt_id)
-                if option:
-                    options.append({"id": option.id, "name": option.name})
-            return options
-
         # get merchandise classification and rate
         merchandise = Option.get(datas["merchandise_id"])
         if not merchandise:
             abort(404, message="Classificação do Produto não encontrada.")
 
-        def get_options_og_id(ids, option_group_id):
-            options = get_options(ids)
-            return {"options": options, "option_group_id": option_group_id}
-
         # transportation mode
-        ways = get_options_og_id(datas["way_ids"], ways_group_id)
+        ways = Option.get_options_og_id(datas["way_ids"], ways_group_id)
         # distance and destination
-        from_tos = get_options_og_id(datas["from_to_ids"], from_tos_group_id)
+        from_tos = Option.get_options_og_id(datas["from_to_ids"], from_tos_group_id)
 
         company_simulations = []
         for company_id in datas["company_ids"]:
@@ -115,13 +99,14 @@ class MtSimulator_Controller(Resource):
                     rate = Rate.get_by_option(*params, ",".join(map(str, ids)))
                 elif len(ids) == 1:
                     rate = Rate.get_by_option(*params, ids[0])
-                rates.append(
-                    {
-                        "id": rate.id if rate else None,
-                        "value": rate.value if rate else None,
-                        "option_group_id": option_group_id,
-                    }
-                )
+                if rate:
+                    rates.append(
+                        {
+                            "id": rate.id,
+                            "value": rate.value,
+                            "option_group_id": option_group_id,
+                        }
+                    )
 
             get_rate(datas["way_ids"], ways_group_id)
             get_rate(datas["from_to_ids"], from_tos_group_id)
@@ -135,6 +120,8 @@ class MtSimulator_Controller(Resource):
 
         res = {
             "status": "success",
+            "user": user,
+            "duration": duration,
             "merchandise": {
                 "option": {
                     "id": merchandise.id,
@@ -145,19 +132,19 @@ class MtSimulator_Controller(Resource):
             "ways": ways,
             "from_tos": from_tos,
             "countries_from": {
-                "options": get_options(datas["country_from_ids"]),
+                "options": Option.get_options(datas["country_from_ids"]),
                 "option_group_id": contries_group_id,
             },
             "states_from": {
-                "options": get_options(datas["state_from_ids"]),
+                "options": Option.get_options(datas["state_from_ids"]),
                 "option_group_id": states_group_id,
             },
             "countries_to": {
-                "options": get_options(datas["country_to_ids"]),
+                "options": Option.get_options(datas["country_to_ids"]),
                 "option_group_id": contries_group_id,
             },
             "states_to": {
-                "options": get_options(datas["states_to_ids"]),
+                "options": Option.get_options(datas["states_to_ids"]),
                 "option_group_id": states_group_id,
             },
             "company_simulations": company_simulations,
