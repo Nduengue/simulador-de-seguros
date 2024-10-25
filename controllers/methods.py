@@ -1,4 +1,6 @@
 from flask_restful import abort
+
+
 def missing_fields(datas, required_fields):
     missing_fields_list = []
     for field in required_fields:

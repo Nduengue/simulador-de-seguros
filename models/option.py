@@ -17,7 +17,6 @@ class Option(Base):
     __tablename__ = "option"
 
     id = Column(Integer, primary_key=True)
-    o_type_id = Column(Integer, ForeignKey("o_type.id"))
     name = Column(String)
     description = Column(String)
     abbreviation = Column(String)
@@ -33,7 +32,6 @@ class Option(Base):
 
         return {
             "id": self.id,
-            "o_type_id": self.o_type_id,
             "name": self.name,
             "description": self.description,
             "abbreviation": self.abbreviation,
@@ -44,12 +42,16 @@ class Option(Base):
         }
 
     @staticmethod
-    def get(id):
+    def get(get_attr):
         with DB_Session() as db_session:
             option = (
                 db_session.query(Option)
                 .filter(
-                    Option.id == id,
+                    (
+                        Option.id == get_attr
+                        if isinstance(get_attr, int)
+                        else Option.name == get_attr
+                    ),
                     Option.deleted == False,
                 )
                 .first()
@@ -59,7 +61,7 @@ class Option(Base):
     @staticmethod
     def put(
         name,
-        o_type_id=None,
+        option_group_id=None,
         abbreviation=None,
         required=False,
         description=None,
@@ -67,12 +69,28 @@ class Option(Base):
         selected=False,
     ):
         with DB_Session() as db_session:
-            # verify if option name already exists for the same policy type
+            # verify if option name already exists
+            from models import OGO
+            from models import OptionGroup
+
+            # verify if option group exists if option group id is provided
+            if option_group_id:
+                option_group = OptionGroup.get(option_group_id)
+                if not option_group or option_group.deleted:
+                    abort(404, "Grupo de opção não encontrado.")
+
             option = (
                 db_session.query(Option)
+                .outerjoin(OGO, OGO.option_id == Option.id)
                 .filter(
-                    Option.o_type_id == o_type_id,
                     Option.name == name,
+                    (
+                        and_(
+                            OGO.option_group_id == option_group_id, OGO.deleted == False
+                        )
+                        if option_group_id
+                        else True
+                    ),
                     Option.deleted == False,
                 )
                 .first()
@@ -84,17 +102,9 @@ class Option(Base):
                     "message": "Opção já existente.",
                     "option": option.to_dict(),
                 }
-            # verify if option type exists
-            from models.o_type import OType
-
-            if o_type_id:
-                o_type = OType.get(o_type_id)
-                if not o_type:
-                    abort(404, message="Tipo de opção não encontrada.")
 
             datetime = current_date_time()
             new_option = Option(
-                o_type_id=o_type_id,
                 name=name,
                 description=description,
                 abbreviation=abbreviation,
@@ -109,6 +119,10 @@ class Option(Base):
                 db_session.query(Option).filter(Option.created_at == datetime).first()
             )
 
+            # create ogo
+            if option_group_id:
+                OGO.put(option_group_id, option.id)
+
             response = {
                 "status": "success",
                 "option": option.to_dict(),
@@ -117,34 +131,47 @@ class Option(Base):
             return response
 
     @staticmethod
+    def get_groups(option_id):
+        from models import OptionGroup
+        from models import OGO
+
+        with DB_Session() as db_session:
+            ogs = (
+                db_session.query(OptionGroup)
+                .outerjoin(OGO, OGO.option_group_id == OptionGroup.id)
+                .filter(
+                    OGO.option_id == option_id,
+                    OptionGroup.deleted == False,
+                )
+                .all()
+            )
+
+            return [{"id": og.id, "name": og.name} for og in ogs]
+
+    @staticmethod
     def post(
-        o_type_id=None,
         category_id=None,
         insurance_id=None,
         insurance_type_id=None,
         policy_type_id=None,
         option_group_id=None,
+        option_group_name=None,
     ):
         with DB_Session() as db_session:
-            from models import OType
             from models import Ciip_Pt
             from models import Ciip
             from models import ORC
             from models import OGO
+            from models import OptionGroup
 
             options = (
                 db_session.query(Option)
-                .outerjoin(OType, Option.o_type_id == OType.id)
                 .outerjoin(ORC, Option.id == ORC.option_id)
                 .outerjoin(Ciip_Pt, ORC.ciip_pt_id == Ciip_Pt.id)
                 .outerjoin(Ciip, Ciip_Pt.ciip_id == Ciip.id)
                 .outerjoin(OGO, Option.id == OGO.option_id)
+                .outerjoin(OptionGroup, OGO.option_group_id == OptionGroup.id)
                 .filter(
-                    (
-                        and_(OType.id == o_type_id, OType.deleted == False)
-                        if o_type_id
-                        else True
-                    ),
                     (
                         and_(
                             Ciip_Pt.policy_type_id == policy_type_id,
@@ -161,7 +188,15 @@ class Option(Base):
                         if category_id
                         else True
                     ),
-                    (Ciip.insurance_id == insurance_id if insurance_id else True),
+                    (
+                        and_(
+                            Ciip.insurance_id == insurance_id,
+                            OptionGroup.insurance_id == insurance_id,
+                            OptionGroup.deleted == False,
+                        )
+                        if insurance_id
+                        else True
+                    ),
                     (
                         Ciip.insurance_type_id == insurance_type_id
                         if insurance_type_id
@@ -173,6 +208,14 @@ class Option(Base):
                             OGO.deleted == False,
                         )
                         if option_group_id
+                        else True
+                    ),
+                    (
+                        and_(
+                            OptionGroup.name == option_group_name,
+                            OptionGroup.deleted == False,
+                        )
+                        if option_group_name
                         else True
                     ),
                     Option.deleted == False,

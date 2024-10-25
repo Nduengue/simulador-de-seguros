@@ -30,12 +30,16 @@ class OptionGroup(Base):
         }
 
     @staticmethod
-    def get(id):
+    def get(get_attr):
         with DB_Session() as db_session:
             option_group = (
                 db_session.query(OptionGroup)
                 .filter(
-                    OptionGroup.id == id,
+                    (
+                        OptionGroup.id == get_attr
+                        if isinstance(get_attr, int)
+                        else OptionGroup.name == get_attr
+                    ),
                     OptionGroup.deleted == False,
                 )
                 .first()

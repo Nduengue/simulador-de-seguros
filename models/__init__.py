@@ -17,5 +17,4 @@ from .ogo import OGO
 from .option_group import OptionGroup
 from .rate import Rate
 from .route import Route
-from .o_type import OType
 from .option import Option

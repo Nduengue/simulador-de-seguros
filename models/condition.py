@@ -39,6 +39,10 @@ class Condition(Base):
 
     @staticmethod  # done
     def put(first_value, second_value):
+        # if seconde value type is list, order by asc and convert to string
+        if type(second_value) == list:
+            second_value = ",".join(map(str, sorted(second_value)))
+
         with DB_Session() as db_session:
             datetime = current_date_time()
             condition = Condition(
@@ -57,11 +61,7 @@ class Condition(Base):
                 )
                 .first()
             )
-            return {
-                "status": "success",
-                "message": "Condição registada com sucesso.",
-                "condition": condition.to_dict(),
-            }
+            return condition
 
     @staticmethod  # done
     def post(option_id=None):

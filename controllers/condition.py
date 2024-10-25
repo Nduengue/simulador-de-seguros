@@ -21,5 +21,9 @@ class Condition_Controller(Resource):
     def put(self):
         datas = request.get_json()
         missing_fields(datas, ["first_value", "second_value"])
-        res = Condition.put(datas["first_value"], datas["second_value"])
-        return res
+        condition = Condition.put(datas["first_value"], datas["second_value"])
+        return {
+            "status": "success",
+            "message": "Condição registada com sucesso.",
+            "condition": condition.to_dict(),
+        }

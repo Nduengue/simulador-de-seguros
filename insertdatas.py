@@ -2,7 +2,6 @@ from models import (
     Company,
     Option,
     Option_Option,
-    Company_Rate,
     Rate,
     Condition,
     Ciip,
@@ -12,7 +11,6 @@ from models import (
     PolicyType,
     OGO,
     OptionGroup,
-    OType,
 )
 
 # companies = [
@@ -221,31 +219,200 @@ from models import (
 #     -16
 # ]
 
-# values = [
-#     "Afeganistão", "África do Sul", "Albânia", "Alemanha", "Andorra", "Angola", "Antígua e Barbuda", "Arábia Saudita",
-#     "Argélia", "Argentina", "Armênia", "Austrália", "Áustria", "Azerbaijão", "Bahamas", "Bangladesh", "Barbados",
-#     "Barém", "Bélgica", "Belize", "Benim", "Bielorrússia", "Bolívia", "Bósnia e Herzegovina", "Botsuana", "Brasil",
-#     "Brunei", "Bulgária", "Burquina Faso", "Burundi", "Butão", "Cabo Verde", "Camarões", "Camboja", "Canadá", 
-#     "Catar", "Cazaquistão", "Chade", "Chile", "China", "Chipre", "Colômbia", "Comores", "Congo (Brazzaville)", 
-#     "Coreia do Norte", "Coreia do Sul", "Costa do Marfim", "Costa Rica", "Croácia", "Cuba", "Dinamarca", 
-#     "Dominica", "Egito", "El Salvador", "Emirados Árabes Unidos", "Equador", "Eritreia", "Eslováquia", "Eslovênia", 
-#     "Espanha", "Estados Unidos", "Estônia", "Eswatini", "Etiópia", "Fiji", "Filipinas", "Finlândia", "França", 
-#     "Gabão", "Gâmbia", "Gana", "Geórgia", "Granada", "Grécia", "Guatemala", "Guiana", "Guiné", "Guiné-Bissau", 
-#     "Guiné Equatorial", "Haiti", "Honduras", "Hungria", "Iêmen", "Ilhas Marshall", "Ilhas Salomão", "Índia", 
-#     "Indonésia", "Irã", "Iraque", "Irlanda", "Islândia", "Israel", "Itália", "Jamaica", "Japão", "Jordânia", 
-#     "Kiribati", "Kosovo", "Kuwait", "Laos", "Lesoto", "Letônia", "Líbano", "Libéria", "Líbia", "Liechtenstein", 
-#     "Lituânia", "Luxemburgo", "Madagascar", "Malásia", "Maláui", "Maldivas", "Mali", "Malta", "Marrocos", 
-#     "Maurício", "Mauritânia", "México", "Mianmar (Birmânia)", "Micronésia", "Moçambique", "Moldávia", "Mônaco", 
-#     "Mongólia", "Montenegro", "Namíbia", "Nauru", "Nepal", "Nicarágua", "Níger", "Nigéria", "Noruega", 
-#     "Nova Zelândia", "Omã", "Países Baixos", "Palau", "Panamá", "Papua-Nova Guiné", "Paquistão", "Paraguai", 
-#     "Peru", "Polônia", "Portugal", "Quênia", "Quirguistão", "Reino Unido", "República Centro-Africana", 
-#     "República Dominicana", "República Tcheca", "Romênia", "Ruanda", "Rússia", "Samoa", "San Marino", "Santa Lúcia", 
-#     "São Cristóvão e Névis", "São Tomé e Príncipe", "São Vicente e Granadinas", "Seicheles", "Senegal", "Serra Leoa", 
-#     "Sérvia", "Singapura", "Síria", "Somália", "Sri Lanka", "Sudão", "Sudão do Sul", "Suécia", "Suíça", "Suriname", 
-#     "Tailândia", "Tajiquistão", "Tanzânia", "Timor-Leste", "Togo", "Tonga", "Trindade e Tobago", "Tunísia", 
-#     "Turcomenistão", "Turquia", "Tuvalu", "Ucrânia", "Uganda", "Uruguai", "Uzbequistão", "Vanuatu", "Vaticano", 
-#     "Venezuela", "Vietnã", "Zâmbia", "Zimbábue"
-# ]
+values = [
+    "Afeganistão",
+    "África do Sul",
+    "Albânia",
+    "Alemanha",
+    "Andorra",
+    "Angola",
+    "Antígua e Barbuda",
+    "Arábia Saudita",
+    "Argélia",
+    "Argentina",
+    "Armênia",
+    "Austrália",
+    "Áustria",
+    "Azerbaijão",
+    "Bahamas",
+    "Bangladesh",
+    "Barbados",
+    "Barém",
+    "Bélgica",
+    "Belize",
+    "Benim",
+    "Bielorrússia",
+    "Bolívia",
+    "Bósnia e Herzegovina",
+    "Botsuana",
+    "Brasil",
+    "Brunei",
+    "Bulgária",
+    "Burquina Faso",
+    "Burundi",
+    "Butão",
+    "Cabo Verde",
+    "Camarões",
+    "Camboja",
+    "Canadá",
+    "Catar",
+    "Cazaquistão",
+    "Chade",
+    "Chile",
+    "China",
+    "Chipre",
+    "Colômbia",
+    "Comores",
+    "Congo (Brazzaville)",
+    "Coreia do Norte",
+    "Coreia do Sul",
+    "Costa do Marfim",
+    "Costa Rica",
+    "Croácia",
+    "Cuba",
+    "Dinamarca",
+    "Dominica",
+    "Egito",
+    "El Salvador",
+    "Emirados Árabes Unidos",
+    "Equador",
+    "Eritreia",
+    "Eslováquia",
+    "Eslovênia",
+    "Espanha",
+    "Estados Unidos",
+    "Estônia",
+    "Eswatini",
+    "Etiópia",
+    "Fiji",
+    "Filipinas",
+    "Finlândia",
+    "França",
+    "Gabão",
+    "Gâmbia",
+    "Gana",
+    "Geórgia",
+    "Granada",
+    "Grécia",
+    "Guatemala",
+    "Guiana",
+    "Guiné",
+    "Guiné-Bissau",
+    "Guiné Equatorial",
+    "Haiti",
+    "Honduras",
+    "Hungria",
+    "Iêmen",
+    "Ilhas Marshall",
+    "Ilhas Salomão",
+    "Índia",
+    "Indonésia",
+    "Irã",
+    "Iraque",
+    "Irlanda",
+    "Islândia",
+    "Israel",
+    "Itália",
+    "Jamaica",
+    "Japão",
+    "Jordânia",
+    "Kiribati",
+    "Kosovo",
+    "Kuwait",
+    "Laos",
+    "Lesoto",
+    "Letônia",
+    "Líbano",
+    "Libéria",
+    "Líbia",
+    "Liechtenstein",
+    "Lituânia",
+    "Luxemburgo",
+    "Madagascar",
+    "Malásia",
+    "Maláui",
+    "Maldivas",
+    "Mali",
+    "Malta",
+    "Marrocos",
+    "Maurício",
+    "Mauritânia",
+    "México",
+    "Mianmar (Birmânia)",
+    "Micronésia",
+    "Moçambique",
+    "Moldávia",
+    "Mônaco",
+    "Mongólia",
+    "Montenegro",
+    "Namíbia",
+    "Nauru",
+    "Nepal",
+    "Nicarágua",
+    "Níger",
+    "Nigéria",
+    "Noruega",
+    "Nova Zelândia",
+    "Omã",
+    "Países Baixos",
+    "Palau",
+    "Panamá",
+    "Papua-Nova Guiné",
+    "Paquistão",
+    "Paraguai",
+    "Peru",
+    "Polônia",
+    "Portugal",
+    "Quênia",
+    "Quirguistão",
+    "Reino Unido",
+    "República Centro-Africana",
+    "República Dominicana",
+    "República Tcheca",
+    "Romênia",
+    "Ruanda",
+    "Rússia",
+    "Samoa",
+    "San Marino",
+    "Santa Lúcia",
+    "São Cristóvão e Névis",
+    "São Tomé e Príncipe",
+    "São Vicente e Granadinas",
+    "Seicheles",
+    "Senegal",
+    "Serra Leoa",
+    "Sérvia",
+    "Singapura",
+    "Síria",
+    "Somália",
+    "Sri Lanka",
+    "Sudão",
+    "Sudão do Sul",
+    "Suécia",
+    "Suíça",
+    "Suriname",
+    "Tailândia",
+    "Tajiquistão",
+    "Tanzânia",
+    "Timor-Leste",
+    "Togo",
+    "Tonga",
+    "Trindade e Tobago",
+    "Tunísia",
+    "Turcomenistão",
+    "Turquia",
+    "Tuvalu",
+    "Ucrânia",
+    "Uganda",
+    "Uruguai",
+    "Uzbequistão",
+    "Vanuatu",
+    "Vaticano",
+    "Venezuela",
+    "Vietnã",
+    "Zâmbia",
+    "Zimbábue",
+]
 
 # values = [
 #     "Bengo", "Benguela", "Bié", "Cabinda", "Cuanza Norte", "Cuanza Sul", "Cunene", "Huambo", "Huila", "Icolo e Bengo",
@@ -255,3 +422,212 @@ from models import (
 # for value in values:
 #     res = Option.put(value, 4)
 #     print(res)
+
+# 1	1	Morte por qualquer causa		M
+# 2	1	Invalidez Total e Permanente		ITP
+# 3	1	Doenças Críticas		DC
+# 25	1	Cobertura para Avaria/Perda Total
+# 26	1	Roubo/Pirataria (marítimo)
+# 27	1	Cobertura para eventos climáticos severos	Inundações ou Tempestades
+# 30	1	Áreas de conflito
+# 36	1	Cláusula A
+# 37	1	Cláusula B
+# 38	1	Cláusula C
+
+
+# res = Option.group_countries()
+# print(res)
+{
+    "company_ids": [1, 2, 3],
+    "category_id": 1,
+    "insurance_id": 2,
+    "insurance_type_id": 1,
+    "policy_type_id": 1,
+    "merchandise_id": 7,
+    "way_ids": [9],
+    "country_from_ids": [48],
+    "state_from_ids": [238, 236],
+    "country_to_ids": [54],
+    "states_to_ids": [],
+    "from_to_ids": [23, 21],
+    "value": 231552,
+}
+(
+    {
+        "status": "success",
+        "company_simulations": [
+            {
+                "company": {
+                    "id": 1,
+                    "name": "Global Seguros",
+                    "email": "global@seguros.ao",
+                    "created_at": "2024-10-19T19:15:55.581817+01:00",
+                    "updated_at": None,
+                    "deleted": False,
+                },
+                "merchandise": {
+                    "option": {"id": 7, "name": "Produtos perigosos"},
+                    "option_group_id": 1,
+                    "rate": {"id": 30, "value": 0.45},
+                },
+                "ways": {
+                    "options": [{"id": 9, "name": "Terrestre"}],
+                    "option_group_id": 2,
+                    "rate": {"id": 15, "value": 0.16},
+                },
+                "from_tos": {
+                    "options": [
+                        {"id": 21, "name": "Internacional"},
+                        {"id": 23, "name": "Com Transbordo"},
+                    ],
+                    "option_group_id": 3,
+                    "rate": {"id": 32, "value": 0.15},
+                },
+                "countries_from": {
+                    "options": [{"id": 48, "name": "Angola"}],
+                    "option_group_id": 11,
+                },
+                "states_from": {
+                    "options": [
+                        {"id": 238, "name": "Cabinda"},
+                        {"id": 236, "name": "Benguela"},
+                    ],
+                    "option_group_id": 12,
+                },
+                "countries_to": {
+                    "options": [{"id": 54, "name": "Austrália"}],
+                    "option_group_id": 11,
+                },
+                "states_to": {"options": [], "option_group_id": 12},
+            },
+            {
+                "company": {
+                    "id": 2,
+                    "name": "Giant Seguros SA",
+                    "email": "giant@seguros.ao",
+                    "created_at": "2024-10-19T19:15:55.625509+01:00",
+                    "updated_at": None,
+                    "deleted": False,
+                },
+                "merchandise": {
+                    "option": {"id": 7, "name": "Produtos perigosos"},
+                    "option_group_id": 1,
+                    "rate": None,
+                },
+                "ways": {
+                    "options": [{"id": 9, "name": "Terrestre"}],
+                    "option_group_id": 2,
+                    "rate": None,
+                },
+                "from_tos": {
+                    "options": [
+                        {"id": 21, "name": "Internacional"},
+                        {"id": 23, "name": "Com Transbordo"},
+                    ],
+                    "option_group_id": 3,
+                    "rate": None,
+                },
+                "countries_from": {
+                    "options": [{"id": 48, "name": "Angola"}],
+                    "option_group_id": 11,
+                },
+                "states_from": {
+                    "options": [
+                        {"id": 238, "name": "Cabinda"},
+                        {"id": 236, "name": "Benguela"},
+                    ],
+                    "option_group_id": 12,
+                },
+                "countries_to": {
+                    "options": [{"id": 54, "name": "Austrália"}],
+                    "option_group_id": 11,
+                },
+                "states_to": {"options": [], "option_group_id": 12},
+            },
+            {
+                "company": {
+                    "id": 3,
+                    "name": "Fidelidade Seguros",
+                    "email": "fidelidade@seguros.ao",
+                    "created_at": "2024-10-19T19:15:55.636480+01:00",
+                    "updated_at": None,
+                    "deleted": False,
+                },
+                "merchandise": {
+                    "option": {"id": 7, "name": "Produtos perigosos"},
+                    "option_group_id": 1,
+                    "rate": None,
+                },
+                "ways": {
+                    "options": [{"id": 9, "name": "Terrestre"}],
+                    "option_group_id": 2,
+                    "rate": None,
+                },
+                "from_tos": {
+                    "options": [
+                        {"id": 21, "name": "Internacional"},
+                        {"id": 23, "name": "Com Transbordo"},
+                    ],
+                    "option_group_id": 3,
+                    "rate": None,
+                },
+                "countries_from": {
+                    "options": [{"id": 48, "name": "Angola"}],
+                    "option_group_id": 11,
+                },
+                "states_from": {
+                    "options": [
+                        {"id": 238, "name": "Cabinda"},
+                        {"id": 236, "name": "Benguela"},
+                    ],
+                    "option_group_id": 12,
+                },
+                "countries_to": {
+                    "options": [{"id": 54, "name": "Austrália"}],
+                    "option_group_id": 11,
+                },
+                "states_to": {"options": [], "option_group_id": 12},
+            },
+        ],
+    },
+    200,
+)
+
+# Países africanos
+# paises_africanos = [
+#     "África do Sul", "Angola", "Argélia", "Benim", "Botsuana", "Burquina Faso", "Burundi",
+#     "Cabo Verde", "Camarões", "Chade", "Comores", "Congo (Brazzaville)", "Costa do Marfim",
+#     "Egito", "Eritreia", "Etiópia", "Gabão", "Gâmbia", "Gana", "Guiné", "Guiné-Bissau",
+#     "Guiné Equatorial", "Lesoto", "Libéria", "Líbia", "Madagascar", "Maláui", "Mali",
+#     "Marrocos", "Maurício", "Mauritânia", "Moçambique", "Namíbia", "Níger", "Nigéria",
+#     "Quênia", "República Centro-Africana", "Ruanda", "Senegal", "Serra Leoa", "Somália",
+#     "Sudão", "Sudão do Sul", "Tanzânia", "Togo", "Tunísia", "Uganda", "Zâmbia", "Zimbábue"
+# ]
+
+# for country in paises_africanos:
+#     option = Option.get(country)
+#     if not option:
+#         print(f"Pais nao encontrado {country}")
+#         continue
+#     OGO.put(15, option.id)
+
+# # Países da SADC
+# paises_sadc = [
+#     "África do Sul", "Angola", "Botsuana", "Eswatini", "Lesoto", "Maláui", "Moçambique",
+#     "Namíbia", "República Democrática do Congo", "São Tomé e Príncipe", "Tanzânia",
+#     "Zâmbia", "Zimbábue"
+# ]
+
+# for country in paises_sadc:
+#     option = Option.get(country)
+#     if not option:
+#         print(f"Pais nao encontrado {country}")
+#         continue
+#     OGO.put(16, option.id)
+
+
+# Option.put("República Democrática do Congo", 16, "RDC")
+# country = Option.get("República Democrática do Congo")
+# if not country:
+#     print(f"Pais nao encontrado República Democrática do Congo")
+#     OGO.put(16, country.id)

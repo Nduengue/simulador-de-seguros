@@ -19,5 +19,5 @@ from ._simulation import Simulation_Controller
 from .rate import Rate_Controller
 from .route import Route_Controller
 from .mt_datas import MtDatas_Controller
-from .o_type import OType_Controller
 from .mt_simulator import MtSimulator_Controller
+from .life_datas import LifeDatas_Controller
