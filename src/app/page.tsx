@@ -1,4 +1,5 @@
 import { Input } from "@/component/input";
+import { APP_BENEFITS } from "@/config/app-values";
 import { HomeIcon, LogIn, MailIcon } from "lucide-react";
 import Image from "next/image";
 
@@ -30,30 +31,39 @@ export default function Home() {
           </li>
         </ul>
       </header>
-      <main className="row-start-2 items-center sm:items-start bg-[#eff4f9] text-[#2c2c2c]">
-        <Image
-          className=""
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <h2>Simule Seu Seguro em Minutos – Rápido e Fácil!</h2>
-        <p>
-          Encontre o seguro perfeito para você, comparando opções e preços em um
-          só lugar.
-        </p>
-        <div className="flex gap-6 items-center  *:bg-[#d18f46] *:p-3 *:rounded-2xl font-bold text-[#fff]">
-          <button>Simular Particular</button>
-          <button>Simular Empresarial</button>
+
+      <main className="row-start-2 items-center sm:items-start  text-[#2c2c2c]">
+        <div className="bg-[#eff4f9] flex flex-col items-center justify-center">
+          <Image
+            className=""
+            src="/app-icons/save-money.png"
+            alt="Next.js logo"
+            width={680}
+            height={168}
+            priority
+          />
+          <div className="flex flex-col items-center gap-y-3 mb-10">
+            <h2 className="text-[#d18f46] font-bold text-3xl">
+              Simule Seu Seguro em Minutos – Rápido e Fácil!
+            </h2>
+            <p>
+              Encontre o seguro perfeito para você, comparando opções e preços
+              em um só lugar.
+            </p>
+            <div className="flex gap-6 items-center  *:bg-[#d18f46] *:p-3 *:rounded-2xl font-bold text-[#fff]">
+              <button>Simular Particular</button>
+              <button>Simular Empresarial</button>
+            </div>
+          </div>
         </div>
-        <div className="bg-[#d18f46]">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum omnis
-            fugit minima! Dolor ut illo atque omnis ea eveniet harum labore hic?
-            Reiciendis ea asperiores nisi odio. Iste, dolorem impedit?
-          </p>
+
+        <div className="bg-[#d18f46] flex flex-col items-center p-8">
+          <h2 className="font-bold text-5xl text-[#eff4f9]">Benefícios</h2>
+          <div className="grid grid-cols-2 gap-8 p-8  ">
+            {APP_BENEFITS.map((item, index) => (
+              <BenefitsCard key={index} {...item} />
+            ))}
+          </div>
         </div>
         <div className="flex gap-6 items-center justify-center bg-[#0f1b2d]">
           <Image
@@ -91,6 +101,31 @@ export default function Home() {
           reservados.
         </p>
       </footer>
+    </div>
+  );
+}
+
+interface BenefitsCardProps {
+  title: string;
+  description: string;
+  image: string;
+}
+function BenefitsCard({ description, image, title }: BenefitsCardProps) {
+  return (
+    <div className="flex gap-1 bg-[#0f1b2d] rounded-2xl p-3 shadow-lg">
+      {/* <HomeIcon size={40} /> */}
+      <Image
+        className=""
+        src={image}
+        alt="Next.js logo"
+        width={120}
+        height={38}
+        priority
+      />
+      <div>
+        <h3 className="text-[#eff4f9] font-bold mb-2">{title}</h3>
+        <p className="text-[#fafcfd]">{description}</p>
+      </div>
     </div>
   );
 }
