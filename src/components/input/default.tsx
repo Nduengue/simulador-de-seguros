@@ -1,4 +1,3 @@
-import { Phone } from "lucide-react";
 import { ElementType } from "react";
 
 interface DefaultProps extends React.InputHTMLAttributes<HTMLInputElement> {

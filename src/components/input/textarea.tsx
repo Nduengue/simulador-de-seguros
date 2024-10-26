@@ -1,4 +1,3 @@
-import { Phone } from "lucide-react";
 
 interface TextareaProps extends React.ComponentProps<"textarea"> {
   label?: string;
