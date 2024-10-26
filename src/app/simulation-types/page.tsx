@@ -1,4 +1,6 @@
-interface ISimulationType {}
+interface ISimulationType {
+  t?: string;
+}
 
 export default function SimulationType({}: ISimulationType) {
   return (
