@@ -1,6 +1,6 @@
-import { Input } from "@/component/input";
+import { Input } from "@/components/input";
 import { APP_BENEFITS } from "@/config/app-values";
-import { HomeIcon, LogIn, MailIcon } from "lucide-react";
+import { HomeIcon, LogIn, MailIcon, Phone, User2 } from "lucide-react";
 import Image from "next/image";
 
 export default function Home() {
@@ -65,7 +65,8 @@ export default function Home() {
             ))}
           </div>
         </div>
-        <div className="flex gap-6 items-center justify-center bg-[#0f1b2d]">
+
+        <div className="flex gap-6 gap-x-10 items-center justify-center bg-[#0f1b2d] py-10">
           <Image
             className=""
             src="/app-icons/contact-us-ilustration.svg"
@@ -74,29 +75,37 @@ export default function Home() {
             height={68}
             priority
           />
-          <div className="bg-red-500">
-            <h2 className="font-bold text-2xl">Entrar em contacto</h2>
-            <Input.Default
-              label="Nome Completo"
-              type="text"
-              placeholder="Preencha com seu nome completo"
-            />
-            <Input.Default
-              label="Número de Telemóvel"
-              type="number"
-              placeholder="Preencha com seu número de telemóvel"
-            />
-            <Input.Default
-              label="Email"
-              type="email"
-              placeholder="Preencha com seu email"
-            />
-            <textarea name="" id=""></textarea>
+          <div className="text-[#eff4f9] w-2/5">
+            <h2 className="font-bold text-2xl mb-2">Entrar em contacto</h2>
+            <div className="space-y-4">
+              <Input.Default
+                icon={User2}
+                label="Nome Completo"
+                type="text"
+                placeholder="Insira seu nome completo"
+              />
+              <Input.Default
+                icon={Phone}
+                label="Número de Telemóvel"
+                type="number"
+                placeholder="Insira seu número de telemóvel"
+              />
+              <Input.Default
+                icon={MailIcon}
+                label="Email"
+                type="email"
+                placeholder="Insira com seu email"
+              />
+              <Input.Textarea
+                label="Mensagem"
+                placeholder="Insira sua mensagem"
+              />
+            </div>
           </div>
         </div>
       </main>
-      <footer className="bg-[#075985]">
-        <p>
+      <footer className="bg-[#075985] p-3">
+        <p className="text-center">
           © 2024 Sociedade de Formação Financeira e Seguros. Todos os direitos
           reservados.
         </p>

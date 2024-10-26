@@ -1,18 +1,20 @@
 import { Phone } from "lucide-react";
+import { ElementType } from "react";
 
 interface DefaultProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
+  icon: ElementType
 }
-export function Default({ label, ...rest }: DefaultProps) {
+export function Default({ label,icon:Icon, ...rest }: DefaultProps) {
   const randomUUID = crypto.randomUUID();
   return (
-    <div className="border border-[#075985] rounded-lg p-2 space-y-2">
+    <div className=" space-y-2 bg">
       <label htmlFor={randomUUID} className="font-bold">{label}</label>
-      <div className="flex items-center gap-2 p-2">
-        <Phone className="text-[#34475b]"/>
+      <div className="flex items-center border gap-x-2 border-[#075985] rounded-xl p-3">
+        <Icon className="text-[#34475b]"/>
         <input
           id={randomUUID}
-          className=" bg-transparent outline-none"
+          className="outline-none bg-transparent w-full"
           {...rest}
         />
       </div>
