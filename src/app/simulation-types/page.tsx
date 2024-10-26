@@ -1,8 +1,5 @@
-interface ISimulationType {
-  t?: string;
-}
 
-export default function SimulationType({}: ISimulationType) {
+export default function SimulationType() {
   return (
     <>
       <h1>Simulation</h1>
