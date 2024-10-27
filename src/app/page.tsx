@@ -1,15 +1,15 @@
 import { Input } from "@/components/input";
 import { APP_BENEFITS } from "@/config/app-values";
-import { HomeIcon, LogIn, MailIcon, Phone, User2 } from "lucide-react";
+import { Building2, HomeIcon, LogIn, MailIcon, Phone, Send, User2 } from "lucide-react";
 import Image from "next/image";
 
 export default function Home() {
   return (
     // <div className="min-h-screen p-8 sm:p-20 font-[family-name:var(--font-geist-sans)]">
     <div className="min-h-screen  font-[family-name:var(--font-geist-sans)]">
-      <header className="bg-[#fafcfd] text-[#34475b] flex items-center justify-between px-2 pt-2 md:px-8 font-bold border-b shadow-lg">
+      <header className="bg-[#fafcfd]  text-[#34475b] flex items-center justify-end md:justify-between px-2 pt-2 md:px-8 font-bold border-b shadow-lg">
         <Image
-          className=""
+          className="hidden md:block"
           src="/next.svg"
           alt="Next.js logo"
           width={180}
@@ -26,7 +26,7 @@ export default function Home() {
             <MailIcon />
             Contacto
           </li>
-          <li className="bg-[#0f1b2d] text-[#fafcfd] p-3 rounded-2xl hover:shadow-xl">
+          <li className="bg-[#0f1b2d] text-[#fafcfd] p-3 rounded-3xl hover:shadow-xl">
             Entrar <LogIn />
           </li>
         </ul>
@@ -42,42 +42,43 @@ export default function Home() {
             height={168}
             priority
           />
-          <div className="flex flex-col items-center gap-y-3 mb-10">
-            <h2 className="text-[#d18f46] font-bold text-3xl">
+          <div className="flex flex-col items-center gap-y-3 px-6 mb-10 text-center">
+            <h2 className="text-[#d18f46] font-bold text-3xl ">
               Simule Seu Seguro em Minutos – Rápido e Fácil!
             </h2>
             <p>
               Encontre o seguro perfeito para você, comparando opções e preços
               em um só lugar.
             </p>
-            <div className="flex gap-6 items-center  *:bg-[#d18f46] *:p-3 *:rounded-2xl font-bold text-[#fff]">
-              <button>Simular Particular</button>
-              <button>Simular Empresarial</button>
+            <div className="flex *:flex *:items-center *:gap-x-1 gap-6 items-center  *:bg-[#d18f46] *:p-3 *:rounded-2xl font-bold text-[#fff]">
+              <button><User2 />Particular</button>
+              <button><Building2 />Empresarial</button>
             </div>
           </div>
         </div>
 
-        <div className="bg-[#d18f46] flex flex-col items-center p-8">
-          <h2 className="font-bold text-5xl text-[#eff4f9]">Benefícios</h2>
-          <div className="grid grid-cols-2 gap-8 p-8  ">
+        <div className="bg-[#d18f46] flex flex-col items-center p-8 space-y-4">
+          <h2 className="font-bold text-5xl text-[#eff4f9] mb-4">Benefícios</h2>
+          <div className="grid sm:grid-cols-2 gap-4 sm:gap-8 sm:px-0 sm:text-sm md:px-14  ">
             {APP_BENEFITS.map((item, index) => (
               <BenefitsCard key={index} {...item} />
             ))}
           </div>
         </div>
 
-        <div className="flex gap-6 gap-x-10 items-center justify-center bg-[#0f1b2d] py-10">
+        <div className="flex gap-6 gap-x-10 items-center justify-center bg-[#0f1b2d] py-10 ">
           <Image
-            className=""
+            className="hidden md:block"
             src="/app-icons/contact-us-ilustration.svg"
             alt="Contact Us logo"
             width={380}
             height={68}
             priority
           />
-          <div className="text-[#eff4f9] w-2/5">
-            <h2 className="font-bold text-2xl mb-2">Entrar em contacto</h2>
-            <div className="space-y-4">
+
+          <div className="text-[#eff4f9] md:w-2/5 w-full px-10 ">
+            <h2 className="font-bold text-3xl sm:text-4xl mb-2">Entrar em contacto</h2>
+            <div className="space-y-4 flex flex-col">
               <Input.Default
                 icon={User2}
                 label="Nome Completo"
@@ -100,6 +101,7 @@ export default function Home() {
                 label="Mensagem"
                 placeholder="Insira sua mensagem"
               />
+              <button className="text-[#eff4f9] bg-[#075985] py-2 px-4 rounded-xl flex items-center gap-2 self-end"><Send size={14} />Enviar</button>
             </div>
           </div>
         </div>
