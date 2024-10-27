@@ -1,38 +1,18 @@
 import { Input } from "@/components/input";
-import { APP_BENEFITS } from "@/config/app-values";
-import { Building2, HomeIcon, LogIn, MailIcon, Phone, Send, User2 } from "lucide-react";
+import { AppLayout } from "@/components/layout";
+import { APP_BENEFITS } from "@/mocks/main";
+import { Building2, MailIcon, Phone, Send, User2 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
     // <div className="min-h-screen p-8 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-    <div className="min-h-screen  font-[family-name:var(--font-geist-sans)]">
-      <header className="bg-[#fafcfd]  text-[#34475b] flex items-center justify-end md:justify-between px-2 pt-2 md:px-8 font-bold border-b shadow-lg">
-        <Image
-          className="hidden md:block"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
+    <div className="min-h-screen  font-[family-name:var(--font-geist-sans)] translate ease-in-out">
 
-        <ul className="flex items-center p-4 gap-3 *:flex *:items-center *:cursor-pointer">
-          <li className="border-b-2 pb-1.5 gap-x-1 border-transparent hover:border-[#d18f46] hover:text-[#d18f46]">
-            <HomeIcon />
-            Inicio
-          </li>
-          <li className="border-b-2 pb-1.5 gap-x-1 border-transparent hover:border-[#d18f46] hover:text-[#d18f46]">
-            <MailIcon />
-            Contacto
-          </li>
-          <li className="bg-[#0f1b2d] text-[#fafcfd] p-3 rounded-3xl hover:shadow-xl">
-            Entrar <LogIn />
-          </li>
-        </ul>
-      </header>
+     <AppLayout.PublicHeader/>
 
-      <main className="row-start-2 items-center sm:items-start  text-[#2c2c2c]">
+      <main className="row-start-2 items-center sm:items-start  text-[#2c2c2c]" id="inicio">
         <div className="bg-[#eff4f9] flex flex-col items-center justify-center">
           <Image
             className=""
@@ -51,8 +31,8 @@ export default function Home() {
               em um só lugar.
             </p>
             <div className="flex *:flex *:items-center *:gap-x-1 gap-6 items-center  *:bg-[#d18f46] *:p-3 *:rounded-2xl font-bold text-[#fff]">
-              <button><User2 />Particular</button>
-              <button><Building2 />Empresarial</button>
+              <Link href={"/simulation/particular"}><User2 />Particular</Link>
+              <Link href={"/simulation/business"}><Building2 />Empresarial</Link>
             </div>
           </div>
         </div>
@@ -66,7 +46,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex gap-6 gap-x-10 items-center justify-center bg-[#0f1b2d] py-10 ">
+        <div className="flex gap-6 gap-x-10 items-center justify-center bg-[#0f1b2d] py-10 " id="contacto">
           <Image
             className="hidden md:block"
             src="/app-icons/contact-us-ilustration.svg"
@@ -105,13 +85,9 @@ export default function Home() {
             </div>
           </div>
         </div>
+
       </main>
-      <footer className="bg-[#075985] p-3">
-        <p className="text-center">
-          © 2024 Sociedade de Formação Financeira e Seguros. Todos os direitos
-          reservados.
-        </p>
-      </footer>
+     <AppLayout.PublicFooter/>
     </div>
   );
 }
