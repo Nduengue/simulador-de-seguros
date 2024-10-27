@@ -1,6 +1,5 @@
 import { Input } from "@/components/input";
 import { Lock, Mail } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 // import Wall1 from require("/wall1.jpg");
 
