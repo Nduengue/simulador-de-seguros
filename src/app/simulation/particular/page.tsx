@@ -3,7 +3,7 @@ import { AppLayout } from "@/components/layout";
 import { Search } from "lucide-react";
 import Image from "next/image";
 import CardAvaliableSimulation from "./card";
-import { APP_AVALIABLE_PARTICULAR_SIMULATION } from "@/mocks/main";
+import { APP_AVALIABLE_PARTICULAR_SIMULATION } from "@/mocks/simullation-type";
 
 export default function SimulationType() {
   return (
@@ -47,6 +47,9 @@ export default function SimulationType() {
               ))}
             </div>
           </div>
+          <button className="my-8 bg-[#0f1b2d] rounded-lg p-1.5 px-3 shadow-2xl text-[#fff]">
+            Ver todos...
+          </button>
         </div>
       </main>
       <AppLayout.PublicFooter />

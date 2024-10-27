@@ -1,6 +1,6 @@
 import { Input } from "@/components/input";
 import { AppLayout } from "@/components/layout";
-import { APP_BENEFITS } from "@/mocks/main";
+import { APP_BENEFITS } from "@/mocks/benefes";
 import { Building2, MailIcon, Phone, Send, User2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

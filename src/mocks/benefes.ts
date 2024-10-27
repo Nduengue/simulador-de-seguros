@@ -37,37 +37,4 @@ export const APP_BENEFITS = [
   },
 ];
 
-export const APP_AVALIABLE_PARTICULAR_SIMULATION = [
-  {
-    id: "5770cc91-1f12-45a2-a8db-1d96ce6d1fde",
-    image: "/app-icons/compare-multiplas-seguradoras.png",
-    title: "Seguro de Automóvel",
-    description:
-      "Proteção para o seu veículo, com coberturas que atendem às suas necessidades",
-    link: "/simulacao/auto",
-  },
-  {
-    id: "90a722d7-c481-4f24-83c0-7029c278e8d0",
-    image: "/app-icons/compare-multiplas-seguradoras.png",
-    title: "Seguro de Saúde",
-    description:
-      "Cobertura para cuidados médicos, com opções de planos que atendem às suas necessidades",
-    link: "/simulacao/saude",
-  },
-  {
-    id: "ff179b8b-4117-4dce-ab51-c003e7e9df13",
-    image: "/app-icons/compare-multiplas-seguradoras.png",
-    title: "Seguro de Viagem",
-    description:
-      "Proteção para suas férias, com coberturas que atendem às suas necessidades",
-    link: "/simulacao/viagem",
-  },
-  {
-    id: "7bd2f706-9e71-4501-9b15-c1ff3b9eb76a",
-    image: "/app-icons/compare-multiplas-seguradoras.png",
-    title: "Seguro de Residência",
-    description:
-      "Proteção para sua casa, com coberturas que atendem às suas necessidades",
-    link: "/simulacao/residencia",
-  },
-];
+

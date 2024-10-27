@@ -15,11 +15,11 @@ export default function PublicHeader() {
         />
 
         <ul className="flex items-center p-4 gap-3 *:flex *:items-center *:cursor-pointer">
-          <Link href={"#inicio"} className="border-b-2 pb-1.5 gap-x-1 border-transparent hover:border-[#d18f46] hover:text-[#d18f46]">
+          <Link href={"/#inicio"} className="border-b-2 pb-1.5 gap-x-1 border-transparent hover:border-[#d18f46] hover:text-[#d18f46]">
             <HomeIcon />
             Inicio
           </Link>
-          <Link href={"#contacto"} className="border-b-2 pb-1.5 gap-x-1 border-transparent hover:border-[#d18f46] hover:text-[#d18f46]">
+          <Link href={"/#contacto"} className="border-b-2 pb-1.5 gap-x-1 border-transparent hover:border-[#d18f46] hover:text-[#d18f46]">
             <MailIcon />
             Contacto
           </Link>

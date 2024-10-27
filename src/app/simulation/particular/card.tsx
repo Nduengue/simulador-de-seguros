@@ -21,23 +21,21 @@ export default function CardAvaliableSimulation({
       href={link}
       className={`flex  rounded-2xl  shadow-lg ${
         index % 2 === 0 ? "bg-[#d18f46]" : "bg-[#34475b]"
-      } transition ease-in-out group`}
+      } transition ease-in-out group grid grid-cols-3`}
     >
       <Image
-        className={`${
-          index % 2 === 0 ? "bg-[#34475b]" : "bg-[#d18f46]"
-        } rounded-l-2xl ${
+        className={`${index % 2 === 0 ? "bg-[#34475b]" : "bg-[#d18f46]"} ${
           index % 2 === 0
             ? "group-hover:bg-[#d18f46]"
             : "group-hover:bg-[#34475b]"
-        }`}
+        } rounded-l-2xl h-full`}
         src={image}
         alt="Simulator Type logo"
         width={120}
         height={38}
-        priority
+        // priority
       />
-      <div className="p-2  rounded-r-2xl">
+      <div className="p-2  rounded-r-2xl col-span-2">
         <h3 className="text-[#eff4f9] font-bold mb-2 ">{title}</h3>
         <p className="text-[#fafcfd]">{description}</p>
       </div>

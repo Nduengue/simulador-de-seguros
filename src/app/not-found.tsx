@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 export default function NotFound() {
   const router = useRouter();
   return (
-    <div className="flex flex-col items-center justify-center bg-zinc-300 text-zinc-700 min-h-screen">
+    <div className="flex flex-col items-center justify-center bg-[#e7e9ec] text-zinc-700 min-h-screen">
       <Image
         className=""
         src="/app-icons/404.webp"
