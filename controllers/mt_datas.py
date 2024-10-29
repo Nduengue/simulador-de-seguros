@@ -1,23 +1,36 @@
 from .imports import *
 from models import Option
+from models import PolicyType
 
 
 class MtDatas_Controller(Resource):
 
     def post(self):
         datas = request.get_json()
-        missing_fields(datas, ["insurance_id"])
+        missing_fields(datas, ["insurance_id", "policy_type_id"])
 
-        merchandises = Option.post(
-            option_group_name="1. Classificação do Produto Transportado"
-        )
-        merchandises = [s.to_dict() for s in merchandises]
+        # get policy type
+        policy_type = PolicyType.get(datas["policy_type_id"])
+        if not policy_type:
+            abort(404, "Tipo de apólice não encontrada.")
 
-        ways = Option.post(option_group_name="2. Meio de Transporte")
-        ways = [s.to_dict() for s in ways]
+        def get_options(option_group_name):
+            return [
+                s.to_dict()
+                for s in Option.post(
+                    insurance_id=datas["insurance_id"],
+                    option_group_name=option_group_name,
+                )
+            ]
 
-        from_tos = Option.post(option_group_name="3. Distância e Destino")
-        from_tos = [s.to_dict() for s in from_tos]
+        merchandises = get_options("1. Classificação do Produto Transportado")
+        ways = get_options("2. Meio de Transporte")
+        from_tos = get_options("3. Distância e Destino")
+        conditions = get_options("4. Condições Especiais")
+        packaging = get_options("5. Condições de Manuseio e Embalagem")
+        # discount = get_options("8. Factores de Descontos")
+        franchise = get_options("9. Franquia - prejuízos indemnizáveis")
+        coverages = get_options("10. Coberturas")
 
         countries = Option.post(option_group_name="countries")
         countries = [
@@ -32,4 +45,10 @@ class MtDatas_Controller(Resource):
             "from_tos": from_tos,
             "countries": countries,
             "states": states,
+            "conditions": conditions,
+            "packaging": packaging,
+            # "discount": discount,
+            "franchise": franchise,
+            "coverages": coverages,
+            "policy_type": policy_type.to_dict(),
         }, 200

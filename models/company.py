@@ -15,6 +15,7 @@ class Company(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
+    pdf = Column(String)
     email = Column(String)
     created_at = Column(DateTime(timezone=True))
     updated_at = Column(DateTime(timezone=True))
@@ -24,6 +25,7 @@ class Company(Base):
         return {
             "id": self.id,
             "name": self.name,
+            "pdf": self.pdf,
             "email": self.email,
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
