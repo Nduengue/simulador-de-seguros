@@ -2,7 +2,7 @@ import { Input } from "@/components/input";
 import { Lock, Mail } from "lucide-react";
 import Link from "next/link";
 // import Wall1 from require("/wall1.jpg");
-
+// TODO mudar kkkkkkkkkkkk
 export default function Auth() {
   return (
     <div className="min-h-screen bg-[url('/login.jpg')] bg-cover bg-center bg-no-repeat bg-fixed text-[#2c2c2c]">
@@ -21,6 +21,7 @@ export default function Auth() {
               iconColor="#fff"
               borderColor="#fff"
               label="Email"
+              placeholder="exemplo@email.com"
             />
             <Input.Default
               icon={Lock}
@@ -28,6 +29,7 @@ export default function Auth() {
               borderColor="#fff"
               type="password"
               label="Senha"
+              placeholder="Digite sua senha"
             />
             <button className="p-2 w-full bg-[#0f1b2d] rounded-lg">
               Entrar

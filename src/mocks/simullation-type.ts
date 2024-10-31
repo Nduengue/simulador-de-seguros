@@ -5,7 +5,7 @@ export const APP_AVALIABLE_PARTICULAR_SIMULATION = [
     title: "Seguro de Vida",
     description:
       "“Proteção financeira para sua família em caso de imprevistos.”",
-    link: "/simulacao/saude",
+    link: "/simulation/particular/vida",
   },
   { 
     id: "90a722d7-c481-4f24-83c0-7029c278e8d0",
