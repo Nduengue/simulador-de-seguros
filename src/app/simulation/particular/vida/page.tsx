@@ -18,9 +18,9 @@ import {
   X
 } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+// import { useState } from "react";
 
-interface IVida {}
+// interface IVida {}
 
 const Fake_Opt = [
   { id: 0, name: "Opção A", value: "Cobertura 0" },
@@ -36,26 +36,27 @@ const Fake_Opt = [
   { id: 10, name: "Opção K", value: "Cobertura 10" },
 ];
 
-export default function Vida({}: IVida) {
-  async function handleSaveLifeSimulation() {
-    // "use server"
+// export default function Vida({}: IVida) {
+export default function Vida() {
+  // async function handleSaveLifeSimulation() {
+  //   // "use server"
 
-    return {
-      success: true,
-      message: "Simulação salva com sucesso",
-    };
-  }
+  //   return {
+  //     success: true,
+  //     message: "Simulação salva com sucesso",
+  //   };
+  // }
 
-  const [seguradoraSelectionadas, setSeguradoraSelectionadas] = useState<
-    string[]
-  >([]);
+  // const [seguradoraSelectionadas, setSeguradoraSelectionadas] = useState<
+  //   string[]
+  // >([]);
 
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
 
   return (
     <div className="text-zinc-800 bg-[#eff4f9] min-h-screen p-4 grid place-items-center">
-      <div className="bg-white bg-[url('/wavess.svg')] bg-cover bg-center bg-no-repeat bg-fixed p-4 rounded-lg min-h-[35rem] flex items-center gap-x-4 shadow-lg ">
-        <div className=" h-[25rem] w-[26rem] relative mx-8 ">
+      <div className="bg-white lg:bg-[url('/wavess.svg')] bg-cover bg-center bg-no-repeat bg-fixed p-4 rounded-lg min-h-[35rem] flex items-center gap-x-4 shadow-lg ">
+        <div className=" h-[25rem] w-[26rem] relative mx-8 hidden lg:block">
           <Image
             src="/app-icons/popp.png"
             alt="logo"
@@ -138,8 +139,8 @@ export default function Vida({}: IVida) {
               icon={Rss}
             >
               <Check.CheckBox
-                activeBoxies={seguradoraSelectionadas}
-                setActiveBoxies={setSeguradoraSelectionadas}
+                // activeBoxies={seguradoraSelectionadas}
+                // setActiveBoxies={setSeguradoraSelectionadas}
                 data={Fake_Opt}
               />
             </Dialog.Drawer>
@@ -151,8 +152,8 @@ export default function Vida({}: IVida) {
               icon={ShieldEllipsis}
             >
               <Check.CheckBox
-                activeBoxies={seguradoraSelectionadas}
-                setActiveBoxies={setSeguradoraSelectionadas}
+                // activeBoxies={seguradoraSelectionadas}
+                // setActiveBoxies={setSeguradoraSelectionadas}
                 data={Fake_Opt}
               />
             </Dialog.Drawer>
@@ -164,8 +165,8 @@ export default function Vida({}: IVida) {
               icon={Handshake}
             >
               <Check.CheckBox
-                activeBoxies={seguradoraSelectionadas}
-                setActiveBoxies={setSeguradoraSelectionadas}
+                // activeBoxies={seguradoraSelectionadas}
+                // setActiveBoxies={setSeguradoraSelectionadas}
                 data={Fake_Opt}
               />
             </Dialog.Drawer>

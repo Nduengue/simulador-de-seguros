@@ -1,37 +1,31 @@
 import { PackageOpen } from "lucide-react";
-import { useEffect } from "react";
-import { Checkbox, Divider } from 'antd';
-import type { CheckboxProps } from 'antd';
+import { Checkbox } from 'antd';
 import type { GetProp } from 'antd';
 
 interface ICheckBox extends React.HTMLAttributes<HTMLDivElement> {
   data: any[];
   activeBoxies?: string[];
-  setActiveBoxies?: (value: string[]) => void;
+  // setActiveBoxies?: (value: string[]) => void;
 }
 
 export default function CheckBox({
   data,
-  activeBoxies,
-  setActiveBoxies,
+  // activeBoxies,
+  // setActiveBoxies,
   ...rest
 }: ICheckBox) {
-  useEffect(() => {
-    console.log(activeBoxies);
-  }, [activeBoxies]);
 
-  function handleActiveBoxies(value: string) {
-    // alert(value);
 
-    if (activeBoxies) {
-      if (activeBoxies.includes(value)) {
-        const newActiveBoxies = activeBoxies.filter((item) => item !== value);
-        setActiveBoxies && setActiveBoxies(newActiveBoxies);
-      } else {
-        setActiveBoxies && setActiveBoxies([...activeBoxies, value]);
-      }
-    }
-  }
+  // function handleActiveBoxies(value: string) {
+  //   if (activeBoxies) {
+  //     if (activeBoxies.includes(value)) {
+  //       const newActiveBoxies = activeBoxies.filter((item) => item !== value);
+  //       setActiveBoxies && setActiveBoxies(newActiveBoxies);
+  //     } else {
+  //       setActiveBoxies && setActiveBoxies([...activeBoxies, value]);
+  //     }
+  //   }
+  // }
 
 
   const onChange: GetProp<typeof Checkbox.Group, 'onChange'> = (checkedValues) => {
@@ -47,7 +41,7 @@ export default function CheckBox({
           <Checkbox.Group style={{ width: '100%' }} onChange={onChange} className="grid grid-cols-4 gap-2">
             {data.map((item, index) => (
             // 
-            <Checkbox value={item.name} id={item.id} className=" hover:bg-blue-400/10 p-2 rounded-lg w-full border fill-red-600 has-[:checked]:bg-orange-300/50 has-[:checked]:border-orange-300 ">{item.name}</Checkbox>
+            <Checkbox value={item.name} id={item.id} key={index} className=" hover:bg-blue-400/10 p-2 rounded-lg w-full border has-[:checked]:bg-orange-300/50 has-[:checked]:border-orange-300 ">{item.name}</Checkbox>
             ))}
           </Checkbox.Group>
         </div>

@@ -20,7 +20,7 @@ export default function Drawer({
   icon: Icon,
 }: IDrawer) {
   const [open, setOpen] = useState(false);
-  const [placement, setPlacement] = useState<DrawerProps["placement"]>(
+  const [placement] = useState<DrawerProps["placement"]>(
     drawerPosition ? drawerPosition : "bottom"
   );
 
@@ -32,9 +32,7 @@ export default function Drawer({
     setOpen(false);
   };
 
-  function handleActionFn() {
-    showDrawer();
-  }
+
 
   return (
     <>

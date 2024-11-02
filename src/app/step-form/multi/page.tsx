@@ -2,9 +2,8 @@
 
 import MultiStep from 'react-multistep'
 
-interface IMulti {}
 
-export default function Multi({}:IMulti) {
+export default function Multi() {
     return (
 <MultiStep activeStep={0}  prevButton={{title: 'Voltar',style:{ background: '#33c3f0', color:"#fff", padding: 6, borderRadius:8, marginRight:8 }}} nextButton={{title: 'Próximo', style:{ background: '#33c3f0', color:"#fff", padding: 6, borderRadius:8 }}} >
 

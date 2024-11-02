@@ -1,8 +1,7 @@
 "use client";
 
 import MultiStep from "react-multistep";
-interface IStep {}
-interface IStep {}
+
 // TODO sdklfaçslkdfasdfasd
 
 const componentStepData: IStepComponent[] = [
@@ -10,7 +9,7 @@ const componentStepData: IStepComponent[] = [
   { title: "S 2", component: StepTwo },
 ];
 
-export default function Step({}: IStep) {
+export default function Step() {
   return (
     <div className="min-h-screen bg-zinc-300 grid place-items-center">
       <div className="w-full min-h-[35rem] max-w-5xl px-6 py-12 bg-white rounded-lg shadow-lg flex flex-col justify-between gap-y-4">

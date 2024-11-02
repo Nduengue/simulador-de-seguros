@@ -5,9 +5,9 @@ export function Main({
   triggerButton: TrigerButton,
   title,
   closeButtonTitle,
-  actionButtonTitle,
-  actionButtonFunction,
-  actionButtonColor,
+  // actionButtonTitle,
+  // actionButtonFunction,
+  // actionButtonColor,
   closeButtonColor,
   children
 }: {
@@ -15,9 +15,9 @@ export function Main({
   title?: string;
   closeButtonTitle?: string;
   closeButtonColor?: RadixColorType;
-  actionButtonTitle?: string;
-  actionButtonFunction?: () => void;
-  actionButtonColor?: RadixColorType;
+  // actionButtonTitle?: string;
+  // actionButtonFunction?: () => void;
+  // actionButtonColor?: RadixColorType;
   children?: React.ReactNode;
 }) {
   return (
