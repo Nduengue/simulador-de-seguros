@@ -13,6 +13,16 @@ export function Default({
   borderColor,
   ...rest
 }: DefaultProps) {
+  /**
+   *     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+   */
   const randomUUID = crypto.randomUUID();
   return (
     <div className=" space-y-2 ">
