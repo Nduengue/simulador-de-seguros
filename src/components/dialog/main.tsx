@@ -9,6 +9,7 @@ export function Main({
   actionButtonFunction,
   actionButtonColor,
   closeButtonColor,
+  children
 }: {
   triggerButton: React.ComponentType;
   title?: string;
@@ -17,6 +18,7 @@ export function Main({
   actionButtonTitle?: string;
   actionButtonFunction?: () => void;
   actionButtonColor?: RadixColorType;
+  children?: React.ReactNode;
 }) {
   return (
     <Dialog.Root>
@@ -27,7 +29,7 @@ export function Main({
         {/* <Dialog.Content > */}
         <Dialog.Title> {title} </Dialog.Title>
         <Dialog.Description size="2">
-     
+     {children}
           {/* {actionButtonFunction ? "true" : "false"} */}
         </Dialog.Description>
 

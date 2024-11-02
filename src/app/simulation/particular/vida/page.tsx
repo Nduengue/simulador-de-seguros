@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 // "use server"
 import { Check } from "@/components/check";
 import { Dialog } from "@/components/dialog";
@@ -26,11 +26,11 @@ import {
   X,
 } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 
 interface IVida {}
 
 export default function Vida({}: IVida) {
-
   async function handleSaveLifeSimulation() {
     // "use server"
 
@@ -39,7 +39,14 @@ export default function Vida({}: IVida) {
       message: "Simulação salva com sucesso",
     };
   }
-  
+
+  const [seguradoraSelectionadas, setSeguradoraSelectionadas] =
+    useState<string[]>([]);
+
+    const [open, setOpen] = useState(false)
+
+    
+
   return (
     <div className="text-zinc-800 bg-[#eff4f9] min-h-screen p-4 grid place-items-center">
       <div className="bg-white bg-[url('/wavess.svg')] bg-cover bg-center bg-no-repeat bg-fixed p-4 rounded-lg min-h-[35rem] flex items-center gap-x-4 shadow-lg ">
@@ -53,7 +60,7 @@ export default function Vida({}: IVida) {
         </div>
 
         {/* <form className="w-[29rem] space-y-2.5" action={handleSaveLifeSimulation}> */}
-        <form className="w-[29rem] space-y-2.5" >
+        <form className="w-[29rem] space-y-2.5">
           <div className="flex items-center gap-x-2">
             <Input.Default
               icon={User2}
@@ -117,12 +124,10 @@ export default function Vida({}: IVida) {
               placeholder="0"
               borderColor="border-[#fba94c]"
             />
-
           </div>
-            {/* <Check.CheckBox data={[{id: 1, name: "Cobertura", value: "Cobertura 1"}, {id: 2, name: "Cobertura", value: "Cobertura 2"}, {id: 3, name: "Cobertura", value: "Cobertura 3"}, {id: 4, name: "Cobertura", value: "Cobertura 4"}, {id: 5, name: "Cobertura", value: "Cobertura 5"}]} /> */}
           <div className="flex gap-x-2 text-sm *:bg-orange-400 *:flex-1 text-gray-100 mt-2 *:py-1 *:rounded-lg items-center justify-between *:flex *:flex-col *:items-center *:justify-center">
             <Dialog.Main
-            closeButtonTitle="Fechar"
+              closeButtonTitle="Fechar"
               title="Selectione a Cobertura"
               triggerButton={() => (
                 <button type="button">
@@ -130,10 +135,12 @@ export default function Vida({}: IVida) {
                   <p>Cobertura</p>
                 </button>
               )}
-            />
+            >
+              <Check.CheckBox data={[]} />
+            </Dialog.Main>
             <Dialog.Main
-            closeButtonTitle="Fechar"
-            actionButtonFunction={() => alert("Cobertura selecionada")}
+              closeButtonTitle="Fechar"
+              actionButtonFunction={() => alert("Cobertura selecionada")}
               title="Selectione o Agravamento"
               triggerButton={() => (
                 <button type="button">
@@ -141,9 +148,11 @@ export default function Vida({}: IVida) {
                   <p>Agravamento</p>
                 </button>
               )}
-            />
+            >
+              <Check.CheckBox data={[]} />
+            </Dialog.Main>
             <Dialog.Main
-            closeButtonTitle="Fechar"
+              closeButtonTitle="Fechar"
               title="Selectione a Seguradora"
               triggerButton={() => (
                 <button type="button">
@@ -151,10 +160,20 @@ export default function Vida({}: IVida) {
                   <p>Seguradora</p>
                 </button>
               )}
-            />
+            >
+              <Check.CheckBox data={[]} />
+            </Dialog.Main>
           </div>
 
           <hr />
+          <Check.CheckBox
+          activeBoxies={seguradoraSelectionadas}
+          setActiveBoxies={setSeguradoraSelectionadas}
+            data={[
+              { id: 1, name: "Cobertura B", value: "Cobertura 1" },
+              { id: 2, name: "Cobertura C", value: "Cobertura 2" },
+            ]}
+          />
 
           <div className="flex gap-x-2 justify-end">
             <Button color="orange" type="reset">
@@ -175,5 +194,3 @@ export default function Vida({}: IVida) {
     </div>
   );
 }
-
-
