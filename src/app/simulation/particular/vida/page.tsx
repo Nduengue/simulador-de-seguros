@@ -4,31 +4,37 @@ import { Check } from "@/components/check";
 import { Dialog } from "@/components/dialog";
 import { Input } from "@/components/input";
 import {
-  AlertDialog,
-  Button,
-  Flex,
-  RadioGroup,
-  Spinner,
+  Button, RadioGroup,
+  Spinner
 } from "@radix-ui/themes";
 import {
-  BadgeDollarSign,
-  BookmarkIcon,
-  BoxIcon,
-  CalendarDays,
+  BadgeDollarSign, CalendarDays,
   Handshake,
   IdCard,
   Rss,
   SendIcon,
   ShieldEllipsis,
-  Timer,
-  TrashIcon,
-  User2,
-  X,
+  Timer, User2,
+  X
 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
 interface IVida {}
+
+const Fake_Opt = [
+  { id: 0, name: "Opção A", value: "Cobertura 0" },
+  { id: 1, name: "Opção B", value: "Cobertura 1" },
+  { id: 2, name: "Opção C", value: "Cobertura 2" },
+  { id: 3, name: "Opção D", value: "Cobertura 3" },
+  { id: 4, name: "Opção E", value: "Cobertura 4" },
+  { id: 5, name: "Opção F", value: "Cobertura 5" },
+  { id: 6, name: "Opção G", value: "Cobertura 6" },
+  { id: 7, name: "Opção H", value: "Cobertura 7" },
+  { id: 8, name: "Opção I", value: "Cobertura 8" },
+  { id: 9, name: "Opção J", value: "Cobertura 9" },
+  { id: 10, name: "Opção K", value: "Cobertura 10" },
+];
 
 export default function Vida({}: IVida) {
   async function handleSaveLifeSimulation() {
@@ -40,12 +46,11 @@ export default function Vida({}: IVida) {
     };
   }
 
-  const [seguradoraSelectionadas, setSeguradoraSelectionadas] =
-    useState<string[]>([]);
+  const [seguradoraSelectionadas, setSeguradoraSelectionadas] = useState<
+    string[]
+  >([]);
 
-    const [open, setOpen] = useState(false)
-
-    
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="text-zinc-800 bg-[#eff4f9] min-h-screen p-4 grid place-items-center">
@@ -126,54 +131,47 @@ export default function Vida({}: IVida) {
             />
           </div>
           <div className="flex gap-x-2 text-sm *:bg-orange-400 *:flex-1 text-gray-100 mt-2 *:py-1 *:rounded-lg items-center justify-between *:flex *:flex-col *:items-center *:justify-center">
-            <Dialog.Main
-              closeButtonTitle="Fechar"
+            <Dialog.Drawer
               title="Selectione a Cobertura"
-              triggerButton={() => (
-                <button type="button">
-                  <Rss size={18} />
-                  <p>Cobertura</p>
-                </button>
-              )}
+              buttonProps={{ type: "button" }}
+              buttonTitle="Cobertura"
+              icon={Rss}
             >
-              <Check.CheckBox data={[]} />
-            </Dialog.Main>
-            <Dialog.Main
-              closeButtonTitle="Fechar"
-              actionButtonFunction={() => alert("Cobertura selecionada")}
+              <Check.CheckBox
+                activeBoxies={seguradoraSelectionadas}
+                setActiveBoxies={setSeguradoraSelectionadas}
+                data={Fake_Opt}
+              />
+            </Dialog.Drawer>
+
+            <Dialog.Drawer
               title="Selectione o Agravamento"
-              triggerButton={() => (
-                <button type="button">
-                  <ShieldEllipsis size={18} />
-                  <p>Agravamento</p>
-                </button>
-              )}
+              buttonTitle="Agravamento"
+              buttonProps={{ type: "button" }}
+              icon={ShieldEllipsis}
             >
-              <Check.CheckBox data={[]} />
-            </Dialog.Main>
-            <Dialog.Main
-              closeButtonTitle="Fechar"
+              <Check.CheckBox
+                activeBoxies={seguradoraSelectionadas}
+                setActiveBoxies={setSeguradoraSelectionadas}
+                data={Fake_Opt}
+              />
+            </Dialog.Drawer>
+
+            <Dialog.Drawer
               title="Selectione a Seguradora"
-              triggerButton={() => (
-                <button type="button">
-                  <Handshake size={18} />
-                  <p>Seguradora</p>
-                </button>
-              )}
+              buttonTitle="Seguradora"
+              buttonProps={{ type: "button" }}
+              icon={Handshake}
             >
-              <Check.CheckBox data={[]} />
-            </Dialog.Main>
+              <Check.CheckBox
+                activeBoxies={seguradoraSelectionadas}
+                setActiveBoxies={setSeguradoraSelectionadas}
+                data={Fake_Opt}
+              />
+            </Dialog.Drawer>
           </div>
 
           <hr />
-          <Check.CheckBox
-          activeBoxies={seguradoraSelectionadas}
-          setActiveBoxies={setSeguradoraSelectionadas}
-            data={[
-              { id: 1, name: "Cobertura B", value: "Cobertura 1" },
-              { id: 2, name: "Cobertura C", value: "Cobertura 2" },
-            ]}
-          />
 
           <div className="flex gap-x-2 justify-end">
             <Button color="orange" type="reset">

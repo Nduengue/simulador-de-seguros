@@ -4,6 +4,7 @@ import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
 
 import "./globals.css";
+import { ConfigProvider } from "antd";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,7 +34,21 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#fafcfd] font-[family-name:var(--font-geist-sans)]`}
         // className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#fafcfd] `}
       >
-        <Theme>{children}</Theme>
+        <ConfigProvider
+          theme={{
+            token: {
+              // Seed Token
+              colorPrimary: "#fba94c",
+              borderRadius: 2,
+
+              // Alias Token
+              // colorBgContainer: "#f6ffed",
+              colorBgContainer: "#fafcfd",
+            },
+          }}
+        >
+          <Theme>{children}</Theme>
+        </ConfigProvider>
       </body>
     </html>
   );
