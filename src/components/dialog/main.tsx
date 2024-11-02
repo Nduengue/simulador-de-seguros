@@ -1,40 +1,59 @@
-"use client"
-import { AlertDialog, Button, Flex } from "@radix-ui/themes";
+// "use client"
+import { Dialog, Button, Flex } from "@radix-ui/themes";
 
 export function Main({
   triggerButton: TrigerButton,
   title,
+  closeButtonTitle,
+  actionButtonTitle,
+  actionButtonFunction,
+  actionButtonColor,
+  closeButtonColor,
 }: {
   triggerButton: React.ComponentType;
   title?: string;
+  closeButtonTitle?: string;
+  closeButtonColor?: RadixColorType;
+  actionButtonTitle?: string;
+  actionButtonFunction?: () => void;
+  actionButtonColor?: RadixColorType;
 }) {
   return (
-    <AlertDialog.Root>
-      <AlertDialog.Trigger>
+    <Dialog.Root>
+      <Dialog.Trigger>
         <TrigerButton />
-      </AlertDialog.Trigger>
-      {/* <AlertDialog.Content maxWidth="450px"> */}
-      <AlertDialog.Content >
-        <AlertDialog.Title> {title} </AlertDialog.Title>
-        <AlertDialog.Description size="2">
-          --------------------------------------- Are you sure? This application
-          will no longer be accessible and any existing sessions will be
-          expired.
-        </AlertDialog.Description>
+      </Dialog.Trigger>
+      <Dialog.Content maxWidth="450px">
+        {/* <Dialog.Content > */}
+        <Dialog.Title> {title} </Dialog.Title>
+        <Dialog.Description size="2">
+     
+          {/* {actionButtonFunction ? "true" : "false"} */}
+        </Dialog.Description>
 
         <Flex gap="3" mt="4" justify="end">
-          <AlertDialog.Cancel>
-            <Button variant="soft" color="gray">
-              Cancel
+          <Dialog.Close>
+            <Button
+              type="button"
+              // variant="soft"
+              color={closeButtonColor ? closeButtonColor : "orange"}
+            >
+              {closeButtonTitle ? closeButtonTitle : "Cancelar"}
             </Button>
-          </AlertDialog.Cancel>
-          <AlertDialog.Action>
-            <Button variant="solid" color="red" onClick={() => alert("hello")}>
-              Abrir Modal
-            </Button>
-          </AlertDialog.Action>
+          </Dialog.Close>
+
+          {/* <Dialog.Close hidden={actionButtonFunction ? false : true}> */}
+          {/* <Button */}
+          {/*  onClick={()=>alert("teste")} */}
+          {/*  type="button" */}
+          {/*  variant="solid" */}
+          {/*  color={actionButtonColor ? actionButtonColor : "blue"} */}
+          {/*  > */}
+          {/* {actionButtonTitle ? actionButtonTitle : "Ok"} */}
+          {/* </Button> */}
+          {/* </Dialog.Close> */}
         </Flex>
-      </AlertDialog.Content>
-    </AlertDialog.Root>
+      </Dialog.Content>
+    </Dialog.Root>
   );
 }
