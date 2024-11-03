@@ -57,8 +57,8 @@ export default function Vida() {
   // const [open, setOpen] = useState(false);
 
   return (
-    <div className="text-gray-600 bg-[#eff4f9] min-h-screen p-4 grid place-items-center">
-      <div className="bg-white lg:bg-[url('/wavess.svg')] bg-cover bg-center bg-no-repeat bg-fixed p-4 rounded-lg min-h-[35rem] flex items-center gap-x-4 shadow-lg ">
+    <div className="text-gray-600 lg:bg-[url('/wavess.svg')] bg-cover bg-center bg-no-repeat bg-fixed bg-[#eff4f9] min-h-screen p-4 grid place-items-center">
+      <div className="bg-white  p-4 rounded-lg min-h-[35rem] flex items-center gap-x-4 shadow-lg ">
         <div className=" h-[25rem] w-[26rem] relative mx-8 hidden lg:block">
           <Image
             src="/app-icons/popp.png"
