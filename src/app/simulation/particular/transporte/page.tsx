@@ -43,7 +43,7 @@ const Data_Gender = [
 ];
 
 // export default function Vida({}: IVida) {
-export default function Vida() {
+export default function Transporte() {
   // async function handleSaveLifeSimulation() {
   //   // "use server"
 

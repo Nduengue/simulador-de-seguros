@@ -10,11 +10,11 @@ export const APP_AVALIABLE_PARTICULAR_SIMULATION = [
   { 
     id: "90a722d7-c481-4f24-83c0-7029c278e8d0",
     image:
-      "/app-icons/simulation-types/seg-tras-p.png",
+    "/app-icons/simulation-types/seg-tras-p.png",
     title: "Seguro de Mercadoria Transportada",
     description:
-      "“Garantia contra perdas e danos durante o transporte de mercadorias.”",
-    link: "/simulacao/saude",
+    "“Garantia contra perdas e danos durante o transporte de mercadorias.”",
+    link: "/simulation/particular/transporte",
   },
   {
     id: "ff179b8b-4117-4dce-ab51-c003e7e9df13",
