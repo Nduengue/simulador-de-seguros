@@ -38,7 +38,7 @@ export default function CheckBox({
       {data.length > 0 ? (
         <div className="flex flex-col gap-y-1 " {...rest}>
           {/* <CheckboxGroup.Root size="1" defaultValue="1"> */}
-          <Checkbox.Group style={{ width: '100%' }} onChange={onChange} className="grid grid-cols-4 gap-2">
+          <Checkbox.Group style={{ width: '100%' }} onChange={onChange} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2">
             {data.map((item, index) => (
             // 
             <Checkbox value={item.name} id={item.id} key={index} className=" hover:bg-blue-400/10 p-2 rounded-lg w-full border has-[:checked]:bg-orange-300/50 has-[:checked]:border-orange-300 ">{item.name}</Checkbox>

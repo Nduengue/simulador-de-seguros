@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "@radix-ui/themes/styles.css";
-import { Theme } from "@radix-ui/themes";
 
 import "./globals.css";
 import { ConfigProvider } from "antd";
@@ -47,7 +45,7 @@ export default function RootLayout({
             },
           }}
         >
-          <Theme>{children}</Theme>
+          {children}
         </ConfigProvider>
       </body>
     </html>
