@@ -63,7 +63,8 @@ export default function Transporte() {
   const items = steps.map((item) => ({ key: item.title, title: item.title }));
 
   return (
-    <div className="text-gray-600 bg-[#eff4f9] lg:bg-[url('/wavess.svg')] bg-cover bg-center bg-no-repeat bg-fixed min-h-screen p-4 grid place-items-center">
+    <div className="text-gray-600 bg-[#eff4f9] lg:bg-[url('/blob-scene1.svg')] bg-cover bg-center bg-no-repeat bg-fixed min-h-screen p-4 grid place-items-center">
+    {/* <div className="text-gray-600 bg-[#eff4f9] lg:bg-[url('/wavess.svg')] bg-cover bg-center bg-no-repeat bg-fixed min-h-screen p-4 grid place-items-center"> */}
       <div className="bg-white  p-4 rounded-lg min-h-[35rem] shadow-lg flex flex-col justify-between">
         <div>
           <Steps current={current} items={items} />
