@@ -1,7 +1,7 @@
 import Drawer from "./drawer";
-import { Main } from "./main";
+// import { Main } from "./main";
 
 export const Dialog = {
-  Main,
+  // Main,
   Drawer
 };

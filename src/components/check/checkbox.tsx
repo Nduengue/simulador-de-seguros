@@ -3,7 +3,7 @@ import { Checkbox } from 'antd';
 import type { GetProp } from 'antd';
 
 interface ICheckBox extends React.HTMLAttributes<HTMLDivElement> {
-  data: any[];
+  data: {id: string|number, name: string, value:string}[];
   activeBoxies?: string[];
   // setActiveBoxies?: (value: string[]) => void;
 }
@@ -41,7 +41,7 @@ export default function CheckBox({
           <Checkbox.Group style={{ width: '100%' }} onChange={onChange} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2">
             {data.map((item, index) => (
             // 
-            <Checkbox value={item.name} id={item.id} key={index} className=" hover:bg-blue-400/10 p-2 rounded-lg w-full border has-[:checked]:bg-orange-300/50 has-[:checked]:border-orange-300 ">{item.name}</Checkbox>
+            <Checkbox value={item.id} key={index} className=" hover:bg-blue-400/10 p-2 rounded-lg w-full border has-[:checked]:bg-orange-300/50 has-[:checked]:border-orange-300 ">{item.name}</Checkbox>
             ))}
           </Checkbox.Group>
         </div>

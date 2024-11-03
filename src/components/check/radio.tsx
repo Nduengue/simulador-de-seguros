@@ -10,11 +10,11 @@ interface IRadio {
 export default function Radio({ defaultValue, itemList }: IRadio) {
   return (
     <RadioAntd.Group defaultValue={defaultValue} className="*:border *:rounded-xl *:p-3 *:text-gray-600 font-bold  rounded-xl *:border-[#fba94c] *:flex-1 *:items-center *:justify-center flex items-center ">
-      {itemList.map((item, index) => (
+      {itemList.map((item) => (
         <RadioAntd
           key={item.id}
           value={item.id}
-          className=" has-[:checked]:bg-[#fb923c] has-[:checked]:text-gray-50"
+          className=" has-[:checked]:bg-[#fb923c]/30 "
         >
           {item.value}
         </RadioAntd>
