@@ -1,9 +1,10 @@
 import { Input } from "@/components/input";
 import { AppLayout } from "@/components/layout";
 import { APP_BENEFITS } from "@/mocks/benefes";
-import { Building2, MailIcon, Phone, Send, User2 } from "lucide-react";
+import { MailIcon, Phone, Send, User2 } from "lucide-react";
+import Categories from "@/components/Categories/Categories";
 import Image from "next/image";
-import Link from "next/link";
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 export default function Home() {
   return (
@@ -11,6 +12,8 @@ export default function Home() {
     <div className="min-h-screen  font-[family-name:var(--font-geist-sans)] translate ease-in-out">
 
      <AppLayout.PublicHeader/>
+
+
 
       <main className="row-start-2 items-center sm:items-start  text-[#2c2c2c]" id="inicio">
         <div className="bg-[#eff4f9] flex flex-col items-center justify-center">
@@ -30,10 +33,13 @@ export default function Home() {
               Encontre o seguro perfeito para você, comparando opções e preços
               em um só lugar.
             </p>
-            <div className="flex *:flex *:items-center *:gap-x-1 gap-6 items-center  *:bg-[#d18f46] *:p-3 *:rounded-2xl font-bold text-[#fff]">
+            {/* <div className="flex *:flex *:items-center *:gap-x-1 gap-6 items-center  *:bg-[#d18f46] *:p-3 *:rounded-2xl font-bold text-[#fff]">
               <Link href={"/simulation/particular"}><User2 />Particular</Link>
               <Link href={"/simulation/business"}><Building2 />Empresarial</Link>
-            </div>
+            </div> */}
+
+<Categories />
+            
           </div>
         </div>
 
@@ -46,7 +52,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex gap-6 gap-x-10 items-center justify-center bg-[#0f1b2d] py-10 " id="contacto">
+        <div className="flex gap-6 gap-x-10 items-center justify-center bg-[#eff4f9] py-10 " id="contacto">
           <Image
             className="hidden md:block"
             src="/app-icons/contact-us-ilustration.svg"
@@ -56,7 +62,7 @@ export default function Home() {
             priority
           />
 
-          <div className="text-[#eff4f9] md:w-2/5 w-full px-10 ">
+<div className="text-[#0F1B2D] md:w-2/5 w-full px-10 ">
             <h2 className="font-bold text-3xl sm:text-4xl mb-2">Entrar em contacto</h2>
             <div className="space-y-4 flex flex-col">
               <Input.Default
@@ -81,7 +87,7 @@ export default function Home() {
                 label="Mensagem"
                 placeholder="Insira sua mensagem"
               />
-              <button className="text-[#eff4f9] bg-[#075985] py-2 px-4 rounded-xl flex items-center gap-2 self-end"><Send size={14} />Enviar</button>
+              <button className="text-[#eff4f9] bg-[#0F1B2D] py-2 px-4 rounded-xl flex items-center gap-2 self-end"><Send size={14} />Enviar</button>
             </div>
           </div>
         </div>
@@ -100,7 +106,6 @@ interface BenefitsCardProps {
 function BenefitsCard({ description, image, title }: BenefitsCardProps) {
   return (
     <div className="flex gap-1 bg-[#0f1b2d] rounded-2xl p-3 shadow-lg">
-      {/* <HomeIcon size={40} /> */}
       <Image
         className=""
         src={image}
@@ -109,9 +114,11 @@ function BenefitsCard({ description, image, title }: BenefitsCardProps) {
         height={38}
         priority
       />
-      <div>
-        <h3 className="text-[#eff4f9] font-bold mb-2">{title}</h3>
-        <p className="text-[#fafcfd]">{description}</p>
+      <div className="flex items-center justify-center flex-col">
+        <div>
+          <h3 className="text-[#eff4f9] font-bold mb-2">{title}</h3>
+          <p className="text-[#fafcfd]">{description}</p>
+        </div>
       </div>
     </div>
   );

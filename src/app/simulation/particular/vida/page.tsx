@@ -70,7 +70,7 @@ export default function Vida() {
 
         {/* <form className="w-[29rem] space-y-2.5" action={handleSaveLifeSimulation}> */}
         <form className=" space-y-2.5">
-          <div className="flex items-center gap-x-2">
+          <div className="flex items-center flex-wrap sm:flex-nowrap gap-y-2 sm:gap-y-0 *:w-full gap-x-2">
             <Input.Default
               icon={User2}
               label="Primeiro Nome"
@@ -103,7 +103,7 @@ export default function Vida() {
             borderColor="border-[#fba94c]"
           />
 
-          <div className="flex items-center gap-x-2 pt-1 mt-2 border-t ">
+          <div className="flex items-center flex-wrap sm:flex-nowrap gap-y-2 sm:gap-y-0 *:w-full gap-x-2 pt-1 mt-2 border-t ">
             <Input.Default
               type="number"
               icon={BadgeDollarSign}
