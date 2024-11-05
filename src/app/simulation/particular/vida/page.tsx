@@ -3,9 +3,11 @@
 import { Check } from "@/components/check";
 import { Dialog } from "@/components/dialog";
 import { Input } from "@/components/input";
+import { Button } from "antd";
 import {
   BadgeDollarSign,
   CalendarDays,
+  Download,
   Handshake,
   IdCard,
   Mail,
@@ -13,7 +15,8 @@ import {
   SendIcon,
   ShieldEllipsis,
   Timer,
-  User2, X
+  User2,
+  X,
 } from "lucide-react";
 import Image from "next/image";
 // import { useState } from "react";
@@ -33,7 +36,6 @@ const Fake_Opt = [
   { id: 9, name: "Opção J", value: "Cobertura 9" },
   { id: 10, name: "Opção K", value: "Cobertura 10" },
 ];
-
 
 const Data_Gender = [
   { id: "1", value: "👨‍🦰Masculino" },
@@ -74,7 +76,7 @@ export default function Vida() {
           <div className="flex items-center flex-wrap sm:flex-nowrap gap-y-2 sm:gap-y-0 *:w-full gap-x-2">
             <Input.Default
               icon={User2}
-              label="Primeiro Completo"
+              label="Nome Completo"
               placeholder="Insira nome completo"
               borderColor="border-[#fba94c]"
             />
@@ -94,7 +96,7 @@ export default function Vida() {
 
           <div className="space-y-2">
             <h2 className="font-bold ">Gênero</h2>
-          <Check.Radio itemList={Data_Gender} defaultValue="1"/>
+            <Check.Radio itemList={Data_Gender} defaultValue="1" />
           </div>
 
           <Input.Default
@@ -168,10 +170,18 @@ export default function Vida() {
               <X size={15} />
               Limpar
             </button>
-            <button type="submit" className="">
-              <SendIcon size={15} />
-              Salvar
-            </button>
+
+            <Dialog.Drawer
+              title="Como você deseja receber os resultados?"
+              buttonTitle="Enviar"
+              buttonProps={{ type: "button" }}
+              icon={SendIcon}
+            >
+              <div className="gap-4 p-2 flex flex-wrap *:p-5 *:rounded *:flex-1">
+                <Button className="hover:animate-pulse" icon={<Mail/>} type="primary" >Receber PDF por email</Button>
+                <Button className="hover:animate-pulse" icon={<Download/>} type="primary" >Baixar resultados diretamente</Button>
+              </div>
+            </Dialog.Drawer>
           </div>
         </form>
       </div>
