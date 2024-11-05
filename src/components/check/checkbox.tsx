@@ -1,10 +1,12 @@
 import { PackageOpen } from "lucide-react";
 import { Checkbox } from 'antd';
 import type { GetProp } from 'antd';
+import { twMerge } from "tailwind-merge";
 
 interface ICheckBox extends React.HTMLAttributes<HTMLDivElement> {
   data: {id: string|number, name: string, value:string}[];
   activeBoxies?: string[];
+  className?: string
   // setActiveBoxies?: (value: string[]) => void;
 }
 
@@ -12,6 +14,7 @@ export default function CheckBox({
   data,
   // activeBoxies,
   // setActiveBoxies,
+  className,
   ...rest
 }: ICheckBox) {
 
@@ -38,7 +41,7 @@ export default function CheckBox({
       {data.length > 0 ? (
         <div className="flex flex-col gap-y-1 " {...rest}>
           {/* <CheckboxGroup.Root size="1" defaultValue="1"> */}
-          <Checkbox.Group style={{ width: '100%' }} onChange={onChange} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2">
+          <Checkbox.Group style={{ width: '100%' }} onChange={onChange} className={twMerge("grid ", className)}>
             {data.map((item, index) => (
             // 
             <Checkbox value={item.id} key={index} className=" hover:bg-blue-400/10 p-2 rounded-lg w-full border has-[:checked]:bg-orange-300/50 has-[:checked]:border-orange-300 ">{item.name}</Checkbox>

@@ -1,6 +1,5 @@
-interface ITransport {}
 
-export default function Transport({}:ITransport) {
+export default function Transport() {
     return (
         <div>
             Transport

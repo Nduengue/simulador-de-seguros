@@ -1,13 +1,14 @@
 interface ILife {
-    params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-export default function Life({params}:ILife) {
-    return (
-        <div className="text-gray-800 ">
-            {params.id}
+export default async function Life({ params }: ILife) {
+  const { id } = await params;
 
-           ------Life  eeeeeeeeeeeeeeeeeeeeeee
-        </div>
-    );
+  return (
+    <div className="text-gray-800 ">
+      {id}
+      ------Life eeeeeeeeeeeeeeeeeeeeeee
+    </div>
+  );
 }

@@ -2,6 +2,9 @@
 
 import React, { useState } from "react";
 import { Button, message, Steps } from "antd";
+import { Input } from "@/components/input";
+import { User2 } from "lucide-react";
+import { Check } from "@/components/check";
 
 // Informações do tomador de seguro e segurado
 // Classificação do Produto Transportado
@@ -20,33 +23,35 @@ export default function Transporte() {
     },
     {
       title: "Passo 2",
-      content: <StepOne title="Classificação do Produto Transportado" />,
+      content: (
+        <StepTwo />
+      ),
     },
     {
       title: "Passo 3",
-      content: <StepOne title="Meio de Transporte" />,
+      content: <StepThree title="Meio de Transporte" />,
     },
     {
       title: "Passo 4",
-      content: <StepOne title="Distância e Destino" />,
+      content: <StepThree title="Distância e Destino" />,
     },
     {
       title: "Passo 5",
-      content: <StepOne title="Detalhes adicionais" />,
+      content: <StepThree title="Detalhes adicionais" />,
     },
     {
       title: "Passo 6",
-      content: <StepOne title="Condições Especiais" />,
+      content: <StepThree title="Condições Especiais" />,
     },
     {
       title: "Passo 7",
       content: (
-        <StepOne title="Condições de Manuseio e Embalagem da Mercadoria" />
+        <StepThree title="Condições de Manuseio e Embalagem da Mercadoria" />
       ),
     },
     {
       title: "Passo 8",
-      content: <StepOne title="Coberturas" />,
+      content: <StepThree title="Coberturas" />,
     },
   ];
 
@@ -64,11 +69,13 @@ export default function Transporte() {
 
   return (
     <div className="text-gray-600 bg-[#eff4f9] lg:bg-[url('/blob-scene1.svg')] bg-cover bg-center bg-no-repeat bg-fixed min-h-screen p-4 grid place-items-center">
-    {/* <div className="text-gray-600 bg-[#eff4f9] lg:bg-[url('/wavess.svg')] bg-cover bg-center bg-no-repeat bg-fixed min-h-screen p-4 grid place-items-center"> */}
+      {/* <div className="text-gray-600 bg-[#eff4f9] lg:bg-[url('/wavess.svg')] bg-cover bg-center bg-no-repeat bg-fixed min-h-screen p-4 grid place-items-center"> */}
       <div className="bg-white  p-4 rounded-lg min-h-[35rem] shadow-lg flex flex-col justify-between">
         <div>
           <Steps current={current} items={items} />
-          <div className="">{steps[current].content}</div>
+          <div className="h-[30rem] overflow-y-auto mt-4">
+            {steps[current].content}
+          </div>
         </div>
 
         <div className="mt-6 self-end">
@@ -96,132 +103,96 @@ export default function Transporte() {
   );
 }
 
+function StepHeader({ title }: { title: string }) {
+  return (
+    <>
+      <h2 className="font-bold text-xl ">{title}</h2>
+      <hr className="mb-4" />
+    </>
+  );
+}
 function StepOne({ title }: { title: string }) {
   return (
-    <div className=" h-[30rem] pt-4">
-      <h2 className="font-bold text-xl">{title}</h2>
-      <hr />
+    <div className="  pt-4 px-2 ">
+      <StepHeader title={title} />
+      <div className="grid grid-cols-2 gap-6 ">
+        <Input.Default
+          icon={User2}
+          label="Nome Completo"
+          placeholder="Insira o nome completo"
+          borderColor="border-[#fba94c]"
+        />
+
+        <Input.Default
+          icon={User2}
+          label="Número de Identificação Fiscal"
+          placeholder="Insira o NIF"
+          borderColor="border-[#fba94c]"
+        />
+        <Input.Default
+          icon={User2}
+          label="Telefone"
+          placeholder="Insira o número de telefone"
+          borderColor="border-[#fba94c]"
+        />
+
+        <Input.Default
+          icon={User2}
+          label="E-mail"
+          placeholder="Insira o e-mail (exemplo@dominio.com)"
+          borderColor="border-[#fba94c]"
+        />
+      </div>
+    </div>
+  );
+}
+function StepTwo({  }: { title?: string }) {
+  const Fake_Radio = [
+    { id: "1", value: "Mercadorias gerais" },
+    { id: "2", value: "Produtos perecíveis" },
+    { id: "3", value: "Produtos perigosos" },
+    { id: "4", value: "Produtos de alto valor" },
+  ];
+
+  const Fake_List = [
+    { id: 0, name: "Terrestre", value: "Terrestre" },
+    { id: 1, name: "Marítimo", value: "Marítimo" },
+    { id: 2, name: "Fluvial", value: "Fluvial" },
+    { id: 3, name: "Aéreo", value: "Aéreo" },
+  ];
+
+  return (
+    <div className="  pt-4 px-2 ">
+      {/* <StepHeader title={""} /> */}
+      <div className="grid gap-6  ">
+        <div>
+          <StepHeader title="Classificação do Produto Transportado" />
+          <Check.Radio
+            itemList={Fake_Radio}
+            defaultValue="1"
+            className="flex-col items-start *:w-full gap-y-2 *:text-start *:justify-start"
+          />
+        </div>
+        <div>
+          <StepHeader title="Meio de Transporte" />
+          <Check.CheckBox
+            className="gap-2 *:p-3"
+            // activeBoxies={seguradoraSelectionadas}
+            // setActiveBoxies={setSeguradoraSelectionadas}
+            data={Fake_List}
+          />
+        </div>
+      </div>
     </div>
   );
 }
 
-{
-  /* <div className=" h-[25rem] w-[26rem] relative mx-8 hidden lg:block">
-<Image
-  src="/app-icons/popp.png"
-  alt="logo"
-  className="absolute"
-  fill
-/>
-</div> */
-}
+function StepThree({ title }: { title: string }) {
 
-{
-  /* <form className="w-[29rem] space-y-2.5" action={handleSaveLifeSimulation}> */
-}
-{
-  /* <form className=" space-y-2.5">
-<div className="flex items-center gap-x-2">
-  <Input.Default
-    icon={User2}
-    label="Primeiro Nome"
-    placeholder="Insira primeiro nome"
-    borderColor="border-[#fba94c]"
-  />
-  <Input.Default
-    icon={User2}
-    label="Sobre Nome"
-    placeholder="Insira último nome"
-    borderColor="border-[#fba94c]"
-  />
-</div>
-<Input.Default
-  icon={IdCard}
-  label="Bilhete de Identidade"
-  placeholder="000000000LA000"
-  borderColor="border-[#fba94c]"
-/>
-
-<div className="space-y-2">
-  <h2 className="font-bold ">Gênero</h2>
-<Check.Radio itemList={Data_Gender} defaultValue="1"/>
-</div>
-
-<Input.Default
-  icon={CalendarDays}
-  type="date"
-  label="Data de Nascimento"
-  borderColor="border-[#fba94c]"
-/>
-
-<div className="flex items-center gap-x-2 pt-1 mt-2 border-t ">
-  <Input.Default
-    type="number"
-    icon={BadgeDollarSign}
-    label="Valor da Cobertura"
-    placeholder="0.00"
-    borderColor="border-[#fba94c]"
-  />
-  <Input.Default
-    type="number"
-    icon={Timer}
-    label="Duração do Seguro em Ano"
-    placeholder="0"
-    borderColor="border-[#fba94c]"
-  />
-</div>
-<div className="flex gap-x-2 text-sm *:bg-orange-400 *:flex-1 text-gray-100 mt-2 *:py-1 *:rounded-lg items-center justify-between *:flex *:flex-col *:items-center *:justify-center">
-  <Dialog.Drawer
-    title="Selectione a Cobertura"
-    buttonProps={{ type: "button" }}
-    buttonTitle="Cobertura"
-    icon={Rss}
-  >
-    <Check.CheckBox
-      // activeBoxies={seguradoraSelectionadas}
-      // setActiveBoxies={setSeguradoraSelectionadas}
-      data={Fake_Opt}
-    />
-  </Dialog.Drawer>
-
-  <Dialog.Drawer
-    title="Selectione o Agravamento"
-    buttonTitle="Agravamento"
-    buttonProps={{ type: "button" }}
-    icon={ShieldEllipsis}
-  >
-    <Check.CheckBox
-      // activeBoxies={seguradoraSelectionadas}
-      // setActiveBoxies={setSeguradoraSelectionadas}
-      data={Fake_Opt}
-    />
-  </Dialog.Drawer>
-
-  <Dialog.Drawer
-    title="Selectione a Seguradora"
-    buttonTitle="Seguradora"
-    buttonProps={{ type: "button" }}
-    icon={Handshake}
-  >
-    <Check.CheckBox
-      // activeBoxies={seguradoraSelectionadas}
-      // setActiveBoxies={setSeguradoraSelectionadas}
-      data={Fake_Opt}
-    />
-  </Dialog.Drawer>
-</div>
-
-<hr />
-
-<div className="flex gap-x-2 justify-end *:flex *:items-center *:gap-x-1.5 text-gray-50 *:rounded *:bg-[#f76b15] *:px-3 *:py-1">
-  <button type="reset" className="">
-    <X size={15} />
-    Limpar
-  </button>
-  <button type="submit" className="">
-    <SendIcon size={15} />
-    Salvar
-  </button>
-</div>
-</form> */
+  return (
+    <div className="  pt-4 px-2 ">
+      {/* <StepHeader title={""} /> */}
+      Em desevolvimento... {title}
+    </div>
+  );
 }

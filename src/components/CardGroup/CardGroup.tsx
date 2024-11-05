@@ -1,6 +1,6 @@
 // Mark the component as a client component
 "use client";
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react';
 import Spinner from '../Spinner/Spinner';
 import Card from '@/components/Card/Card';
 import { API_LOCATION } from '@/util/api';
@@ -47,7 +47,7 @@ const CardGroup = ({ route, link }: IProps) => {
                 console.error(error)
                 setLoading(false);
             });
-    }, []);
+    }, [category_id, insurance_id, insurance_type_id, policy_type_id,route]);
 
     const handleCardClick = (option: IOption) => {
         if (route === 'insurance') {

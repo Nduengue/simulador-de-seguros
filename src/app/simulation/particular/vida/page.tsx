@@ -42,23 +42,7 @@ const Data_Gender = [
   { id: "2", value: "👩‍🦰Femenino" },
 ];
 
-// export default function Vida({}: IVida) {
 export default function Vida() {
-  // async function handleSaveLifeSimulation() {
-  //   // "use server"
-
-  //   return {
-  //     success: true,
-  //     message: "Simulação salva com sucesso",
-  //   };
-  // }
-
-  // const [seguradoraSelectionadas, setSeguradoraSelectionadas] = useState<
-  //   string[]
-  // >([]);
-
-  // const [open, setOpen] = useState(false);
-
   return (
     <div className="text-gray-600 lg:bg-[url('/wavess.svg')] bg-cover bg-center bg-no-repeat bg-fixed bg-[#eff4f9] min-h-screen p-4 grid place-items-center">
       <div className="bg-white  p-4 rounded-lg min-h-[35rem] flex items-center gap-x-4 shadow-lg ">
@@ -130,6 +114,7 @@ export default function Vida() {
               icon={Rss}
             >
               <Check.CheckBox
+                className="sm:grid-cols-2 lg:grid-cols-4 gap-2"
                 // activeBoxies={seguradoraSelectionadas}
                 // setActiveBoxies={setSeguradoraSelectionadas}
                 data={Fake_Opt}
@@ -143,6 +128,7 @@ export default function Vida() {
               icon={ShieldEllipsis}
             >
               <Check.CheckBox
+                className="sm:grid-cols-2 lg:grid-cols-4 gap-2"
                 // activeBoxies={seguradoraSelectionadas}
                 // setActiveBoxies={setSeguradoraSelectionadas}
                 data={Fake_Opt}
@@ -156,6 +142,7 @@ export default function Vida() {
               icon={Handshake}
             >
               <Check.CheckBox
+                className="sm:grid-cols-2 lg:grid-cols-4 gap-2"
                 // activeBoxies={seguradoraSelectionadas}
                 // setActiveBoxies={setSeguradoraSelectionadas}
                 data={Fake_Opt}
@@ -178,8 +165,20 @@ export default function Vida() {
               icon={SendIcon}
             >
               <div className="gap-4 p-2 flex flex-wrap *:p-5 *:rounded *:flex-1">
-                <Button className="hover:animate-pulse" icon={<Mail/>} type="primary" >Receber PDF por email</Button>
-                <Button className="hover:animate-pulse" icon={<Download/>} type="primary" >Baixar resultados diretamente</Button>
+                <Button
+                  className="hover:animate-pulse"
+                  icon={<Mail />}
+                  type="primary"
+                >
+                  Receber PDF por email
+                </Button>
+                <Button
+                  className="hover:animate-pulse"
+                  icon={<Download />}
+                  type="primary"
+                >
+                  Baixar resultados diretamente
+                </Button>
               </div>
             </Dialog.Drawer>
           </div>

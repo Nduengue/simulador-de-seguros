@@ -5,22 +5,26 @@ import Image from "next/image";
 // import { APP_AVALIABLE_PARTICULAR_SIMULATION } from "@/mocks/simullation-type";
 import CardGroup from "@/components/CardGroup/CardGroup";
 
-interface IProps {
-  title?: string;
+interface IShowCardGroupPage {
+  title: string;
   description?: string;
-  route?: string;
-  link?: string;
+  route: string;
+  link: string;
 }
 
-const ShowCardGroupPage = ({
-  title = "Selecione o Seguro para Simulação",
-  description = `Escolha abaixo o seguro que deseja simular. Cada opção
-    oferece uma breve descrição para facilitar sua escolha. Basta
-    clicar em um dos tipos e avançar para calcular a melhor oferta
-    para você!`,
-  route = "insurance",
-  link = "/simulation/insurancetype"
-}: IProps) => {
+// const ShowCardGroupPageData = {
+//   title: "Selecione o Seguro para Simulação",
+//   description: `Escolha abaixo o seguro que deseja simular. Cada opção
+//     oferece uma breve descrição para facilitar sua escolha. Basta
+//     clicar em um dos tipos e avançar para calcular a melhor oferta
+//     para você!`,
+//   route: "insurance",
+//   link: "/simulation/insurancetype",
+// };
+
+export  function ShowCardGroupPage({ title, description, route, link }: IShowCardGroupPage) {
+ 
+
   return (
     <div className="min-h-screen  font-[family-name:var(--font-geist-sans)] translate ease-in-out">
       <AppLayout.PublicHeader />
@@ -39,12 +43,8 @@ const ShowCardGroupPage = ({
             priority
           />
           <div className="flex flex-col items-center gap-y-3 px-6 mb-10 text-center  md:px-20">
-            <h2 className="text-[#d18f46] font-bold text-3xl ">
-              {title}
-            </h2>
-            <p>
-              {description}
-            </p>
+            <h2 className="text-[#d18f46] font-bold text-3xl ">{title}</h2>
+            <p>{description}</p>
           </div>
           <div className="flex flex-col w-full p-8">
             {/* <div className="sm:w-1/3 mb-4 sm:self-end md:pr-14">
@@ -60,7 +60,6 @@ const ShowCardGroupPage = ({
               ))} */}
               <CardGroup route={route} link={link} />
             </div>
-
           </div>
           {/* <button className="my-8 bg-[#0f1b2d] rounded-lg p-1.5 px-3 shadow-2xl text-[#fff]">
             Ver todos...
@@ -71,5 +70,3 @@ const ShowCardGroupPage = ({
     </div>
   );
 }
-
-export default ShowCardGroupPage;
