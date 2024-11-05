@@ -8,6 +8,7 @@ import {
   CalendarDays,
   Handshake,
   IdCard,
+  Mail,
   Rss,
   SendIcon,
   ShieldEllipsis,
@@ -73,21 +74,21 @@ export default function Vida() {
           <div className="flex items-center flex-wrap sm:flex-nowrap gap-y-2 sm:gap-y-0 *:w-full gap-x-2">
             <Input.Default
               icon={User2}
-              label="Primeiro Nome"
-              placeholder="Insira primeiro nome"
+              label="Primeiro Completo"
+              placeholder="Insira nome completo"
               borderColor="border-[#fba94c]"
             />
             <Input.Default
-              icon={User2}
-              label="Sobre Nome"
-              placeholder="Insira último nome"
+              icon={IdCard}
+              label="BI"
+              placeholder="000000000LA000"
               borderColor="border-[#fba94c]"
             />
           </div>
           <Input.Default
-            icon={IdCard}
-            label="Bilhete de Identidade"
-            placeholder="000000000LA000"
+            icon={Mail}
+            label="E-mail"
+            placeholder="exemplo@dominio.com"
             borderColor="border-[#fba94c]"
           />
 
