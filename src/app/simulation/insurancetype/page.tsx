@@ -1,5 +1,5 @@
 import React from 'react'
-import {ShowCardGroupPage} from '../page'
+import ShowCardGroupPage from '../page'
 
 
 export default function InsuranceTypePage() {

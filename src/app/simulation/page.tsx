@@ -1,3 +1,5 @@
+'use client';
+
 // import { Input } from "@/components/input";
 import { AppLayout } from "@/components/layout";
 // import { Search } from "lucide-react";
@@ -11,7 +13,6 @@ interface IShowCardGroupPage {
   route: string;
   link: string;
 }
-
 // const ShowCardGroupPageData = {
 //   title: "Selecione o Seguro para Simulação",
 //   description: `Escolha abaixo o seguro que deseja simular. Cada opção
@@ -22,7 +23,7 @@ interface IShowCardGroupPage {
 //   link: "/simulation/insurancetype",
 // };
 
-export  function ShowCardGroupPage({ title, description, route, link }: IShowCardGroupPage) {
+export default  function ShowCardGroupPage({ link,route,title,description }: IShowCardGroupPage) {
  
 
   return (
