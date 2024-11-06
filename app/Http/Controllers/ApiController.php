@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Log;
 
 class ApiController extends Controller{
 
-    protected $api_url = 'http://192.168.1.99:5008/';
+    /* protected $api_url = 'http://192.168.1.99:5008/'; */
+    protected $api_url = 'http://api-simulator.mtapp.ao/';
     public function getUsers()
     {
         $users =[
