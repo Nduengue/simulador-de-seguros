@@ -81,13 +81,13 @@ class SimulationLifeControllers extends Controller{
                     "value"=> $request->coverage_value,
                     "duration" => $request->coverage_duration,
                     "body"=> $simulaterLife['body'],
-                    'email' => $request->email
+                    'email' => $request->user['email'],
                 ];
 
-               if(empty($request->email)){
+               if($request->receber === "site"){
                 $date_pdf_site_life = $pdfSiteLifeControllers->PdfSiteLife($date_params);
                 return response()->json(['success'=> true ,'mensage' => 'Dados da simulação Life salvos com sucesso!', 'pdf'=> $date_pdf_site_life], 200);
-               }else{
+               }else if($request->receber === "email"){
                 $date_pdf_email_life = $pdfEmailControllers->PdfEmailLife($date_params);
                 return response()->json(['success'=> true ,'mensage' => 'Dados da simulação Life salvos com sucesso!','dados'=>$simulaterLife ,'email'=> $date_pdf_email_life], 200);
                }

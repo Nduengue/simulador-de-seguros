@@ -78,7 +78,7 @@ class Validation extends Controller
             'policy_type_id' => 'required|integer',
             'company_ids' => 'required|array|min:1',
             'company_ids.*' => 'integer',
-            'email' => 'required|email'
+            'receber'=>'required|string',
         ], [
             'user.name.required' => 'O nome do usuário é obrigatório.',
             'user.nif.required' => 'O NIF do usuário é obrigatório.',
@@ -107,8 +107,7 @@ class Validation extends Controller
             'policy_type_id.exists' => 'O tipo de apólice selecionado é inválido.',
             'company_ids.required' => 'É necessário selecionar ao menos uma companhia.',
             'company_ids.*.exists' => 'Uma das companhias selecionadas é inválida.',
-            'email.required' => 'O campo de email é obrigatório.',
-            'email.email' => 'O email deve ser um endereço de email válido.'
+            'receber.required' => 'campo obrigatorio é obrigatório.',
         ]);
         return $validator->fails();       
     }
@@ -268,7 +267,7 @@ class Validation extends Controller
             'coverage_value',
             'coverage_ids',
             'aggravation_ids',
-            'email'
+            'receber'
         ];
         $Params = [];
 
