@@ -3,8 +3,9 @@
 import React, { useState } from "react";
 import { Button, message, Steps } from "antd";
 import { Input } from "@/components/input";
-import { User2 } from "lucide-react";
+import { FlagIcon, User2 } from "lucide-react";
 import { Check } from "@/components/check";
+
 
 // Informações do tomador de seguro e segurado
 // Classificação do Produto Transportado
@@ -29,29 +30,29 @@ export default function Transporte() {
     },
     {
       title: "Passo 3",
-      content: <StepThree title="Meio de Transporte" />,
-    },
-    {
-      title: "Passo 4",
       content: <StepThree title="Distância e Destino" />,
     },
     {
+      title: "Passo 4",
+      content: <StepModel title="...." />,
+    },
+    {
       title: "Passo 5",
-      content: <StepThree title="Detalhes adicionais" />,
+      content: <StepModel title="Detalhes adicionais" />,
     },
     {
       title: "Passo 6",
-      content: <StepThree title="Condições Especiais" />,
+      content: <StepModel title="Condições Especiais" />,
     },
     {
       title: "Passo 7",
       content: (
-        <StepThree title="Condições de Manuseio e Embalagem da Mercadoria" />
+        <StepModel title="Condições de Manuseio e Embalagem da Mercadoria" />
       ),
     },
     {
       title: "Passo 8",
-      content: <StepThree title="Coberturas" />,
+      content: <StepModel title="Coberturas" />,
     },
   ];
 
@@ -186,8 +187,40 @@ function StepTwo({  }: { title?: string }) {
     </div>
   );
 }
+function StepThree({  }: { title?: string }) {
+  const Fake_Radio = [
+    { id: "1", value: "Mercadorias gerais" },
+    { id: "2", value: "Produtos perecíveis" },
+    { id: "3", value: "Produtos perigosos" },
+    { id: "4", value: "Produtos de alto valor" },
+  ];
 
-function StepThree({ title }: { title: string }) {
+  const Fake_List = [
+    { id: 0, name: "Terrestre", value: "Terrestre" },
+    { id: 1, name: "Marítimo", value: "Marítimo" },
+    { id: 2, name: "Fluvial", value: "Fluvial" },
+    { id: 3, name: "Aéreo", value: "Aéreo" },
+  ];
+
+  return (
+    <div className="  pt-4 px-2 ">
+      {/* <StepHeader title={""} /> */}
+      <div className="grid gap-6  ">
+        <div>
+          <StepHeader title="Classificação do Produto Transportado" />
+          
+          <Input.Default icon={FlagIcon} title="Pais de Origem"/>
+        </div>
+        <div>
+          <StepHeader title="Meio de Transporte" />
+         <Input.Default icon={FlagIcon} title="Pais de Destino"/>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StepModel({ title }: { title: string }) {
 
   return (
     <div className="  pt-4 px-2 ">
