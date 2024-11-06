@@ -76,7 +76,7 @@ class SimulationLifeControllers extends Controller{
                         'error'=> $this->date_error,
                     ] ,500);
                 }
-                
+                // main
                 $date_params = [
                     "value"=> $request->coverage_value,
                     "duration" => $request->coverage_duration,
