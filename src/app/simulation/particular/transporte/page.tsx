@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button, message, Steps } from "antd";
 import { Input } from "@/components/input";
-import { CalendarDays, Earth, FlagIcon, User2 } from "lucide-react";
+import { CalendarDays, Earth, User2 } from "lucide-react";
 import { Check } from "@/components/check";
-import { title } from "process";
 
 
 // Informações do tomador de seguro e segurado
@@ -175,19 +174,6 @@ function StepTwo({  }: { title?: string }) {
   );
 }
 function StepThree({  }: { title?: string }) {
-  const Fake_Radio = [
-    { id: "1", value: "Mercadorias gerais" },
-    { id: "2", value: "Produtos perecíveis" },
-    { id: "3", value: "Produtos perigosos" },
-    { id: "4", value: "Produtos de alto valor" },
-  ];
-
-  const Fake_List = [
-    { id: 0, name: "Terrestre", value: "Terrestre" },
-    { id: 1, name: "Marítimo", value: "Marítimo" },
-    { id: 2, name: "Fluvial", value: "Fluvial" },
-    { id: 3, name: "Aéreo", value: "Aéreo" },
-  ];
 
   return (
     <div className="  pt-4 px-2  h-full flex flex-col">
