@@ -6,27 +6,32 @@ import { Input } from "@/components/input";
 import { CalendarDays, Earth, User2 } from "lucide-react";
 import { Check } from "@/components/check";
 
-
-// Informações do tomador de seguro e segurado
-// Classificação do Produto Transportado
-// Meio de Transporte
-// Distância e Destino
-// Detalhes adicionais
-// Condições Especiais
-// Condições de Manuseio e Embalagem da Mercadoria
-// Coberturas
-
 export default function Transporte() {
+  const [NomeComplete, setNomeComplete] = useState<string>("");
+  const [Email, setEmail] = useState<string>("");
+  const [Nif, setNif] = useState<string>("");
+  const [Telefone, setTelefone] = useState<string>("");
+
   const steps = [
     {
       title: "1º Passo",
-      content: <StepOne title="Informações do tomador de seguro e segurado" />,
+      content: (
+        <StepOne
+          title="Informações do tomador de seguro e segurado"
+          setNomeCompleteFn={setNomeComplete}
+          setEmailFn={setEmail}
+          setNifFn={setNif}
+          setTelefoneFn={setTelefone}
+          NomeComplete={NomeComplete}
+          Email={Email}
+          Nif={Nif}
+          Telefone={Telefone}
+        />
+      ),
     },
     {
       title: "2º Passo",
-      content: (
-        <StepTwo />
-      ),
+      content: <StepTwo />,
     },
     {
       title: "3º Passo",
@@ -43,6 +48,13 @@ export default function Transporte() {
   ];
 
   const [current, setCurrent] = useState(0);
+
+  const handleCleanInputs = () => {
+    setNomeComplete("");
+    setEmail("");
+    setNif("");
+    setTelefone("");
+  };
 
   const next = () => {
     setCurrent(current + 1);
@@ -89,7 +101,6 @@ export default function Transporte() {
     </div>
   );
 }
-
 function StepHeader({ title }: { title: string }) {
   return (
     <>
@@ -98,13 +109,35 @@ function StepHeader({ title }: { title: string }) {
     </>
   );
 }
-function StepOne({ title }: { title: string }) {
+function StepOne({
+  title,
+  setNomeCompleteFn,
+  setEmailFn,
+  setNifFn,
+  setTelefoneFn,
+  NomeComplete,
+  Nif,
+  Telefone,
+  Email,
+}: {
+  title: string;
+  setNomeCompleteFn: (e: string) => void;
+  setEmailFn: (e: string) => void;
+  setNifFn: (e: string) => void;
+  setTelefoneFn: (e: string) => void;
+  NomeComplete: string;
+  Email: string;
+  Nif: string;
+  Telefone: string;
+}) {
   return (
     <div className="  pt-4 px-2 ">
       <StepHeader title={title} />
       <div className="grid grid-cols-2 gap-6 ">
         <Input.Default
           icon={User2}
+          onChange={(e) => setNomeCompleteFn(e.target.value)}
+          value={NomeComplete}
           label="Nome Completo"
           placeholder="Insira o nome completo"
           borderColor="border-[#fba94c]"
@@ -112,12 +145,18 @@ function StepOne({ title }: { title: string }) {
 
         <Input.Default
           icon={User2}
+          onChange={(e) => setNifFn(e.target.value)}
+          value={Nif}
           label="Número de Identificação Fiscal"
           placeholder="Insira o NIF"
+          maxLength={14}
           borderColor="border-[#fba94c]"
         />
         <Input.Default
           icon={User2}
+          onChange={(e) => setTelefoneFn(e.target.value)}
+          value={Telefone}
+          maxLength={9}
           label="Telefone"
           placeholder="Insira o número de telefone"
           borderColor="border-[#fba94c]"
@@ -125,6 +164,8 @@ function StepOne({ title }: { title: string }) {
 
         <Input.Default
           icon={User2}
+          onChange={(e) => setEmailFn(e.target.value)}
+          value={Email}
           label="E-mail"
           placeholder="Insira o e-mail (exemplo@dominio.com)"
           borderColor="border-[#fba94c]"
@@ -133,7 +174,7 @@ function StepOne({ title }: { title: string }) {
     </div>
   );
 }
-function StepTwo({  }: { title?: string }) {
+function StepTwo({}: { title?: string }) {
   const Fake_Radio = [
     { id: "1", value: "Mercadorias gerais" },
     { id: "2", value: "Produtos perecíveis" },
@@ -173,26 +214,25 @@ function StepTwo({  }: { title?: string }) {
     </div>
   );
 }
-function StepThree({  }: { title?: string }) {
-
+function StepThree({}: { title?: string }) {
   return (
     <div className="  pt-4 px-2  h-full flex flex-col">
       {/* <StepHeader title={title} /> */}
       <div className="flex flex-col flex-1 *:flex-1 ">
         <div className="">
           <StepHeader title="País de Origem" />
-          
-          <Input.Default icon={Earth} title="Pais de Origem"/>
+
+          <Input.Default icon={Earth} title="Pais de Origem" />
         </div>
         <div className="">
           <StepHeader title="País de Destino" />
-         <Input.Default icon={Earth} title="Pais de Destino"/>
+          <Input.Default icon={Earth} title="Pais de Destino" />
         </div>
       </div>
     </div>
   );
 }
-function StepFour({  }: { title?: string }) {
+function StepFour({}: { title?: string }) {
   const Fake_List = [
     { id: 0, name: "Nacional", value: "Nacional" },
     { id: 1, name: "Interprovincial", value: "Interprovincial" },
@@ -202,22 +242,37 @@ function StepFour({  }: { title?: string }) {
     { id: 5, name: "Outros Continentes", value: "Outros Continentes" },
   ];
   const Fake_List2 = [
-    { id: 0, name: "Cobertura para Avaria/Perda Total", value: "Cobertura para Avaria/Perda Total" },
-    { id: 1, name: "Roubo/Pirataria (marítimo)", value: "Roubo/Pirataria (marítimo)" },
-    { id: 2, name: "Cobertura para eventos climáticos severos", value: "Cobertura para eventos climáticos severos" },
-    { id: 3, name: "Riscos Geopolíticos (Áreas de conflito)", value: "Riscos Geopolíticos (Áreas de conflito)" },
+    {
+      id: 0,
+      name: "Cobertura para Avaria/Perda Total",
+      value: "Cobertura para Avaria/Perda Total",
+    },
+    {
+      id: 1,
+      name: "Roubo/Pirataria (marítimo)",
+      value: "Roubo/Pirataria (marítimo)",
+    },
+    {
+      id: 2,
+      name: "Cobertura para eventos climáticos severos",
+      value: "Cobertura para eventos climáticos severos",
+    },
+    {
+      id: 3,
+      name: "Riscos Geopolíticos (Áreas de conflito)",
+      value: "Riscos Geopolíticos (Áreas de conflito)",
+    },
   ];
 
   return (
-    // Rascunho 
+    // Rascunho
     // <div className="  pt-4 px-2  h-full flex flex-col">
     // <div className="flex flex-col flex-1 *:flex-1 ">
-
 
     <div className="  pt-4 px-2 ">
       {/* <StepHeader title={""} /> */}
       <div className="grid gap-6  ">
-      <div>
+        <div>
           <StepHeader title="Detalhes Adicionais" />
           <Check.CheckBox
             className="gap-2 *:p-3 grid grid-cols-2"
@@ -226,7 +281,7 @@ function StepFour({  }: { title?: string }) {
             data={Fake_List}
           />
         </div>
-      <div>
+        <div>
           <StepHeader title="Condições Especiais" />
           <Check.CheckBox
             className="gap-2 *:p-3 grid grid-cols-2"
@@ -236,7 +291,6 @@ function StepFour({  }: { title?: string }) {
           />
         </div>
 
-
         {/* <div>
           <StepHeader title="Classificação do Produto Transportado" />
           <Check.Radio
@@ -245,12 +299,11 @@ function StepFour({  }: { title?: string }) {
             className="grid grid-cols-2 gap-2 items-start *:w-full gap-y-2 *:text-start *:justify-start"
           />
         </div> */}
-       
       </div>
     </div>
   );
 }
-function StepFive({  }: { title?: string }) {
+function StepFive({}: { title?: string }) {
   const Fake_Radio = [
     { id: "1", value: "Embalados profissionalmente" },
     { id: "2", value: "Sem proteção ou embalagem inadequada" },
@@ -261,16 +314,10 @@ function StepFive({  }: { title?: string }) {
     { id: "3", value: "Cláusula C" },
   ];
 
- 
-
   return (
- 
     <div className="  pt-4 px-2 ">
       {/* <StepHeader title={""} /> */}
       <div className="grid gap-6  ">
-     
-
-
         <div>
           <StepHeader title="Condições de Manuseio e Embalagem da Mercadoria" />
           <Check.Radio
@@ -279,7 +326,7 @@ function StepFive({  }: { title?: string }) {
             className="grid grid-cols-2 gap-2 items-start *:w-full gap-y-2 *:text-start *:justify-start"
           />
         </div>
-        <div >
+        <div>
           <StepHeader title="Coberturas" />
           <Check.Radio
             itemList={Fake_Radio2}
@@ -287,12 +334,18 @@ function StepFive({  }: { title?: string }) {
             className="grid grid-cols-2 gap-2 items-start *:w-full gap-y-2 *:text-start *:justify-start"
           />
           <div className="space-y-2 mt-4">
-            <Input.Default label="Dias de duração da apolice" placeholder="0" icon={CalendarDays}/>
-            <Input.Default label="Valor máximo por mercadoria" placeholder="0" icon={CalendarDays}/>
+            <Input.Default
+              label="Dias de duração da apolice"
+              placeholder="0"
+              icon={CalendarDays}
+            />
+            <Input.Default
+              label="Valor máximo por mercadoria"
+              placeholder="0"
+              icon={CalendarDays}
+            />
           </div>
         </div>
-       
-       
       </div>
     </div>
   );
