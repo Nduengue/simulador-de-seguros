@@ -5,7 +5,6 @@ import { Button, Steps } from "antd";
 import { Input } from "@/components/input";
 import { CalendarDays, Earth, IdCardIcon, MailIcon, PhoneIcon, User2Icon } from "lucide-react";
 import { Check } from "@/components/check";
-import AutoCompleteTagInput from "./auto-complete-tag-input";
 
 export default function Transporte() {
   // var step 1
@@ -295,7 +294,7 @@ function StepThree({
       <div className="flex flex-col flex-1 *:flex-1 ">
         <div className="">
           <StepHeader title="País de Origem" />
-          <AutoCompleteTagInput />
+          <Input.AutoCompleteTagInput />
           <Input.Default icon={Earth} title="Pais de Origem" />
         </div>
         <div className="">
