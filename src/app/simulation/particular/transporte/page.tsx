@@ -3,29 +3,30 @@
 import { useState } from "react";
 import { Button, message, Steps } from "antd";
 import { Input } from "@/components/input";
-import {
-  CalendarDays,
-  Earth,
-  IdCard,
-  IdCardIcon,
-  MailIcon,
-  PhoneIcon,
-  User2,
-  User2Icon,
-} from "lucide-react";
+import { CalendarDays, Earth, IdCard, IdCardIcon, MailIcon, PhoneIcon, User2, User2Icon } from "lucide-react";
 import { Check } from "@/components/check";
 
 export default function Transporte() {
+  // var step 1
   const [NomeComplete, setNomeComplete] = useState<string>("");
   const [Email, setEmail] = useState<string>("");
   const [Nif, setNif] = useState<string>("");
   const [Telefone, setTelefone] = useState<string>("");
-
-  const [
-    ClassificacaoProdutoTransportado,
-    setClassificacaoProdutoTransportado,
-  ] = useState<string[]>([]);
+  // var step 2
+  const [ClassificacaoProdutoTransportado, setClassificacaoProdutoTransportado] = useState<string>("1");
   const [MeioTransporte, setMeioTransporte] = useState<string[]>([]);
+  // var step 3
+  const [PaisOrigem, setPaisOrigem] = useState<string[]>([]);
+  const [PaisDestino, setPaisDestino] = useState<string[]>([]);
+  const [Provincias, setProvincias] = useState<string[]>([]);
+  // var step 4
+  const [DetalhesAdicionais, setDetalhesAdicionaisFn] = useState<string[]>([]);
+  const [CondicoesEspeciais, setCondicoesEspeciaisFn] = useState<string[]>([]);
+  // var step 5
+  const [CondicoesManuseioEmbalagemMercadoria, setCondicoesManuseioEmbalagemMercadoria] = useState<string>("");
+  const [Coberturas, setCoberturas] = useState<string>("");
+  const [DiasduracaoApolice, setDiasduracaoApolice] = useState<string>("");
+  const [ValorMaximoMercadoria, setValorMaximoMercadoria] = useState<string>("");
 
   const steps = [
     {
@@ -50,31 +51,53 @@ export default function Transporte() {
         <StepTwo
           MeioTransporte={MeioTransporte}
           setMeioTransporteFn={setMeioTransporte}
+          setClassificacaoProdutoTransportadoFn={setClassificacaoProdutoTransportado}
+          ClassificacaoProdutoTransportado={ClassificacaoProdutoTransportado}
         />
       ),
     },
     {
       title: "3º Passo",
-      content: <StepThree title="Distância e Destino" />,
+      content: (
+        <StepThree
+          setPaisOrigemFn={setPaisOrigem}
+          PaisOrigem={PaisOrigem}
+          setPaisDestinoFn={setPaisDestino}
+          PaisDestino={PaisDestino}
+          setProvinciasFn={setProvincias}
+          Provincias={Provincias}
+        />
+      ),
     },
     {
       title: "4º Passo",
-      content: <StepFour title="Detalhes adicionais & Condições Especiais" />,
+      content: (
+        <StepFour
+          CondicoesEspeciais={CondicoesEspeciais}
+          DetalhesAdicionais={DetalhesAdicionais}
+          setCondicoesEspeciaisFn={setCondicoesEspeciaisFn}
+          setDetalhesAdicionaisFn={setDetalhesAdicionaisFn}
+        />
+      ),
     },
     {
       title: "5º Passo",
-      content: <StepFive title="" />,
+      content: <StepFive
+      Coberturas={Coberturas}
+      setCoberturasFn={setCoberturas}
+      CondicoesManuseioEmbalagemMercadoria={CondicoesManuseioEmbalagemMercadoria}
+      setCondicoesManuseioEmbalagemMercadoriaFn={setCondicoesManuseioEmbalagemMercadoria}
+      ValorMaximoMercadoria={ValorMaximoMercadoria}
+      setValorMaximoMercadoriaFn={setValorMaximoMercadoria}
+      DiasduracaoApolice={DiasduracaoApolice}
+      setDiasduracaoApoliceFn={setDiasduracaoApolice}
+      />,
     },
   ];
 
   const [current, setCurrent] = useState(0);
 
-  const handleCleanInputs = () => {
-    setNomeComplete("");
-    setEmail("");
-    setNif("");
-    setTelefone("");
-  };
+
 
   const next = () => {
     setCurrent(current + 1);
@@ -86,26 +109,24 @@ export default function Transporte() {
 
   const items = steps.map((item) => ({ key: item.title, title: item.title }));
 
+  function handleSubmitFn() {
+    alert("Exemplo de Envio")
+    window.location.reload();
+  }
+
   return (
     <div className="text-gray-600 bg-[#eff4f9] lg:bg-[url('/blob-scene1.svg')] bg-cover bg-center bg-no-repeat bg-fixed min-h-screen p-4 grid place-items-center">
       {/* <div className="text-gray-600 bg-[#eff4f9] lg:bg-[url('/wavess.svg')] bg-cover bg-center bg-no-repeat bg-fixed min-h-screen p-4 grid place-items-center"> */}
       <div className="bg-white w-[62rem] p-4 rounded-lg min-h-[35rem] shadow-lg flex flex-col justify-between">
         <div>
           <Steps current={current} items={items} />
-          <div className="h-[30rem] w-full overflow-y-auto mt-4">
-            {steps[current].content}
-          </div>
+          <div className="h-[30rem] w-full overflow-y-auto mt-4">{steps[current].content}</div>
         </div>
 
         <div className="mt-6 self-end ">
-          <Button
-            color="danger"
-            variant="filled"
-            className="mr-2"
-            onClick={() => handleCleanInputs()}
-          >
-            Limpar
-          </Button>
+          {/* <Button color="danger" variant="filled" className="mr-2" onClick={() => handleCleanInputs()}> */}
+          {/* Limpar */}
+          {/* </Button> */}
           {current > 0 && (
             <Button style={{ margin: "0 8px" }} onClick={() => prev()}>
               Voltar
@@ -117,10 +138,7 @@ export default function Transporte() {
             </Button>
           )}
           {current === steps.length - 1 && (
-            <Button
-              type="primary"
-              onClick={() => message.success("Processing complete!")}
-            >
+            <Button type="primary" onClick={handleSubmitFn}>
               Concluir
             </Button>
           )}
@@ -205,9 +223,13 @@ function StepOne({
 function StepTwo({
   MeioTransporte,
   setMeioTransporteFn,
+  ClassificacaoProdutoTransportado,
+  setClassificacaoProdutoTransportadoFn,
 }: {
   MeioTransporte: string[];
   setMeioTransporteFn: (e: string[]) => void;
+  ClassificacaoProdutoTransportado: string;
+  setClassificacaoProdutoTransportadoFn: (e: string) => void;
 }) {
   const Fake_Radio = [
     { id: "1", name: "Mercadorias gerais" },
@@ -231,24 +253,41 @@ function StepTwo({
           <StepHeader title="Classificação do Produto Transportado" />
           <Check.Radio
             itemList={Fake_Radio}
-            defaultValue="1"
+            value={ClassificacaoProdutoTransportado}
+            setValuesFn={setClassificacaoProdutoTransportadoFn}
             className="grid grid-cols-2 gap-2 items-start *:w-full gap-y-2 *:text-start *:justify-start"
           />
         </div>
         <div>
           <StepHeader title="Meio de Transporte" />
-          <Check.CheckBox
-            className="gap-2 *:p-3 grid grid-cols-2"
-            values={MeioTransporte}
-            setValuesFn={setMeioTransporteFn}
-            data={Fake_List}
-          />
+          <Check.CheckBox className="gap-2 *:p-3 grid grid-cols-2" values={MeioTransporte} setValuesFn={setMeioTransporteFn} data={Fake_List} />
         </div>
       </div>
     </div>
   );
 }
-function StepThree({}: { title?: string }) {
+function StepThree({
+  setPaisOrigemFn,
+  PaisOrigem,
+  setPaisDestinoFn,
+  PaisDestino,
+  setProvinciasFn,
+  Provincias,
+}: {
+  setPaisOrigemFn: (e: string[]) => void;
+  PaisOrigem: string[];
+  setPaisDestinoFn: (e: string[]) => void;
+  PaisDestino: string[];
+  setProvinciasFn: (e: string[]) => void;
+  Provincias: string[];
+}) {
+  setPaisOrigemFn;
+  PaisOrigem;
+  setPaisDestinoFn;
+  PaisDestino;
+  setProvinciasFn;
+  Provincias;
+
   return (
     <div className="  pt-4 px-2  h-full flex flex-col">
       {/* <StepHeader title={title} /> */}
@@ -266,35 +305,42 @@ function StepThree({}: { title?: string }) {
     </div>
   );
 }
-function StepFour({}: { title?: string }) {
+
+function StepFour({
+  CondicoesEspeciais,
+  DetalhesAdicionais,
+  setCondicoesEspeciaisFn,
+  setDetalhesAdicionaisFn,
+}: {
+  DetalhesAdicionais: string[];
+  setDetalhesAdicionaisFn: (e: string[]) => void;
+  CondicoesEspeciais: string[];
+  setCondicoesEspeciaisFn: (e: string[]) => void;
+}) {
   const Fake_List = [
-    { id: 0, name: "Nacional", value: "Nacional" },
-    { id: 1, name: "Interprovincial", value: "Interprovincial" },
-    { id: 2, name: "Países da SADC", value: "Países da SADC" },
-    { id: 3, name: "Sem transbordo", value: "Sem transbordo" },
-    { id: 4, name: "Intra-provincial", value: "Intra-provincial" },
-    { id: 5, name: "Outros Continentes", value: "Outros Continentes" },
+    { id: 0, name: "Nacional" },
+    { id: 1, name: "Interprovincial" },
+    { id: 2, name: "Países da SADC" },
+    { id: 3, name: "Sem transbordo" },
+    { id: 4, name: "Intra-provincial" },
+    { id: 5, name: "Outros Continentes" },
   ];
   const Fake_List2 = [
     {
       id: 0,
       name: "Cobertura para Avaria/Perda Total",
-      value: "Cobertura para Avaria/Perda Total",
     },
     {
       id: 1,
       name: "Roubo/Pirataria (marítimo)",
-      value: "Roubo/Pirataria (marítimo)",
     },
     {
       id: 2,
       name: "Cobertura para eventos climáticos severos",
-      value: "Cobertura para eventos climáticos severos",
     },
     {
       id: 3,
       name: "Riscos Geopolíticos (Áreas de conflito)",
-      value: "Riscos Geopolíticos (Áreas de conflito)",
     },
   ];
 
@@ -308,44 +354,43 @@ function StepFour({}: { title?: string }) {
       <div className="grid gap-6  ">
         <div>
           <StepHeader title="Detalhes Adicionais" />
-          <Check.CheckBox
-            className="gap-2 *:p-3 grid grid-cols-2"
-            // activeBoxies={seguradoraSelectionadas}
-            // setActiveBoxies={setSeguradoraSelectionadas}
-            data={Fake_List}
-          />
+          <Check.CheckBox className="gap-2 *:p-3 grid grid-cols-2" values={DetalhesAdicionais} setValuesFn={setDetalhesAdicionaisFn} data={Fake_List} />
         </div>
         <div>
           <StepHeader title="Condições Especiais" />
-          <Check.CheckBox
-            className="gap-2 *:p-3 grid grid-cols-2"
-            // activeBoxies={seguradoraSelectionadas}
-            // setActiveBoxies={setSeguradoraSelectionadas}
-            data={Fake_List2}
-          />
+          <Check.CheckBox className="gap-2 *:p-3 grid grid-cols-2" values={CondicoesEspeciais} setValuesFn={setCondicoesEspeciaisFn} data={Fake_List2} />
         </div>
-
-        {/* <div>
-          <StepHeader title="Classificação do Produto Transportado" />
-          <Check.Radio
-            itemList={Fake_Radio}
-            defaultValue="1"
-            className="grid grid-cols-2 gap-2 items-start *:w-full gap-y-2 *:text-start *:justify-start"
-          />
-        </div> */}
       </div>
     </div>
   );
 }
-function StepFive({}: { title?: string }) {
+function StepFive({
+  CondicoesManuseioEmbalagemMercadoria,
+  Coberturas,
+  DiasduracaoApolice,
+  ValorMaximoMercadoria,
+  setCondicoesManuseioEmbalagemMercadoriaFn,
+  setCoberturasFn,
+  setDiasduracaoApoliceFn,
+  setValorMaximoMercadoriaFn,
+}: {
+  CondicoesManuseioEmbalagemMercadoria: string;
+  Coberturas: string;
+  DiasduracaoApolice: string;
+  ValorMaximoMercadoria: string;
+  setCondicoesManuseioEmbalagemMercadoriaFn: (e: string) => void;
+  setCoberturasFn: (e: string) => void;
+  setDiasduracaoApoliceFn: (e: string) => void;
+  setValorMaximoMercadoriaFn: (e: string) => void;
+}) {
   const Fake_Radio = [
-    { id: "1", value: "Embalados profissionalmente" },
-    { id: "2", value: "Sem proteção ou embalagem inadequada" },
+    { id: "1", name: "Embalados profissionalmente" },
+    { id: "2", name: "Sem proteção ou embalagem inadequada" },
   ];
   const Fake_Radio2 = [
-    { id: "1", value: "Cláusula A" },
-    { id: "2", value: "Cláusula B" },
-    { id: "3", value: "Cláusula C" },
+    { id: "1", name: "Cláusula A" },
+    { id: "2", name: "Cláusula B" },
+    { id: "3", name: "Cláusula C" },
   ];
 
   return (
@@ -356,7 +401,8 @@ function StepFive({}: { title?: string }) {
           <StepHeader title="Condições de Manuseio e Embalagem da Mercadoria" />
           <Check.Radio
             itemList={Fake_Radio}
-            defaultValue="1"
+            value={CondicoesManuseioEmbalagemMercadoria}
+            setValuesFn={setCondicoesManuseioEmbalagemMercadoriaFn}
             className="grid grid-cols-2 gap-2 items-start *:w-full gap-y-2 *:text-start *:justify-start"
           />
         </div>
@@ -364,7 +410,8 @@ function StepFive({}: { title?: string }) {
           <StepHeader title="Coberturas" />
           <Check.Radio
             itemList={Fake_Radio2}
-            defaultValue="1"
+            value={Coberturas}
+            setValuesFn={setCoberturasFn}
             className="grid grid-cols-2 gap-2 items-start *:w-full gap-y-2 *:text-start *:justify-start"
           />
           <div className="space-y-2 mt-4">
@@ -372,11 +419,15 @@ function StepFive({}: { title?: string }) {
               label="Dias de duração da apolice"
               placeholder="0"
               icon={CalendarDays}
+              value={DiasduracaoApolice}
+              onChange={(e) => setDiasduracaoApoliceFn(e.target.value)}
             />
             <Input.Default
               label="Valor máximo por mercadoria"
               placeholder="0"
               icon={CalendarDays}
+              value={ValorMaximoMercadoria}
+              onChange={(e) => setValorMaximoMercadoriaFn(e.target.value)}
             />
           </div>
         </div>
@@ -384,13 +435,3 @@ function StepFive({}: { title?: string }) {
     </div>
   );
 }
-
-// function StepModel({ title }: { title: string }) {
-
-//   return (
-//     <div className="  pt-4 px-2 ">
-//       {/* <StepHeader title={""} /> */}
-//       Em desevolvimento... {title}
-//     </div>
-//   );
-// }
