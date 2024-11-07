@@ -3,7 +3,16 @@
 import { useState } from "react";
 import { Button, message, Steps } from "antd";
 import { Input } from "@/components/input";
-import { CalendarDays, Earth, User2 } from "lucide-react";
+import {
+  CalendarDays,
+  Earth,
+  IdCard,
+  IdCardIcon,
+  MailIcon,
+  PhoneIcon,
+  User2,
+  User2Icon,
+} from "lucide-react";
 import { Check } from "@/components/check";
 
 export default function Transporte() {
@@ -11,6 +20,12 @@ export default function Transporte() {
   const [Email, setEmail] = useState<string>("");
   const [Nif, setNif] = useState<string>("");
   const [Telefone, setTelefone] = useState<string>("");
+
+  const [
+    ClassificacaoProdutoTransportado,
+    setClassificacaoProdutoTransportado,
+  ] = useState<string[]>([]);
+  const [MeioTransporte, setMeioTransporte] = useState<string[]>([]);
 
   const steps = [
     {
@@ -31,7 +46,12 @@ export default function Transporte() {
     },
     {
       title: "2º Passo",
-      content: <StepTwo />,
+      content: (
+        <StepTwo
+          MeioTransporte={MeioTransporte}
+          setMeioTransporteFn={setMeioTransporte}
+        />
+      ),
     },
     {
       title: "3º Passo",
@@ -77,7 +97,15 @@ export default function Transporte() {
           </div>
         </div>
 
-        <div className="mt-6 self-end">
+        <div className="mt-6 self-end ">
+          <Button
+            color="danger"
+            variant="filled"
+            className="mr-2"
+            onClick={() => handleCleanInputs()}
+          >
+            Limpar
+          </Button>
           {current > 0 && (
             <Button style={{ margin: "0 8px" }} onClick={() => prev()}>
               Voltar
@@ -135,7 +163,7 @@ function StepOne({
       <StepHeader title={title} />
       <div className="grid grid-cols-2 gap-6 ">
         <Input.Default
-          icon={User2}
+          icon={User2Icon}
           onChange={(e) => setNomeCompleteFn(e.target.value)}
           value={NomeComplete}
           label="Nome Completo"
@@ -144,7 +172,7 @@ function StepOne({
         />
 
         <Input.Default
-          icon={User2}
+          icon={IdCardIcon}
           onChange={(e) => setNifFn(e.target.value)}
           value={Nif}
           label="Número de Identificação Fiscal"
@@ -153,7 +181,7 @@ function StepOne({
           borderColor="border-[#fba94c]"
         />
         <Input.Default
-          icon={User2}
+          icon={PhoneIcon}
           onChange={(e) => setTelefoneFn(e.target.value)}
           value={Telefone}
           maxLength={9}
@@ -163,7 +191,7 @@ function StepOne({
         />
 
         <Input.Default
-          icon={User2}
+          icon={MailIcon}
           onChange={(e) => setEmailFn(e.target.value)}
           value={Email}
           label="E-mail"
@@ -174,7 +202,13 @@ function StepOne({
     </div>
   );
 }
-function StepTwo({}: { title?: string }) {
+function StepTwo({
+  MeioTransporte,
+  setMeioTransporteFn,
+}: {
+  MeioTransporte: string[];
+  setMeioTransporteFn: (e: string[]) => void;
+}) {
   const Fake_Radio = [
     { id: "1", value: "Mercadorias gerais" },
     { id: "2", value: "Produtos perecíveis" },
@@ -183,10 +217,10 @@ function StepTwo({}: { title?: string }) {
   ];
 
   const Fake_List = [
-    { id: 0, name: "Terrestre", value: "Terrestre" },
-    { id: 1, name: "Marítimo", value: "Marítimo" },
-    { id: 2, name: "Fluvial", value: "Fluvial" },
-    { id: 3, name: "Aéreo", value: "Aéreo" },
+    { id: 0, name: "Terrestre" },
+    { id: 1, name: "Marítimo" },
+    { id: 2, name: "Fluvial" },
+    { id: 3, name: "Aéreo" },
   ];
 
   return (
@@ -205,8 +239,8 @@ function StepTwo({}: { title?: string }) {
           <StepHeader title="Meio de Transporte" />
           <Check.CheckBox
             className="gap-2 *:p-3 grid grid-cols-2"
-            // activeBoxies={seguradoraSelectionadas}
-            // setActiveBoxies={setSeguradoraSelectionadas}
+            values={MeioTransporte}
+            setValuesFn={setMeioTransporteFn}
             data={Fake_List}
           />
         </div>
