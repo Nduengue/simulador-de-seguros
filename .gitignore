@@ -32,5 +32,3 @@ database/factories
 database/seeders
 bootstrap
 vite.config.js
-#
-app/http/Controllers/rotaApiControllers.php
