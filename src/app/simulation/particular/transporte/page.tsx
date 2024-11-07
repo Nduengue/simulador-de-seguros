@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Button, message, Steps } from "antd";
+import { Button, Steps } from "antd";
 import { Input } from "@/components/input";
-import { CalendarDays, Earth, IdCard, IdCardIcon, MailIcon, PhoneIcon, User2, User2Icon } from "lucide-react";
+import { CalendarDays, Earth, IdCardIcon, MailIcon, PhoneIcon, User2Icon } from "lucide-react";
 import { Check } from "@/components/check";
+import AutoCompleteTagInput from "./auto-complete-tag-input";
 
 export default function Transporte() {
   // var step 1
@@ -294,7 +295,7 @@ function StepThree({
       <div className="flex flex-col flex-1 *:flex-1 ">
         <div className="">
           <StepHeader title="País de Origem" />
-
+          <AutoCompleteTagInput />
           <Input.Default icon={Earth} title="Pais de Origem" />
         </div>
         <div className="">

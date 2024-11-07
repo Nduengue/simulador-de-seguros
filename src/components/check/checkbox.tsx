@@ -10,7 +10,6 @@ interface ICheckBox extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export default function CheckBox({ data, values, setValuesFn, className, useNameOnValue, ...rest }: ICheckBox) {
- 
   const uuid = crypto.randomUUID();
 
   return (
@@ -43,7 +42,7 @@ function BoxItem({
   myClassName: string;
   item: {
     name: string;
-    id: string|number;
+    id: string | number;
   };
   useNameOnValue?: boolean;
   setSelectedValues: (value: string[]) => void;
@@ -83,3 +82,35 @@ function BoxItem({
     </label>
   );
 }
+
+// function Variant1({
+//   myClassName,
+//   useNameOnValue,
+//   uuid,
+//   item,
+//   handleChange
+// }: {
+//   uuid: string;
+//   myClassName: string;
+//   useNameOnValue: boolean;
+//   item: { name: string; id: string | number };
+//   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+// }) {
+//   return (
+//     <label
+//       htmlFor={uuid}
+//       className="flex flex-row items-center gap-2  text-sm text-[#212121] hover:bg-orange-200/10 p-3 rounded-lg w-full border has-[:checked]:bg-orange-300/50 has-[:checked]:border-orange-300"
+//     >
+//       <input id={uuid} type="checkbox" className={`peer hidden ${myClassName}`} checked={check} value={useNameOnValue ? item.name : item.id} onChange={handleChange} />
+//       <div
+//         // htmlFor={uuid}
+//         className="h-5 w-5 flex rounded-md border border-[#a2a1a833] bg-[#fdfdfd] peer-checked:bg-[#fba94c] transition"
+//       >
+//         <svg fill="none" viewBox="0 0 24 24" className="w-5 h-5 dark:stroke-[#fff]" xmlns="http://www.w3.org/2000/svg">
+//           <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+//         </svg>
+//       </div>
+//       {item.name}
+//     </label>
+//   );
+// }
