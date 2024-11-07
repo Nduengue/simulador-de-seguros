@@ -6,11 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use api;
 
 class ApiController extends Controller{
 
     /* protected $api_url = 'http://192.168.1.99:5008/'; */
-    protected $api_url = 'http://api-simulator.mtapp.ao/';
+    //protected $api_url = 'http://api-simulator.mtapp.ao/';
+    protected $api_url = api::getUrl();
     public function getUsers()
     {
         $users =[
