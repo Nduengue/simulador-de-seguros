@@ -6,99 +6,15 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use api;
+use App\Http\Controllers\rotaApiControllers;
 
 class ApiController extends Controller{
 
     /* protected $api_url = 'http://192.168.1.99:5008/'; */
     //protected $api_url = 'http://api-simulator.mtapp.ao/';
-    protected $api_url = api::getUrl();
-    public function getUsers()
-    {
-        $users =[
-            'nome'=> 'Lopes',
-            'sobreNome' => 'Cristovão'
-        ];
-        $valor = "Exemplo de valor";
-        print_r($valor);
-        //return response()->json(['data'=>$users]);
-    }
-
-    public function getUserById(Request $request)
-    {
-        $users =[
-            'nome'=> $request->nome,
-            'sobreNome' => $request->sobrenome
-        ];
-
-        if ($users) {
-            return response()->json(['data'=> $users]);
-        } else {
-            return response()->json(['message' => 'Usuário não encontrado'], 404);
-        }
-    }
-
-    public function sendData(Request $request)
-    {
-        // Dados a serem enviados
-
-        //dd($request);        
-
-        $dados = [
-            'name' => 'SFFS',
-        ];
-        $id =[
-            'id' =>"Lopes"
-        ];
-
-        // Faz uma requisição POST para a API externa
-        $response = Http::get('http://192.168.1.99:5005/category', $id);
-
-        // Verifica se a requisição foi bem-sucedida
-        if ($response->successful()) {
-            dd($response->json());
-            // Retorna a resposta da API de destino
-            return response()->json([
-                'message' => 'Dados enviados com sucesso!',
-                'response' => $response->json(), // resposta da API
-            ]);
-
-        } else {
-            // Lida com o erro da API de destino
-            return response()->json([
-                'message' => 'Falha ao enviar dados para a API de destino.',
-                'error' => $response->body(),
-            ], $response->status());
-        }
-    }
-
-    public function ReceberRelatorio($dados){
-        try {
-            // Faz uma requisição POST para a API externa
-            $response = Http::post('http://192.168.1.99:5005/simulation', $dados->all());
-            // Verifica se a requisição foi bem-sucedida
-            if ($response->successful()) {
-                $responseData = $response->json();
-                // Retorna a resposta da API de destino
-                Log::info('O controlador foi acessado.'.$responseData['user']);
-                Log::info('O controlador foi acessado.'.$$response->body());
-                return $responseData;
-    
-            } else {
-                // Lida com o erro da API de destino
-                //Log::info('O controlador foi acessado.'. $response->body());
-                return response()->json([
-                    'message' => 'Falha ao enviar dados para a API de destino.',
-                    'error' => $response->body(),
-                ], $response->status());
-            }
-
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
-    }
-
-    public function ApiSimualtionLife($dados){
+    protected $api_url = 'https://api-simulator.mtapp.ao/';
+   
+   /*  public function ApiSimualtionLife($dados){
         try {
             // Faz uma requisição POST para a API externa
             $response = Http::post('http://192.168.1.99:5005/simulation', $dados);
@@ -134,23 +50,24 @@ class ApiController extends Controller{
                 'status' => 500,
             ];
         }   
-    }
+    } */
 
     public function ApiSimulater($dados,$rote_life){
         try {
+            $rotaApiControllers =  rotaApiControllers::getUrl();
+            
             // Faz uma requisição POST para a API externa
-            $response = Http::post($this->api_url.$rote_life, $dados);
+            $response = Http::post($rotaApiControllers.$rote_life, $dados);
             
             // Verifica se a requisição foi bem-sucedida
             if ($response->successful()) {
-                if ($response->getStatusCode() !== 204) {  // Evita processar quando não há conteúdo
-                    /* Log::info($response->json()); */
+                if ($response->getStatusCode() !== 204) {  
+
                     return [
                         'success' => true,
                         'status' => $response->status(),
                         'body'=>$response->json()];
                 } else {
-                    // Lida com a situação onde 204 é retornado (nenhum conteúdo)
                     return [
                         'success' => false,
                         'message' => 'Nenhum conteúdo retornado pela API de destino.',
@@ -162,7 +79,7 @@ class ApiController extends Controller{
                     'success' => false,
                     'message' => 'Falha ao enviar dados para a API de destino.',
                     'error' => $response->body(),
-                    'status' => response()->status(),
+                    'status' => $response->status(),
                 ];
             }
         }
@@ -173,7 +90,6 @@ class ApiController extends Controller{
                 'status' => 500,
             ];
         }   
-    }
-    
+    }    
 }
 
