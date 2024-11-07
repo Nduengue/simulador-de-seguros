@@ -210,10 +210,10 @@ function StepTwo({
   setMeioTransporteFn: (e: string[]) => void;
 }) {
   const Fake_Radio = [
-    { id: "1", value: "Mercadorias gerais" },
-    { id: "2", value: "Produtos perecíveis" },
-    { id: "3", value: "Produtos perigosos" },
-    { id: "4", value: "Produtos de alto valor" },
+    { id: "1", name: "Mercadorias gerais" },
+    { id: "2", name: "Produtos perecíveis" },
+    { id: "3", name: "Produtos perigosos" },
+    { id: "4", name: "Produtos de alto valor" },
   ];
 
   const Fake_List = [

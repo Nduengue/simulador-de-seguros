@@ -38,8 +38,8 @@ const Fake_Opt = [
 ];
 
 const Data_Gender = [
-  { id: "1", value: "👨‍🦰Masculino" },
-  { id: "2", value: "👩‍🦰Femenino" },
+  { id: "1", name: "👨‍🦰Masculino" },
+  { id: "2", name: "👩‍🦰Femenino" },
 ];
 
 export default function Vida() {
@@ -80,7 +80,7 @@ export default function Vida() {
 
           <div className="space-y-2">
             <h2 className="font-bold ">Gênero</h2>
-            <Check.Radio itemList={Data_Gender} defaultValue="1" />
+            <Check.Radio itemList={Data_Gender} value="1" setValuesFn={()=>0} />
           </div>
 
           <Input.Default
@@ -115,6 +115,8 @@ export default function Vida() {
             >
               <Check.CheckBox
                 className="sm:grid-cols-2 lg:grid-cols-4 gap-2"
+                setValuesFn={()=>0}
+                values={[]}
                 // activeBoxies={seguradoraSelectionadas}
                 // setActiveBoxies={setSeguradoraSelectionadas}
                 data={Fake_Opt}
@@ -128,6 +130,8 @@ export default function Vida() {
               icon={ShieldEllipsis}
             >
               <Check.CheckBox
+                 setValuesFn={()=>0}
+                 values={[]}
                 className="sm:grid-cols-2 lg:grid-cols-4 gap-2"
                 // activeBoxies={seguradoraSelectionadas}
                 // setActiveBoxies={setSeguradoraSelectionadas}
@@ -142,6 +146,8 @@ export default function Vida() {
               icon={Handshake}
             >
               <Check.CheckBox
+                 setValuesFn={()=>0}
+                 values={[]}
                 className="sm:grid-cols-2 lg:grid-cols-4 gap-2"
                 // activeBoxies={seguradoraSelectionadas}
                 // setActiveBoxies={setSeguradoraSelectionadas}
