@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use Barryvdh\DomPDF\Facade\Pdf;
+//use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
+
+//use PDF;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,8 +19,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 Route::get('/', function () {
 
-    $pdf = PDF::loadView('fidelidade');
-    return $pdf->stream();
-    //return view('fidelidade');
-    //return view('select_typ');
+
+    $pdf = PDF::loadView('global',);
+    return $pdf->stream('invoice.pdf');
+    //return view('global');
 });

@@ -1,33 +1,23 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulação Vida Crédito Consumo</title>
+    <title>Simulação de Seguro</title>
     <style>
-        /* @page {
-            margin: 0;
-            size: A4;
-        }
-        html{
-            width: 210mm;
-            height: 297mm;
-            margin: auto;
-        }
-        body {
-            font-family: Arial, sans-serif;
+        /** {
             margin: 0;
             padding: 0;
-            height: 100%;
-            background-color: #f5f5f5;
-        } */
+            box-sizing: border-box;
+        }*/
         @page {
             size: A4;
             margin: 0;
         }
 
         html {
+            margin: 0;
             width: 210mm;
             height: 297mm;
             margin: auto;
@@ -35,235 +25,285 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            padding: 0;
+            width: 210mm;
+            height: 297mm;
             margin: 0;
-            height: 100VH;
+            font-family: Arial, sans-serif;
             background-color: #fff;
-        }
-
-        .certificate {
-            box-sizing: border-box;
-            page-break-after: always;
-            height: 100%;
+            color: #333;
+            line-height: 1.6;
+            font-size: 10pt;
         }
 
         .container {
-            box-sizing: border-box;
-            page-break-after: always;
-            /*  width: 100%; */
-            /* margin: 20px auto; */
-            background-color: #fff;
-            padding: 20px;
-            height: auto;
-            /* border: 1px solid #ddd; */
-            /* border-radius: 8px; */
+            margin: 0 auto;
+            padding: 15mm;
+            padding-top: 21px;
         }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        header {
+            width: 100%;
+            margin-bottom: 141px;
+            clear: both;
         }
 
-        .left-info {
-            text-align: left;
+        header .div_img_texto {
+            width: 50%;
+            float: left;
+            height: auto !important;
         }
 
-        .right-info {
-            text-align: right;
+        header .div_img_texto img {
+            width: 300px;
+            height: 100px;
+            object-fit: cover;
+            margin-right: 1px;
         }
 
-        .right-info img {
-            width: 150px;
+        header h1 {
+            font-size: 36px;
+            color: #D63031;
         }
 
-        .section {
-            margin-bottom: 20px;
+        header h2 {
+            font-size: 14px;
+            color: #D63031;
+            margin-right: 10px;
+            padding: 30px;
         }
 
-        .section-title {
+        .simulation-info {
+            float: right;
+
+        }
+
+        .simulation-info p {
+            color: #D63031;
             font-weight: bold;
-            background-color: #f5f5f5;
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
+            text-align: right;
+            padding: 25px;
+
         }
 
-        .section-content {
-            padding: 10px;
+        section {
+            margin-bottom: 10px;
+            font-size: 13px;
+            clear: both;
         }
 
-        .section-content table {
+        section h3 {
+            padding: 0 5px;
+            margin: 0;
+            margin-bottom: 4px;
+            font-size: 12px;
+            background-color: #bdbdbd;
+            border-radius: 4px;
+        }
+
+        section p {
+            margin: 0;
+        }
+
+        table {
             width: 100%;
             border-collapse: collapse;
         }
 
-        .section-content table td {
-            padding: 10px;
-            border: 1px solid #ddd;
+        table.second,
+        table.second th,
+        table.second td {
+            border-bottom: 1px solid #ddd;
         }
 
-        .footer {
+        table.second th,
+        table.second td {
+            /*padding: 10px;*/
+            text-align: left;
+        }
+
+        aside {
+            position: fixed;
+            bottom: 160px;
+            left: 0;
+            right: 0;
+        }
+
+        aside>div {
+            width: 210mm;
+            height: 10px;
+            margin: auto;
+        }
+
+        aside>div>div {
+            transform: rotate(-90deg);
+            font-size: 10px;
             text-align: center;
-            padding: 20px;
-            background-color: #f5f5f5;
-            border-top: 1px solid #ddd;
-            margin-top: 20px;
+            float: left;
+            margin-left: -14mm;
         }
 
-        .bold {
-            font-weight: bold;
+        footer {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 20px;
+            clear: both;
         }
 
-        .red {
-            color: red;
+        footer>div {
+            width: 210mm;
+            margin: auto;
         }
 
-        .right {
+        footer>div>div {
+            padding: 0 15mm;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 10px;
+            color: #555;
+            padding: 0;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        span.text-center {
+            width: 100%;
+            text-align: center;
+        }
+
+        .text-end {
             text-align: right;
         }
-
-        p {
-            font-size: 0.9em;
-        }
     </style>
-</head>
 </head>
 
 <body>
     <div class="container">
-        <div class="header">
-            <div class="left-info">
-                <p>Data da Simulação: {{ $dados['data_atual'] }}</p>
-                <p>Código da Simulação: 12100000000000106493</p>
-                <p>Código do Mediador: 100</p>
+        <header>
+            <div class="div_img_texto">
+                <img src="img/logo fidelidade-Photoroom.png" alt="Banner Seguro" /> <!-- Caminho para a imagem local -->
             </div>
-            <div class="right-info">
-                <img src="img/logo fidelidade-Photoroom.png" alt="SFFS">
-                <p class="red bold">SIMULAÇÃO VIDA CRÉDITO CONSUMO</p>
+            <div class="simulation-info div_img_texto">
+                <p>SIMULAÇÃO<br>VIDA CRÉDITO CONSUMO</p>
             </div>
-        </div>
+        </header>
 
-        <div class="section">
-            <div class="section-title">PESSOA SEGURA</div>
-            <div class="section-content">
-                <table>
-                    <tr>
-                        <td class="bold">Nome:</td>
-                        <td>{{ $dados['user']['name'] }}</td>
-                    </tr>
-                    <tr>
-                        <td class="bold">Data Nascimento:</td>
-                        <td>{{ $dados['user']['birth_date'] }}</td>
-                    </tr>
-                    <tr>
-                        <td class="bold">Idade na Data Início do Seguro:</td>
-                        <td>{{ $dados['idade'] }}</td>
-                    </tr>
-                </table>
+        <section class="person-info">
+            <div class="text-end" style="font-size: 10px; margin-bottom: 10px;">
+                <span><strong>Data de Simulação: </strong>{{ $dados['data_atual'] }}</span>
+                <span><strong>Código da Simulação: </strong>121000000000000106493</span>
+                <span><strong>Código do Mediador: </strong>100</span>
             </div>
-        </div>
+            <h3>PESSOA SEGURA</h3>
+            <p><strong>Nome:</strong> {{ $dados['user']['name'] }} </p>
+            <p><strong>Data Nascimento:</strong> {{ $dados['user']['birth_date'] }} </p>
+            <p><strong>Idade na Data Início do Seguro:</strong>{{ $dados['idade'] }}</p>
+        </section>
 
-        <div class="section">
-            <div class="section-title">DADOS DA APÓLICE</div>
-            <div class="section-content">
-                <table>
-                    <tr>
-                        <td class="bold">Data Início:</td>
-                        <td>{{ $dados['data_inicio'] }}</td>
-                        <td class="bold">Hora Início:</td>
-                        <td>{{ $dados['hora_inicio'] }}</td>
-                    </tr>
-                    <tr>
-                        <td class="bold">Data Termo:</td>
-                        <td>{{ $dados['data_termo'] }}</td>
-                        <td class="bold">Prazo:</td>
-                        <td>{{ $dados['coverage_duration'] }} Meses</td>
-                    </tr>
-                    <tr>
-                        <td class="bold">Fracionamento:</td>
-                        <td>Único</td>
-                        <td class="bold">Cobrador:</td>
-                        <td>100</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
+        <section class="policy-info">
+            <h3><strong>DADOS DA APÓLICE</strong></h3>
 
-        <div class="section">
-            <div class="section-title">GARANTIAS E CAPITAIS</div>
-            <div class="section-content">
-                <table>
+            <table class="first">
+                <tbody>
                     <tr>
-                        <td class="bold">Garantias Contratadas:</td>
-                        <td>COBERTURA EM CASO DE MORTE</td>
+                        <td><strong>Data Início: </strong>{{ $dados['data_inicio'] }}</td>
+                        <td><strong>Hora Início: </strong>{{ $dados['hora_inicio'] }}</td>
+                        <td><strong>Data Termo: </strong>{{ $dados['data_termo'] }}</td>
                     </tr>
-                   
-                        @foreach ($dados['coverages'] as $coverage)
-                            <tr>
-                                <td class="bold">{{ $coverage['name'] }}</td>
-                                <td>{{ $dados['coverage_value'] }} AOA</td> 
-                            </tr>
-                        @endforeach
-                   
                     <tr>
-                        <td class="bold">Capital:</td>
-                        <td>{{ $dados['coverage_value'] }} AOA</td>
+                        <td colspan="2"><strong>Prazo: </strong>{{ $dados['coverage_duration'] }} Meses</td>
+                        <td><strong>Fracionamento: </strong>Único</td>
                     </tr>
-                </table>
-            </div>
-        </div>
+                    <tr>
+                        <td colspan="3"><strong>Cobrador: </strong>100</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
 
-        <div class="section">
-            <div class="section-title">GARANTIAS E CAPITAIS</div>
-            <div class="section-content">
-                <table>
+        <section class="guarantees">
+            <h3>GARANTIAS E CAPITAIS</h3>
+            <table class="second">
+                <thead>
                     <tr>
-                        <td class="bold">Garantias Contratadas:</td>
-                        <td>AGRAVAMENTOS EM CASO DE MORTE</td>
+                        <th>Garantias Contratadas</th>
+                        <th>
+                            <p class="text-center">Capital</p>
+                        </th>
                     </tr>
-                    
-                        @foreach ($dados['aggravations'] as $aggravation)
-                            <tr>
-                                <td class="bold">{{ $aggravation['name'] }}</td>
-                                <td>{{ $dados['coverage_value'] }} AOA</td> 
-                            </tr>
-                        @endforeach
-                    
-                    <tr>
-                        <td class="bold">Capital:</td>
-                        <td>{{ $dados['coverage_value'] }} AOA</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
+                </thead>
+                <tbody>
+                    @foreach ($dados['coverages'] as $coverage)
+                        <tr>
+                            <td>{{ $coverage['name'] }}</td>
+                            <td>
+                                <p class="text-end">{{ $dados['coverage_value'] }} AOA</p>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </section>
 
-        <div class="section">
-            <div class="section-title">PRÊMIO</div>
-            <div class="section-content">
-                <table>
+        <section class="premium">
+            <h3>PRÊMIO</h3>
+            <p class="text-end"><strong>Moeda: </strong> AOA</p>
+            <table class="second">
+                <thead>
                     <tr>
-                        <td class="bold">Prêmio Total Único:</td>
-                        <td>{{$dados['preco_apagar']}} AOA</td>
+                        <th colspan="2">
+                            <p class="text-end"><strong>Prêmio Total Único</strong></p>
+                        </th>
                     </tr>
-                </table>
-            </div>
-        </div>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Prêmio Total Único: </strong></td>
+                        <td>
+                            <p class="text-end">{{$dados['preco_apagar']}} AOA</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
 
-        <div class="section">
-            <div class="section-title">INFORMAÇÃO IMPORTANTE</div>
-            <div class="section-content">
-                <p>A importância do prêmio tem unicamente valor informativo. Esta simulação não é considerada proposta
-                    ou oferta de seguros por parte da seguradora, não constituindo obrigação contratual para qualquer
-                    das partes. Prêmio calculado de acordo com as características do risco e as circunstâncias pessoais
-                    declaradas pelo proponente, de acordo com as taxas actuais à data da presente simulação...</p>
+        <section class="important-info">
+            <h3>INFORMAÇÃO IMPORTANTE</h3>
+            <p style="text-align: justify;">
+                A importância do prêmio tem unicamente valor informativo. Esta simulação não é considerada proposta ou
+                oferta de seguros por parte da seguradora, não constituindo obrigação contratual para qualquer das
+                partes. Prêmio calculado de acordo com as características do risco e as circunstâncias pessoais
+                declaradas pelo proponente, de acordo com as taxas atuais à data da presente simulação. O montante do
+                prêmio é provisório. O prêmio final será conhecido na conclusão do processo de análise do pedido de
+                seguro onde se inclui a declaração de saúde, questionário clínico, ou exames médicos (se aplicáveis), e
+                qualquer outra documentação necessária para o processo. Esta cotação tem uma validade de 60 dias. Para
+                aderir a este seguro é necessário ter idade igual ou inferior a 60 anos e não ultrapassar os 65 anos
+                durante a vigência do contrato.
+            </p>
+        </section>
+
+        <aside>
+            <div>
+                <div class="text">AO008 14/10/2024 13:59:35 FIN_AG1672</div>
             </div>
-        </div>
+        </aside>
+
+        <footer>
+            <div>
+                <div>
+                    <p>
+                        <strong>Fidelidade - Companhia de Seguros, S.A.</strong> • Sede: Via S8, Condomínio Cidade
+                        Financeira, Bloco 10 - 3º Piso - Talatona - Luanda - Angola
+                    </p>
+                    <p>NIF: 5417081509 • Capital Social: 3.052.350.000,00 AOA • www.fidelidade.co.ao</p>
+                </div>
+            </div>
+        </footer>
     </div>
-
-    <!-- <div class="footer">
-        <p>&copy; 2024 SFFS Seguros. Todos os direitos reservados.</p>
-    </div> -->
 </body>
 
 </html>
