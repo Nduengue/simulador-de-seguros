@@ -10,11 +10,12 @@ import { AutoCompleteTagInputListType } from "@/components/input/auto-complete-t
 import { GET_MT_LIST } from "@/mocks/dto-mt";
 import { IGetIdAndNameMapperResponse, GetIdAndNameMapper } from "@/util/function/mappers";
 import Loading from "@/app/loading";
-import { error } from "console";
 
 interface IApiListData {
   merchandises: IGetIdAndNameMapperResponse[];
   ways: IGetIdAndNameMapperResponse[];
+  countries: IGetIdAndNameMapperResponse[];
+  states: IGetIdAndNameMapperResponse[];
 }
 
 export default function Transporte() {
@@ -41,13 +42,18 @@ export default function Transporte() {
 
   const [current, setCurrent] = useState(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [apiListDataResponse, setApiListDataResponse] = useState<IApiListData>({ merchandises: [], ways: [] });
+  const [apiListDataResponse, setApiListDataResponse] = useState<IApiListData>({ merchandises: [], ways: [], countries: [], states: [] });
 
   useEffect(() => {
     GET_MT_LIST()
       .then((response: GoodsTransportedType) => {
-        const { merchandises, ways } = response;
-        setApiListDataResponse({ merchandises: GetIdAndNameMapper(merchandises), ways: GetIdAndNameMapper(ways) });
+        const { merchandises, ways,countries,states } = response;
+        setApiListDataResponse({
+          merchandises: GetIdAndNameMapper(merchandises),
+          ways: GetIdAndNameMapper(ways),
+          countries: GetIdAndNameMapper(countries),
+          states: GetIdAndNameMapper(states),
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -55,7 +61,6 @@ export default function Transporte() {
       .finally(() => {
         setIsLoading(false);
       });
-
   }, []);
 
   const steps = [
@@ -93,12 +98,14 @@ export default function Transporte() {
       title: "3º Passo",
       content: (
         <StepThree
-          setPaisOrigemFn={setPaisOrigem}
+          listOfCountries={apiListDataResponse.countries}
+          listOfProvinces={apiListDataResponse.states}
           PaisOrigem={PaisOrigem}
-          setPaisDestinoFn={setPaisDestino}
           PaisDestino={PaisDestino}
-          setProvinciasFn={setProvincias}
           Provincias={Provincias}
+          setPaisOrigemFn={setPaisOrigem}
+          setPaisDestinoFn={setPaisDestino}
+          setProvinciasFn={setProvincias}
         />
       ),
     },
@@ -271,7 +278,6 @@ function StepTwo({
   setMeioTransporteFn: (e: string[]) => void;
   setClassificacaoProdutoTransportadoFn: (e: string) => void;
 }) {
-
   return (
     <div className="  pt-4 px-2 ">
       <div className="grid gap-6  ">
@@ -293,19 +299,23 @@ function StepTwo({
   );
 }
 function StepThree({
-  setPaisOrigemFn,
   PaisOrigem,
-  setPaisDestinoFn,
   PaisDestino,
-  setProvinciasFn,
   Provincias,
+  listOfCountries,
+  listOfProvinces,
+  setPaisOrigemFn,
+  setPaisDestinoFn,
+  setProvinciasFn,
 }: {
-  setPaisOrigemFn: (e: AutoCompleteTagInputListType[]) => void;
   PaisOrigem: AutoCompleteTagInputListType[];
-  setPaisDestinoFn: (e: AutoCompleteTagInputListType[]) => void;
   PaisDestino: AutoCompleteTagInputListType[];
-  setProvinciasFn: (e: AutoCompleteTagInputListType[]) => void;
   Provincias: AutoCompleteTagInputListType[];
+  listOfCountries: IGetIdAndNameMapperResponse[];
+  listOfProvinces: IGetIdAndNameMapperResponse[];
+  setPaisOrigemFn: (e: AutoCompleteTagInputListType[]) => void;
+  setPaisDestinoFn: (e: AutoCompleteTagInputListType[]) => void;
+  setProvinciasFn: (e: AutoCompleteTagInputListType[]) => void;
 }) {
   const listOfOptions: { id: string; name: string }[] = [];
 
@@ -326,7 +336,7 @@ function StepThree({
           <Input.AutoCompleteTagInput
             setValuesFn={setPaisOrigemFn}
             values={PaisOrigem}
-            listOfOptions={listOfOptions}
+            listOfOptions={listOfCountries}
             icon={Search}
             inputClassName="p-3 rounded-xl border-[#075985]"
             suggestionLiClassName="hover:bg-primary"
@@ -338,7 +348,7 @@ function StepThree({
           <Input.AutoCompleteTagInput
             setValuesFn={setPaisDestinoFn}
             values={PaisDestino}
-            listOfOptions={listOfOptions}
+            listOfOptions={listOfCountries}
             icon={Search}
             inputClassName="p-3 rounded-xl border-[#075985]"
             suggestionLiClassName="hover:bg-primary"
@@ -351,7 +361,7 @@ function StepThree({
             <Input.AutoCompleteTagInput
               setValuesFn={setProvinciasFn}
               values={Provincias}
-              listOfOptions={listOfOptions}
+              listOfOptions={listOfProvinces}
               icon={Search}
               inputClassName="p-3 rounded-xl border-[#075985]"
               suggestionLiClassName="hover:bg-primary"

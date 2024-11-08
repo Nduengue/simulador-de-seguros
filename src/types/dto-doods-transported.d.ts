@@ -2,7 +2,7 @@ interface GoodsTransportedType {
   merchandises: OptionDTOType[];
   ways: OptionDTOType[];
   from_tos: OptionDTOType[];
-  countries: Country[];
+  countries: OptionDTOType[];
   states: OptionDTOType[];
   conditions: OptionDTOType[];
   packaging: OptionDTOType[];
