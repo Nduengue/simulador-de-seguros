@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
-interface Option {
+export interface AutoCompleteTagInputListType {
   id: string;
   name: string;
 }
 
 interface IAutoCompleteTagInput {
-  listOfOptions: Option[];
+  listOfOptions: AutoCompleteTagInputListType[];
   placeholder?: string;
   icon?: React.ElementType;
   iconClassName?: string;
@@ -15,9 +15,11 @@ interface IAutoCompleteTagInput {
   suggestionUlClassName?: string;
   suggestionLiClassName?: string;
   selectedTagsClassName?: string;
+  values: AutoCompleteTagInputListType[];
+  setValuesFn: (e: AutoCompleteTagInputListType[]) => void;
 }
 
-export default function AutoCompleteTagInput({
+export function AutoCompleteTagInput({
   listOfOptions,
   inputClassName,
   iconClassName,
@@ -26,10 +28,18 @@ export default function AutoCompleteTagInput({
   suggestionLiClassName,
   suggestionUlClassName,
   selectedTagsClassName,
+  values,
+  setValuesFn,
 }: IAutoCompleteTagInput) {
   const [inputValue, setInputValue] = useState<string>("");
-  const [suggestions, setSuggestions] = useState<Option[]>([]);
-  const [selectedTags, setSelectedTags] = useState<Option[]>([]);
+  const [suggestions, setSuggestions] = useState<AutoCompleteTagInputListType[]>([]);
+
+  const [selectedTags, setSelectedTags] = useState<AutoCompleteTagInputListType[]>(values);
+
+  useEffect(() => {
+    console.log(selectedTags);
+    setValuesFn(selectedTags);
+  }, [selectedTags]);
 
   // Filtra as sugestões ao digitar
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +54,7 @@ export default function AutoCompleteTagInput({
   };
 
   // Adiciona a tag selecionada e limpa o campo de entrada
-  const handleAddTag = (option: Option) => {
+  const handleAddTag = (option: AutoCompleteTagInputListType) => {
     if (!selectedTags.find((tag) => tag.id === option.id)) {
       setSelectedTags([...selectedTags, option]);
     }

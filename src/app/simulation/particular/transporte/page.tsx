@@ -6,6 +6,7 @@ import { Input } from "@/components/input";
 import { CalendarDays, Earth, IdCardIcon, MailIcon, PhoneIcon, Search, User2Icon } from "lucide-react";
 import { Check } from "@/components/check";
 import { ContinentsCountry } from "@/util/data/country";
+import { AutoCompleteTagInputListType } from "@/components/input/auto-complete-tag-input";
 
 export default function Transporte() {
   // var step 1
@@ -17,9 +18,9 @@ export default function Transporte() {
   const [ClassificacaoProdutoTransportado, setClassificacaoProdutoTransportado] = useState<string>("1");
   const [MeioTransporte, setMeioTransporte] = useState<string[]>([]);
   // var step 3
-  const [PaisOrigem, setPaisOrigem] = useState<string[]>([]);
-  const [PaisDestino, setPaisDestino] = useState<string[]>([]);
-  const [Provincias, setProvincias] = useState<string[]>([]);
+  const [PaisOrigem, setPaisOrigem] = useState<AutoCompleteTagInputListType[]>([]);
+  const [PaisDestino, setPaisDestino] = useState<AutoCompleteTagInputListType[]>([]);
+  const [Provincias, setProvincias] = useState<AutoCompleteTagInputListType[]>([]);
   // var step 4
   const [DetalhesAdicionais, setDetalhesAdicionaisFn] = useState<string[]>([]);
   const [CondicoesEspeciais, setCondicoesEspeciaisFn] = useState<string[]>([]);
@@ -32,29 +33,20 @@ export default function Transporte() {
   const steps = [
     {
       title: "1º Passo",
+
       content: (
-        <StepThree
-          setPaisOrigemFn={setPaisOrigem}
-          PaisOrigem={PaisOrigem}
-          setPaisDestinoFn={setPaisDestino}
-          PaisDestino={PaisDestino}
-          setProvinciasFn={setProvincias}
-          Provincias={Provincias}
+        <StepOne
+          title="Informações do tomador de seguro e segurado"
+          setNomeCompleteFn={setNomeComplete}
+          setEmailFn={setEmail}
+          setNifFn={setNif}
+          setTelefoneFn={setTelefone}
+          NomeComplete={NomeComplete}
+          Email={Email}
+          Nif={Nif}
+          Telefone={Telefone}
         />
       ),
-      // content: (
-      //   <StepOne
-      //     title="Informações do tomador de seguro e segurado"
-      //     setNomeCompleteFn={setNomeComplete}
-      //     setEmailFn={setEmail}
-      //     setNifFn={setNif}
-      //     setTelefoneFn={setTelefone}
-      //     NomeComplete={NomeComplete}
-      //     Email={Email}
-      //     Nif={Nif}
-      //     Telefone={Telefone}
-      //   />
-      // ),
     },
     {
       title: "2º Passo",
@@ -285,14 +277,13 @@ function StepThree({
   setProvinciasFn,
   Provincias,
 }: {
-  setPaisOrigemFn: (e: string[]) => void;
-  PaisOrigem: string[];
-  setPaisDestinoFn: (e: string[]) => void;
-  PaisDestino: string[];
-  setProvinciasFn: (e: string[]) => void;
-  Provincias: string[];
+  setPaisOrigemFn: (e: AutoCompleteTagInputListType[]) => void;
+  PaisOrigem: AutoCompleteTagInputListType[];
+  setPaisDestinoFn: (e: AutoCompleteTagInputListType[]) => void;
+  PaisDestino: AutoCompleteTagInputListType[];
+  setProvinciasFn: (e: AutoCompleteTagInputListType[]) => void;
+  Provincias: AutoCompleteTagInputListType[];
 }) {
-  //
   const listOfOptions: { id: string; name: string }[] = [];
 
   ContinentsCountry.forEach((continent) => {
@@ -304,25 +295,47 @@ function StepThree({
     });
   });
 
-  setPaisOrigemFn;
-  PaisOrigem;
-  setPaisDestinoFn;
-  PaisDestino;
-  setProvinciasFn;
-  Provincias;
-
   return (
     <div className="  pt-4 px-2  h-full flex flex-col">
-      {/* <StepHeader title={title} /> */}
       <div className="flex flex-col flex-1 *:flex-1 ">
         <div className="">
           <StepHeader title="País de Origem" />
-          <Input.AutoCompleteTagInput listOfOptions={listOfOptions} icon={Search} inputClassName="focus:border-orange-500 p-3 rounded-xl border-[#075985]" suggestionLiClassName="hover:bg-primary"  />
+          <Input.AutoCompleteTagInput
+            setValuesFn={setPaisOrigemFn}
+            values={PaisOrigem}
+            listOfOptions={listOfOptions}
+            icon={Search}
+            inputClassName="p-3 rounded-xl border-[#075985]"
+            suggestionLiClassName="hover:bg-primary"
+            selectedTagsClassName="bg-primary"
+          />
         </div>
-        <div className="">
+        <div className="mt-4">
           <StepHeader title="País de Destino" />
-          <Input.Default icon={Earth} title="Pais de Destino" />
+          <Input.AutoCompleteTagInput
+            setValuesFn={setPaisDestinoFn}
+            values={PaisDestino}
+            listOfOptions={listOfOptions}
+            icon={Search}
+            inputClassName="p-3 rounded-xl border-[#075985]"
+            suggestionLiClassName="hover:bg-primary"
+            selectedTagsClassName="bg-primary"
+          />
         </div>
+        {PaisDestino.length > 0 && PaisDestino.every((pais) => pais.name === "Angola") && (
+          <div className="mt-4">
+            <StepHeader title="Provincias de Termino" />
+            <Input.AutoCompleteTagInput
+              setValuesFn={setProvinciasFn}
+              values={Provincias}
+              listOfOptions={listOfOptions}
+              icon={Search}
+              inputClassName="p-3 rounded-xl border-[#075985]"
+              suggestionLiClassName="hover:bg-primary"
+              selectedTagsClassName="bg-primary"
+            />
+          </div>
+        )}
       </div>
     </div>
   );

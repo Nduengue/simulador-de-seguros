@@ -1,4 +1,4 @@
-import AutoCompleteTagInput from "./auto-complete-tag-input";
+import { AutoCompleteTagInput } from "./auto-complete-tag-input";
 import { Default } from "./default";
 import { Textarea } from "./textarea";
 
