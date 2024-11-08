@@ -1,5 +1,11 @@
 "use client";
 
+// TODO lidar com checkbox e radios vazias
+// TODO obter dados de api
+// TODO criar função para obter dados da api
+// TODO validações
+// TODO salvar dados
+
 import { useEffect, useState } from "react";
 import { Button, Steps } from "antd";
 import { Input } from "@/components/input";
@@ -16,6 +22,10 @@ interface IApiListData {
   ways: IGetIdAndNameMapperResponse[];
   countries: IGetIdAndNameMapperResponse[];
   states: IGetIdAndNameMapperResponse[];
+  from_tos: IGetIdAndNameMapperResponse[];
+  conditions: IGetIdAndNameMapperResponse[];
+  coverages: IGetIdAndNameMapperResponse[];
+  packaging: IGetIdAndNameMapperResponse[];
 }
 
 export default function Transporte() {
@@ -42,17 +52,30 @@ export default function Transporte() {
 
   const [current, setCurrent] = useState(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [apiListDataResponse, setApiListDataResponse] = useState<IApiListData>({ merchandises: [], ways: [], countries: [], states: [] });
+  const [apiListDataResponse, setApiListDataResponse] = useState<IApiListData>({
+    merchandises: [],
+    ways: [],
+    countries: [],
+    states: [],
+    from_tos: [],
+    conditions: [],
+    coverages: [],
+    packaging: [],
+  });
 
   useEffect(() => {
     GET_MT_LIST()
       .then((response: GoodsTransportedType) => {
-        const { merchandises, ways,countries,states } = response;
+        const { merchandises, ways, countries, states, from_tos, conditions, coverages, packaging } = response;
         setApiListDataResponse({
           merchandises: GetIdAndNameMapper(merchandises),
           ways: GetIdAndNameMapper(ways),
           countries: GetIdAndNameMapper(countries),
           states: GetIdAndNameMapper(states),
+          from_tos: GetIdAndNameMapper(from_tos),
+          conditions: GetIdAndNameMapper(conditions),
+          coverages: GetIdAndNameMapper(coverages),
+          packaging: GetIdAndNameMapper(packaging),
         });
       })
       .catch((error) => {
@@ -113,6 +136,8 @@ export default function Transporte() {
       title: "4º Passo",
       content: (
         <StepFour
+          aditionalDetailsList={apiListDataResponse.from_tos}
+          specificConditionsList={apiListDataResponse.conditions}
           CondicoesEspeciais={CondicoesEspeciais}
           DetalhesAdicionais={DetalhesAdicionais}
           setCondicoesEspeciaisFn={setCondicoesEspeciaisFn}
@@ -124,6 +149,8 @@ export default function Transporte() {
       title: "5º Passo",
       content: (
         <StepFive
+          coveragesList={apiListDataResponse.coverages}
+          packagingList={apiListDataResponse.packaging}
           Coberturas={Coberturas}
           setCoberturasFn={setCoberturas}
           CondicoesManuseioEmbalagemMercadoria={CondicoesManuseioEmbalagemMercadoria}
@@ -376,56 +403,28 @@ function StepThree({
 function StepFour({
   CondicoesEspeciais,
   DetalhesAdicionais,
+  aditionalDetailsList,
+  specificConditionsList,
   setCondicoesEspeciaisFn,
   setDetalhesAdicionaisFn,
 }: {
   DetalhesAdicionais: string[];
-  setDetalhesAdicionaisFn: (e: string[]) => void;
   CondicoesEspeciais: string[];
+  aditionalDetailsList: IGetIdAndNameMapperResponse[];
+  specificConditionsList: IGetIdAndNameMapperResponse[];
+  setDetalhesAdicionaisFn: (e: string[]) => void;
   setCondicoesEspeciaisFn: (e: string[]) => void;
 }) {
-  const Fake_List = [
-    { id: 0, name: "Nacional" },
-    { id: 1, name: "Interprovincial" },
-    { id: 2, name: "Países da SADC" },
-    { id: 3, name: "Sem transbordo" },
-    { id: 4, name: "Intra-provincial" },
-    { id: 5, name: "Outros Continentes" },
-  ];
-  const Fake_List2 = [
-    {
-      id: 0,
-      name: "Cobertura para Avaria/Perda Total",
-    },
-    {
-      id: 1,
-      name: "Roubo/Pirataria (marítimo)",
-    },
-    {
-      id: 2,
-      name: "Cobertura para eventos climáticos severos",
-    },
-    {
-      id: 3,
-      name: "Riscos Geopolíticos (Áreas de conflito)",
-    },
-  ];
-
   return (
-    // Rascunho
-    // <div className="  pt-4 px-2  h-full flex flex-col">
-    // <div className="flex flex-col flex-1 *:flex-1 ">
-
     <div className="  pt-4 px-2 ">
-      {/* <StepHeader title={""} /> */}
       <div className="grid gap-6  ">
         <div>
           <StepHeader title="Detalhes Adicionais" />
-          <Check.CheckBox className="gap-2 *:p-3 grid grid-cols-2" values={DetalhesAdicionais} setValuesFn={setDetalhesAdicionaisFn} data={Fake_List} />
+          <Check.CheckBox className="gap-2 *:p-3 grid grid-cols-2" values={DetalhesAdicionais} setValuesFn={setDetalhesAdicionaisFn} data={aditionalDetailsList} />
         </div>
         <div>
           <StepHeader title="Condições Especiais" />
-          <Check.CheckBox className="gap-2 *:p-3 grid grid-cols-2" values={CondicoesEspeciais} setValuesFn={setCondicoesEspeciaisFn} data={Fake_List2} />
+          <Check.CheckBox className="gap-2 *:p-3 grid grid-cols-2" values={CondicoesEspeciais} setValuesFn={setCondicoesEspeciaisFn} data={specificConditionsList} />
         </div>
       </div>
     </div>
@@ -436,6 +435,8 @@ function StepFive({
   Coberturas,
   DiasduracaoApolice,
   ValorMaximoMercadoria,
+  coveragesList,
+  packagingList,
   setCondicoesManuseioEmbalagemMercadoriaFn,
   setCoberturasFn,
   setDiasduracaoApoliceFn,
@@ -445,21 +446,13 @@ function StepFive({
   Coberturas: string;
   DiasduracaoApolice: string;
   ValorMaximoMercadoria: string;
+  coveragesList: IGetIdAndNameMapperResponse[];
+  packagingList: IGetIdAndNameMapperResponse[];
   setCondicoesManuseioEmbalagemMercadoriaFn: (e: string) => void;
   setCoberturasFn: (e: string) => void;
   setDiasduracaoApoliceFn: (e: string) => void;
   setValorMaximoMercadoriaFn: (e: string) => void;
 }) {
-  const Fake_Radio = [
-    { id: "1", name: "Embalados profissionalmente" },
-    { id: "2", name: "Sem proteção ou embalagem inadequada" },
-  ];
-  const Fake_Radio2 = [
-    { id: "1", name: "Cláusula A" },
-    { id: "2", name: "Cláusula B" },
-    { id: "3", name: "Cláusula C" },
-  ];
-
   return (
     <div className="  pt-4 px-2 ">
       {/* <StepHeader title={""} /> */}
@@ -467,7 +460,7 @@ function StepFive({
         <div>
           <StepHeader title="Condições de Manuseio e Embalagem da Mercadoria" />
           <Check.Radio
-            itemList={Fake_Radio}
+            itemList={packagingList}
             value={CondicoesManuseioEmbalagemMercadoria}
             setValuesFn={setCondicoesManuseioEmbalagemMercadoriaFn}
             className="grid grid-cols-2 gap-2 items-start *:w-full gap-y-2 *:text-start *:justify-start"
@@ -476,7 +469,7 @@ function StepFive({
         <div>
           <StepHeader title="Coberturas" />
           <Check.Radio
-            itemList={Fake_Radio2}
+            itemList={coveragesList}
             value={Coberturas}
             setValuesFn={setCoberturasFn}
             className="grid grid-cols-2 gap-2 items-start *:w-full gap-y-2 *:text-start *:justify-start"
