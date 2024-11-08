@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { Button, Steps } from "antd";
 import { Input } from "@/components/input";
-import { CalendarDays, Earth, IdCardIcon, MailIcon, PhoneIcon, User2Icon } from "lucide-react";
+import { CalendarDays, Earth, IdCardIcon, MailIcon, PhoneIcon, Search, User2Icon } from "lucide-react";
 import { Check } from "@/components/check";
+import { ContinentsCountry } from "@/util/data/country";
 
 export default function Transporte() {
   // var step 1
@@ -32,18 +33,28 @@ export default function Transporte() {
     {
       title: "1º Passo",
       content: (
-        <StepOne
-          title="Informações do tomador de seguro e segurado"
-          setNomeCompleteFn={setNomeComplete}
-          setEmailFn={setEmail}
-          setNifFn={setNif}
-          setTelefoneFn={setTelefone}
-          NomeComplete={NomeComplete}
-          Email={Email}
-          Nif={Nif}
-          Telefone={Telefone}
+        <StepThree
+          setPaisOrigemFn={setPaisOrigem}
+          PaisOrigem={PaisOrigem}
+          setPaisDestinoFn={setPaisDestino}
+          PaisDestino={PaisDestino}
+          setProvinciasFn={setProvincias}
+          Provincias={Provincias}
         />
       ),
+      // content: (
+      //   <StepOne
+      //     title="Informações do tomador de seguro e segurado"
+      //     setNomeCompleteFn={setNomeComplete}
+      //     setEmailFn={setEmail}
+      //     setNifFn={setNif}
+      //     setTelefoneFn={setTelefone}
+      //     NomeComplete={NomeComplete}
+      //     Email={Email}
+      //     Nif={Nif}
+      //     Telefone={Telefone}
+      //   />
+      // ),
     },
     {
       title: "2º Passo",
@@ -82,22 +93,22 @@ export default function Transporte() {
     },
     {
       title: "5º Passo",
-      content: <StepFive
-      Coberturas={Coberturas}
-      setCoberturasFn={setCoberturas}
-      CondicoesManuseioEmbalagemMercadoria={CondicoesManuseioEmbalagemMercadoria}
-      setCondicoesManuseioEmbalagemMercadoriaFn={setCondicoesManuseioEmbalagemMercadoria}
-      ValorMaximoMercadoria={ValorMaximoMercadoria}
-      setValorMaximoMercadoriaFn={setValorMaximoMercadoria}
-      DiasduracaoApolice={DiasduracaoApolice}
-      setDiasduracaoApoliceFn={setDiasduracaoApolice}
-      />,
+      content: (
+        <StepFive
+          Coberturas={Coberturas}
+          setCoberturasFn={setCoberturas}
+          CondicoesManuseioEmbalagemMercadoria={CondicoesManuseioEmbalagemMercadoria}
+          setCondicoesManuseioEmbalagemMercadoriaFn={setCondicoesManuseioEmbalagemMercadoria}
+          ValorMaximoMercadoria={ValorMaximoMercadoria}
+          setValorMaximoMercadoriaFn={setValorMaximoMercadoria}
+          DiasduracaoApolice={DiasduracaoApolice}
+          setDiasduracaoApoliceFn={setDiasduracaoApolice}
+        />
+      ),
     },
   ];
 
   const [current, setCurrent] = useState(0);
-
-
 
   const next = () => {
     setCurrent(current + 1);
@@ -110,7 +121,7 @@ export default function Transporte() {
   const items = steps.map((item) => ({ key: item.title, title: item.title }));
 
   function handleSubmitFn() {
-    alert("Exemplo de Envio")
+    alert("Exemplo de Envio");
     window.location.reload();
   }
 
@@ -281,6 +292,18 @@ function StepThree({
   setProvinciasFn: (e: string[]) => void;
   Provincias: string[];
 }) {
+  //
+  const listOfOptions: { id: string; name: string }[] = [];
+
+  ContinentsCountry.forEach((continent) => {
+    continent.countries.forEach((country) => {
+      listOfOptions.push({
+        id: country.id,
+        name: country.name,
+      });
+    });
+  });
+
   setPaisOrigemFn;
   PaisOrigem;
   setPaisDestinoFn;
@@ -294,8 +317,7 @@ function StepThree({
       <div className="flex flex-col flex-1 *:flex-1 ">
         <div className="">
           <StepHeader title="País de Origem" />
-          <Input.AutoCompleteTagInput />
-          <Input.Default icon={Earth} title="Pais de Origem" />
+          <Input.AutoCompleteTagInput listOfOptions={listOfOptions} icon={Search} inputClassName="focus:border-orange-500 p-3 rounded-xl border-[#075985]" suggestionLiClassName="hover:bg-primary"  />
         </div>
         <div className="">
           <StepHeader title="País de Destino" />

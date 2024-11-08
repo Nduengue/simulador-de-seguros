@@ -1,21 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { twMerge } from "tailwind-merge";
 
 interface Option {
-  id: number;
+  id: string;
   name: string;
 }
 
-const AutoCompleteTagInput: React.FC = () => {
-  const options: Option[] = [
-    { id: 1, name: 'React' },
-    { id: 2, name: 'Next.js' },
-    { id: 3, name: 'Tailwind CSS' },
-    { id: 4, name: 'TypeScript' },
-    { id: 5, name: 'JavaScript' },
-    { id: 6, name: 'Node.js' },
-  ];
+interface IAutoCompleteTagInput {
+  listOfOptions: Option[];
+  placeholder?: string;
+  icon?: React.ElementType;
+  iconClassName?: string;
+  inputClassName?: string;
+  suggestionUlClassName?: string;
+  suggestionLiClassName?: string;
+  selectedTagsClassName?: string;
+}
 
-  const [inputValue, setInputValue] = useState<string>('');
+export default function AutoCompleteTagInput({
+  listOfOptions,
+  inputClassName,
+  iconClassName,
+  placeholder,
+  icon: Icon,
+  suggestionLiClassName,
+  suggestionUlClassName,
+  selectedTagsClassName,
+}: IAutoCompleteTagInput) {
+  const [inputValue, setInputValue] = useState<string>("");
   const [suggestions, setSuggestions] = useState<Option[]>([]);
   const [selectedTags, setSelectedTags] = useState<Option[]>([]);
 
@@ -24,9 +36,7 @@ const AutoCompleteTagInput: React.FC = () => {
     const value = e.target.value;
     setInputValue(value);
     if (value.length > 0) {
-      const filteredSuggestions = options.filter((option) =>
-        option.name.toLowerCase().includes(value.toLowerCase())
-      );
+      const filteredSuggestions = listOfOptions.filter((option) => option.name.toLowerCase().includes(value.toLowerCase()));
       setSuggestions(filteredSuggestions);
     } else {
       setSuggestions([]);
@@ -38,34 +48,27 @@ const AutoCompleteTagInput: React.FC = () => {
     if (!selectedTags.find((tag) => tag.id === option.id)) {
       setSelectedTags([...selectedTags, option]);
     }
-    setInputValue('');
+    setInputValue("");
     setSuggestions([]);
   };
 
   // Remove uma tag da lista
-  const handleRemoveTag = (id: number) => {
+  const handleRemoveTag = (id: string) => {
     setSelectedTags(selectedTags.filter((tag) => tag.id !== id));
   };
 
   return (
-    <div className="w-full max-w-md mx-auto mt-10">
+    <div className="w-full">
       <div className="relative">
-        <input
-          type="text"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-          placeholder="Digite para buscar..."
-          value={inputValue}
-          onChange={handleInputChange}
-        />
+        <div className={twMerge("flex items-center  w-full outline-none gap-x-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500", inputClassName)}>
+          {Icon && <Icon className={twMerge("text-gray-400", iconClassName)} />}
+          <input type="text" className="w-full outline-none" placeholder={placeholder ? placeholder : "Digite para buscar..."} value={inputValue} onChange={handleInputChange} />
+        </div>
 
         {suggestions.length > 0 && (
-          <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-lg mt-1 max-h-40 overflow-y-auto">
+          <ul className={twMerge("absolute z-10 w-full bg-white border border-gray-300 rounded-lg mt-1 max-h-40 overflow-y-auto", suggestionUlClassName)}>
             {suggestions.map((option) => (
-              <li
-                key={option.id}
-                className="px-4 py-2 cursor-pointer hover:bg-blue-500 hover:text-white"
-                onClick={() => handleAddTag(option)}
-              >
+              <li key={option.id} className={twMerge("px-4 py-2 cursor-pointer hover:bg-blue-500 hover:text-white", suggestionLiClassName)} onClick={() => handleAddTag(option)}>
                 {option.name}
               </li>
             ))}
@@ -76,15 +79,9 @@ const AutoCompleteTagInput: React.FC = () => {
       {/* Lista de Tags */}
       <div className="flex flex-wrap mt-4">
         {selectedTags.map((tag) => (
-          <div
-            key={tag.id}
-            className="flex items-center bg-blue-500 text-white rounded-full px-4 py-1 mr-2 mb-2"
-          >
+          <div key={tag.id} className={twMerge("flex items-center bg-blue-500 text-white rounded-full px-4 py-1 mr-2 mb-2", selectedTagsClassName)}>
             <span className="mr-2">{tag.name}</span>
-            <button
-              onClick={() => handleRemoveTag(tag.id)}
-              className="text-white hover:text-gray-300 focus:outline-none"
-            >
+            <button onClick={() => handleRemoveTag(String(tag.id))} className="text-white hover:text-gray-300 focus:outline-none">
               &times;
             </button>
           </div>
@@ -92,6 +89,4 @@ const AutoCompleteTagInput: React.FC = () => {
       </div>
     </div>
   );
-};
-
-export default AutoCompleteTagInput;
+}
