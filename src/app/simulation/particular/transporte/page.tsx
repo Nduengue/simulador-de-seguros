@@ -1,12 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Steps } from "antd";
 import { Input } from "@/components/input";
-import { CalendarDays, Earth, IdCardIcon, MailIcon, PhoneIcon, Search, User2Icon } from "lucide-react";
+import { CalendarDays, IdCardIcon, MailIcon, PhoneIcon, Search, User2Icon } from "lucide-react";
 import { Check } from "@/components/check";
 import { ContinentsCountry } from "@/util/data/country";
 import { AutoCompleteTagInputListType } from "@/components/input/auto-complete-tag-input";
+import { GET_MT_LIST } from "@/mocks/dto-mt";
+import { IGetIdAndNameMapperResponse, GetIdAndNameMapper } from "@/util/function/mappers";
+import Loading from "@/app/loading";
+import { error } from "console";
+
+interface IApiListData {
+  merchandises: IGetIdAndNameMapperResponse[];
+  ways: IGetIdAndNameMapperResponse[];
+}
 
 export default function Transporte() {
   // var step 1
@@ -30,6 +39,25 @@ export default function Transporte() {
   const [DiasduracaoApolice, setDiasduracaoApolice] = useState<string>("");
   const [ValorMaximoMercadoria, setValorMaximoMercadoria] = useState<string>("");
 
+  const [current, setCurrent] = useState(0);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [apiListDataResponse, setApiListDataResponse] = useState<IApiListData>({ merchandises: [], ways: [] });
+
+  useEffect(() => {
+    GET_MT_LIST()
+      .then((response: GoodsTransportedType) => {
+        const { merchandises, ways } = response;
+        setApiListDataResponse({ merchandises: GetIdAndNameMapper(merchandises), ways: GetIdAndNameMapper(ways) });
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+
+  }, []);
+
   const steps = [
     {
       title: "1º Passo",
@@ -52,6 +80,8 @@ export default function Transporte() {
       title: "2º Passo",
       content: (
         <StepTwo
+          apiMerchandises={apiListDataResponse.merchandises}
+          apiWays={apiListDataResponse.ways}
           MeioTransporte={MeioTransporte}
           setMeioTransporteFn={setMeioTransporte}
           setClassificacaoProdutoTransportadoFn={setClassificacaoProdutoTransportado}
@@ -100,8 +130,6 @@ export default function Transporte() {
     },
   ];
 
-  const [current, setCurrent] = useState(0);
-
   const next = () => {
     setCurrent(current + 1);
   };
@@ -121,31 +149,36 @@ export default function Transporte() {
     <div className="text-gray-600 bg-[#eff4f9] lg:bg-[url('/blob-scene1.svg')] bg-cover bg-center bg-no-repeat bg-fixed min-h-screen p-4 grid place-items-center">
       {/* <div className="text-gray-600 bg-[#eff4f9] lg:bg-[url('/wavess.svg')] bg-cover bg-center bg-no-repeat bg-fixed min-h-screen p-4 grid place-items-center"> */}
       <div className="bg-white w-[62rem] p-4 rounded-lg min-h-[35rem] shadow-lg flex flex-col justify-between">
-        <div>
-          <Steps current={current} items={items} />
-          <div className="h-[30rem] w-full overflow-y-auto mt-4">{steps[current].content}</div>
-        </div>
-
-        <div className="mt-6 self-end ">
-          {/* <Button color="danger" variant="filled" className="mr-2" onClick={() => handleCleanInputs()}> */}
-          {/* Limpar */}
-          {/* </Button> */}
-          {current > 0 && (
-            <Button style={{ margin: "0 8px" }} onClick={() => prev()}>
-              Voltar
-            </Button>
-          )}
-          {current < steps.length - 1 && (
-            <Button type="primary" onClick={() => next()}>
-              Próximo
-            </Button>
-          )}
-          {current === steps.length - 1 && (
-            <Button type="primary" onClick={handleSubmitFn}>
-              Concluir
-            </Button>
-          )}
-        </div>
+        {isLoading ? (
+          <Loading className="h-[35rem]" />
+        ) : (
+          <>
+            <div>
+              <Steps current={current} items={items} />
+              <div className="h-[30rem] w-full overflow-y-auto mt-4">{steps[current].content}</div>
+            </div>
+            <div className="mt-6 self-end ">
+              {/* <Button color="danger" variant="filled" className="mr-2" onClick={() => handleCleanInputs()}> */}
+              {/* Limpar */}
+              {/* </Button> */}
+              {current > 0 && (
+                <Button style={{ margin: "0 8px" }} onClick={() => prev()}>
+                  Voltar
+                </Button>
+              )}
+              {current < steps.length - 1 && (
+                <Button type="primary" onClick={() => next()}>
+                  Próximo
+                </Button>
+              )}
+              {current === steps.length - 1 && (
+                <Button type="primary" onClick={handleSubmitFn}>
+                  Concluir
+                </Button>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
@@ -159,25 +192,25 @@ function StepHeader({ title }: { title: string }) {
   );
 }
 function StepOne({
-  title,
   setNomeCompleteFn,
   setEmailFn,
   setNifFn,
   setTelefoneFn,
+  title,
   NomeComplete,
   Nif,
   Telefone,
   Email,
 }: {
   title: string;
-  setNomeCompleteFn: (e: string) => void;
-  setEmailFn: (e: string) => void;
-  setNifFn: (e: string) => void;
-  setTelefoneFn: (e: string) => void;
   NomeComplete: string;
   Email: string;
   Nif: string;
   Telefone: string;
+  setNomeCompleteFn: (e: string) => void;
+  setEmailFn: (e: string) => void;
+  setNifFn: (e: string) => void;
+  setTelefoneFn: (e: string) => void;
 }) {
   return (
     <div className="  pt-4 px-2 ">
@@ -225,37 +258,27 @@ function StepOne({
 }
 function StepTwo({
   MeioTransporte,
-  setMeioTransporteFn,
   ClassificacaoProdutoTransportado,
+  apiMerchandises,
+  apiWays,
+  setMeioTransporteFn,
   setClassificacaoProdutoTransportadoFn,
 }: {
   MeioTransporte: string[];
-  setMeioTransporteFn: (e: string[]) => void;
   ClassificacaoProdutoTransportado: string;
+  apiMerchandises: IGetIdAndNameMapperResponse[];
+  apiWays: IGetIdAndNameMapperResponse[];
+  setMeioTransporteFn: (e: string[]) => void;
   setClassificacaoProdutoTransportadoFn: (e: string) => void;
 }) {
-  const Fake_Radio = [
-    { id: "1", name: "Mercadorias gerais" },
-    { id: "2", name: "Produtos perecíveis" },
-    { id: "3", name: "Produtos perigosos" },
-    { id: "4", name: "Produtos de alto valor" },
-  ];
-
-  const Fake_List = [
-    { id: 0, name: "Terrestre" },
-    { id: 1, name: "Marítimo" },
-    { id: 2, name: "Fluvial" },
-    { id: 3, name: "Aéreo" },
-  ];
 
   return (
     <div className="  pt-4 px-2 ">
-      {/* <StepHeader title={""} /> */}
       <div className="grid gap-6  ">
         <div>
           <StepHeader title="Classificação do Produto Transportado" />
           <Check.Radio
-            itemList={Fake_Radio}
+            itemList={apiMerchandises}
             value={ClassificacaoProdutoTransportado}
             setValuesFn={setClassificacaoProdutoTransportadoFn}
             className="grid grid-cols-2 gap-2 items-start *:w-full gap-y-2 *:text-start *:justify-start"
@@ -263,7 +286,7 @@ function StepTwo({
         </div>
         <div>
           <StepHeader title="Meio de Transporte" />
-          <Check.CheckBox className="gap-2 *:p-3 grid grid-cols-2" values={MeioTransporte} setValuesFn={setMeioTransporteFn} data={Fake_List} />
+          <Check.CheckBox className="gap-2 *:p-3 grid grid-cols-2" values={MeioTransporte} setValuesFn={setMeioTransporteFn} data={apiWays} />
         </div>
       </div>
     </div>
@@ -340,7 +363,6 @@ function StepThree({
     </div>
   );
 }
-
 function StepFour({
   CondicoesEspeciais,
   DetalhesAdicionais,
