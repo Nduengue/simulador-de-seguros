@@ -53,6 +53,13 @@ const stepTwoSchema = z.object({
   ClassificacaoProdutoTransportado: z.string().min(1, { message: "Selecione Uma 'Classificação de Produto Transportado'" }),
 });
 
+const stepThreeSchema = z.object({
+  PaisOrigem: z.array(z.object({ id: z.string(), name: z.string() })).min(1, { message: "Selecione pelo menos um 'País de Origem'" }),
+  PaisDestino: z.array(z.object({ id: z.string(), name: z.string() })).min(1, { message: "Selecione pelo menos um 'País de Destino'" }),
+});
+
+const stepThreeSchemaProvincias = z.array(z.object({ id: z.string(), name: z.string() })).min(1, { message: "Selecione pelo menos uma 'Província'" });
+
 export default function Transporte() {
   // var step 1
   const [NomeComplete, setNomeComplete] = useState<string>("");
@@ -214,6 +221,32 @@ export default function Transporte() {
         Lib.Sonner({ messages: errosMessages, type: "error" });
         return;
       }
+    } else if (current === 2) {
+      const validation = stepThreeSchema.safeParse({
+        PaisOrigem,
+        PaisDestino,
+      });
+
+      if (!validation.success) {
+        const errosMessages = validation.error.errors.map((error) => error.message);
+        Lib.Sonner({ messages: errosMessages, type: "error" });
+        return;
+      }
+
+      if (PaisDestino[0].name == "Angola") {
+        const validationStates = stepThreeSchemaProvincias.safeParse(Provincias);
+
+        if (!validationStates.success) {
+          const errosMessages = validationStates.error.errors.map((error) => error.message);
+          Lib.Sonner({ messages: errosMessages, type: "error" });
+          return;
+        }
+      }
+    }else if (current === 3) {
+      const validation = stepFourSchema.safeParse({
+        CondicoesEspeciais,
+        DetalhesAdicionais,
+      });
     }
 
     setCurrent(current + 1);
