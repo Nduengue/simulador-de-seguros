@@ -8,13 +8,26 @@ interface IRadio {
     name: string;
   }[];
   value: string;
-  setValuesFn: (e: string) => void;
   className?: string;
   useNameOnValue?: boolean;
+  defaultValue?: string;
+  setValuesFn: (e: string) => void;
 }
 
-export default function Radio({ value: Value, itemList, className, setValuesFn, useNameOnValue }: IRadio) {
+export default function Radio({ value: Value, itemList, className, defaultValue, setValuesFn, useNameOnValue }: IRadio) {
   const [value, setValue] = useState<string>(Value);
+  const [defaultRadioValue, setDefaultRadioValue] = useState<string>(() => {
+    if (defaultValue) {
+      !value && setValue(defaultValue);
+      return defaultValue;
+    } else if (!defaultValue && !value) {
+      const value = useNameOnValue ? itemList[0].name : itemList[0].id;
+      setValue(value);
+      return value;
+    } else {
+      return "";
+    }
+  });
 
   const onChange = (e: RadioChangeEvent) => {
     console.log("radio checked", e.target.value);
@@ -27,18 +40,20 @@ export default function Radio({ value: Value, itemList, className, setValuesFn, 
 
   return (
     <>
+      {}
+      {/* <p>v -{value}</p> */}
+      {/* <p>V -{Value}</p> */}
       {itemList.length > 0 ? (
         <RadioAntd.Group
-          defaultValue={value}
+          defaultValue={value ? value : defaultRadioValue}
           onChange={onChange}
           className={twMerge(
-            "*:border *:rounded-xl *:p-3 *:text-gray-600 font-bold  rounded-xl *:border-[#fba94c] *:flex-1 *:items-center *:justify-center flex items-center ",
+            "*:border *:rounded-xl *:p-3 *:text-gray-600 font-bold  rounded-xl *:border-primary *:flex-1 *:items-center *:justify-center flex items-center ",
             className
           )}
         >
           {itemList.map((item) => (
-            // <RadioAntd key={item.id} value={useNameOnValue ? item.name : item.id} className=" has-[:checked]:bg-[#fb923c]/30 ">
-            <RadioAntd key={item.id} value={value} className=" has-[:checked]:bg-[#fb923c]/30 ">
+            <RadioAntd key={item.id} value={useNameOnValue ? item.name : item.id} className=" has-[:checked]:bg-[#fb923c]/30 ">
               {item.name}
             </RadioAntd>
           ))}

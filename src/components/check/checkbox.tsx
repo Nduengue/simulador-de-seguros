@@ -2,22 +2,22 @@ import { PackageOpen } from "lucide-react";
 import { useEffect, useState } from "react";
 
 interface ICheckBox extends React.HTMLAttributes<HTMLDivElement> {
-  data: { id: string | number; name: string }[];
+  itemList: { id: string | number; name: string }[];
   className?: string;
   values: string[];
   setValuesFn: (value: string[]) => void;
   useNameOnValue?: boolean;
 }
 
-export default function CheckBox({ data, values, setValuesFn, className, useNameOnValue, ...rest }: ICheckBox) {
+export default function CheckBox({ itemList, values, setValuesFn, className, useNameOnValue, ...rest }: ICheckBox) {
   const uuid = crypto.randomUUID();
 
   return (
     <div>
-      {data.length > 0 ? (
+      {itemList.length > 0 ? (
         <div className="grid grid-cols-2 gap-2 " {...rest}>
           {/* {JSON.stringify(value, null, 2)} */}
-          {data.map((items, index) => (
+          {itemList.map((items, index) => (
             <BoxItem myClassName={uuid} setSelectedValues={setValuesFn} boxState={values.includes(String(items.id))} item={items} />
           ))}
         </div>
@@ -52,6 +52,7 @@ function BoxItem({
   useEffect(() => {
     console.log(myClassName);
     const allHtmlElements = Array.from(window.document.getElementsByClassName(myClassName));
+
     const avaliableValues = allHtmlElements.filter((html): html is HTMLInputElement => html instanceof HTMLInputElement && html.checked).map((html) => html.value);
     setSelectedValues(avaliableValues);
     console.log(avaliableValues);

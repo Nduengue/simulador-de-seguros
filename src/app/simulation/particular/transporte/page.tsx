@@ -50,7 +50,7 @@ const stepOneSchema = z.object({
 
 const stepTwoSchema = z.object({
   MeioTransporte: z.string().array().min(1, { message: "Selecione pelo menos um 'Meio de Transporte'" }),
-  ClassificacaoProdutoTransportado: z.string().min(2, { message: "Selecione Uma 'Classificação de Produto Transportado'" }),
+  ClassificacaoProdutoTransportado: z.string().min(1, { message: "Selecione Uma 'Classificação de Produto Transportado'" }),
 });
 
 export default function Transporte() {
@@ -60,7 +60,7 @@ export default function Transporte() {
   const [Nif, setNif] = useState<string>("");
   const [Telefone, setTelefone] = useState<string>("");
   // var step 2
-  const [ClassificacaoProdutoTransportado, setClassificacaoProdutoTransportado] = useState<string>("1");
+  const [ClassificacaoProdutoTransportado, setClassificacaoProdutoTransportado] = useState<string>("");
   const [MeioTransporte, setMeioTransporte] = useState<string[]>([]);
   // var step 3
   const [PaisOrigem, setPaisOrigem] = useState<AutoCompleteTagInputListType[]>([]);
@@ -362,6 +362,7 @@ function StepTwo({
           <StepHeader title="Classificação do Produto Transportado" />
           <Check.Radio
             itemList={merchandisesList}
+            // defaultValue={merchandisesList[0].id}
             value={ClassificacaoProdutoTransportado}
             setValuesFn={setClassificacaoProdutoTransportadoFn}
             className="grid grid-cols-2 gap-2 items-start *:w-full gap-y-2 *:text-start *:justify-start"
@@ -369,7 +370,7 @@ function StepTwo({
         </div>
         <div>
           <StepHeader title="Meio de Transporte" />
-          <Check.CheckBox className="gap-2 *:p-3 grid grid-cols-2" values={MeioTransporte} setValuesFn={setMeioTransporteFn} data={waysList} />
+          <Check.CheckBox className="gap-2 *:p-3 grid grid-cols-2" values={MeioTransporte} setValuesFn={setMeioTransporteFn} itemList={waysList} />
         </div>
       </div>
     </div>
@@ -470,11 +471,11 @@ function StepFour({
       <div className="grid gap-6  ">
         <div>
           <StepHeader title="Detalhes Adicionais" />
-          <Check.CheckBox className="gap-2 *:p-3 grid grid-cols-2" values={DetalhesAdicionais} setValuesFn={setDetalhesAdicionaisFn} data={aditionalDetailsList} />
+          <Check.CheckBox className="gap-2 *:p-3 grid grid-cols-2" values={DetalhesAdicionais} setValuesFn={setDetalhesAdicionaisFn} itemList={aditionalDetailsList} />
         </div>
         <div>
           <StepHeader title="Condições Especiais" />
-          <Check.CheckBox className="gap-2 *:p-3 grid grid-cols-2" values={CondicoesEspeciais} setValuesFn={setCondicoesEspeciaisFn} data={specificConditionsList} />
+          <Check.CheckBox className="gap-2 *:p-3 grid grid-cols-2" values={CondicoesEspeciais} setValuesFn={setCondicoesEspeciaisFn} itemList={specificConditionsList} />
         </div>
       </div>
     </div>

@@ -119,7 +119,7 @@ export default function Vida() {
                 values={[]}
                 // activeBoxies={seguradoraSelectionadas}
                 // setActiveBoxies={setSeguradoraSelectionadas}
-                data={Fake_Opt}
+                itemList={Fake_Opt}
               />
             </Dialog.Drawer>
 
@@ -135,7 +135,7 @@ export default function Vida() {
                 className="sm:grid-cols-2 lg:grid-cols-4 gap-2"
                 // activeBoxies={seguradoraSelectionadas}
                 // setActiveBoxies={setSeguradoraSelectionadas}
-                data={Fake_Opt}
+                itemList={Fake_Opt}
               />
             </Dialog.Drawer>
 
@@ -151,7 +151,7 @@ export default function Vida() {
                 className="sm:grid-cols-2 lg:grid-cols-4 gap-2"
                 // activeBoxies={seguradoraSelectionadas}
                 // setActiveBoxies={setSeguradoraSelectionadas}
-                data={Fake_Opt}
+                itemList={Fake_Opt}
               />
             </Dialog.Drawer>
           </div>
