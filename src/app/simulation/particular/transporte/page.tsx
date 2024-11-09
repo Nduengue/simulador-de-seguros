@@ -16,7 +16,6 @@ import { IGetIdAndNameMapperResponse, GetIdAndNameMapper } from "@/util/function
 import Loading from "@/app/loading";
 import { stepOneSchema, stepTwoSchema, stepThreeSchema, stepThreeSchemaProvincias, stepFourSchema, stepFiveSchema } from "./schema-validation";
 import { Lib } from "@/lib";
-import { API_LOCATION } from "@/util/api";
 
 interface IApiListData {
   merchandises: IGetIdAndNameMapperResponse[];
