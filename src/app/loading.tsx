@@ -13,7 +13,7 @@ export default function Loading({ className, label, labelClassName }: ILoading) 
         <div className="w-20 h-20 border-4 border-transparent text-orange-400 text-4xl animate-spin flex items-center justify-center border-t-orange-400 rounded-full">
           <div className="w-16 h-16 border-4 border-transparent text-orange-600 text-2xl animate-spin flex items-center justify-center border-t-orange-600 rounded-full"></div>
         </div>
-        <p className="font-bold animate-bounce">{label ? label : "Aguarde..."}</p>
+        <p className={twMerge("font-bold animate-bounce", labelClassName)}>{label ? label : "Aguarde..."}</p>
       </div>
     </div>
   );

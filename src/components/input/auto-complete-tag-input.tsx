@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
@@ -39,7 +40,7 @@ export function AutoCompleteTagInput({
   useEffect(() => {
     console.log(selectedTags);
     setValuesFn(selectedTags);
-  }, [selectedTags]);
+  }, [selectedTags, setValuesFn]);
 
   // Filtra as sugestões ao digitar
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -16,18 +16,33 @@ interface IRadio {
 
 export default function Radio({ value: Value, itemList, className, defaultValue, setValuesFn, useNameOnValue }: IRadio) {
   const [value, setValue] = useState<string>(Value);
-  const [defaultRadioValue, setDefaultRadioValue] = useState<string>(() => {
+  const [defaultRadioValue] = useState<string>(() => {
     if (defaultValue) {
-      !value && setValue(defaultValue);
+      if (!value) {
+        setValue(defaultValue);
+      }
       return defaultValue;
     } else if (!defaultValue && !value) {
-      const value = useNameOnValue ? itemList[0].name : itemList[0].id;
-      setValue(value);
-      return value;
+      const defaultVal = useNameOnValue ? itemList[0].name : itemList[0].id;
+      setValue(defaultVal);
+      return defaultVal;
     } else {
       return "";
     }
   });
+  
+  // const [defaultRadioValue] = useState<string>(() => {
+  //   if (defaultValue) {
+  //     !value && setValue(defaultValue);
+  //     return defaultValue;
+  //   } else if (!defaultValue && !value) {
+  //     const value = useNameOnValue ? itemList[0].name : itemList[0].id;
+  //     setValue(value);
+  //     return value;
+  //   } else {
+  //     return "";
+  //   }
+  // });
 
   const onChange = (e: RadioChangeEvent) => {
     console.log("radio checked", e.target.value);
@@ -36,7 +51,7 @@ export default function Radio({ value: Value, itemList, className, defaultValue,
 
   useEffect(() => {
     setValuesFn(value);
-  }, [value]);
+  }, [value, setValuesFn]);
 
   return (
     <>

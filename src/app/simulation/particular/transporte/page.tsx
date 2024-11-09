@@ -1,9 +1,4 @@
 "use client";
-
-// TODO validações
-// TODO obter dados de api
-// TODO salvar dados
-
 import { useEffect, useState } from "react";
 import { Button, Steps } from "antd";
 import { Input } from "@/components/input";
@@ -202,7 +197,7 @@ export default function Transporte() {
         return;
       }
 
-      if (PaisDestino[0].name == "Angola") {
+      if (PaisDestino.every(pais=> pais.name== "Angola") ) {
         const validationStates = stepThreeSchemaProvincias.safeParse(Provincias);
 
         if (!validationStates.success) {
