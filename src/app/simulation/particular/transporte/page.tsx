@@ -574,6 +574,7 @@ function StepFive({
             <Input.Default
               label="Dias de duração da apolice"
               placeholder="0"
+              type="number"
               icon={CalendarDays}
               value={DiasduracaoApolice}
               onChange={(e) => setDiasduracaoApoliceFn(e.target.value)}
@@ -581,6 +582,7 @@ function StepFive({
             <Input.Default
               label="Valor máximo por mercadoria"
               placeholder="0"
+              type="number"
               icon={CalendarDays}
               value={ValorMaximoMercadoria}
               onChange={(e) => setValorMaximoMercadoriaFn(e.target.value)}
