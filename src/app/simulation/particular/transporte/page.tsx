@@ -5,7 +5,7 @@
 // TODO salvar dados
 
 import { useEffect, useState } from "react";
-import { Button, message, Steps } from "antd";
+import { Button, Steps } from "antd";
 import { Input } from "@/components/input";
 import { CalendarDays, IdCardIcon, MailIcon, PhoneIcon, Search, User2Icon } from "lucide-react";
 import { Check } from "@/components/check";
@@ -14,8 +14,9 @@ import { AutoCompleteTagInputListType } from "@/components/input/auto-complete-t
 import { GET_MT_LIST } from "@/mocks/dto-mt";
 import { IGetIdAndNameMapperResponse, GetIdAndNameMapper } from "@/util/function/mappers";
 import Loading from "@/app/loading";
-import { z } from "zod";
+import { stepOneSchema, stepTwoSchema, stepThreeSchema, stepThreeSchemaProvincias, stepFourSchema, stepFiveSchema } from "./schema-validation";
 import { Lib } from "@/lib";
+import { API_LOCATION } from "@/util/api";
 
 interface IApiListData {
   merchandises: IGetIdAndNameMapperResponse[];
@@ -27,38 +28,6 @@ interface IApiListData {
   coverages: IGetIdAndNameMapperResponse[];
   packaging: IGetIdAndNameMapperResponse[];
 }
-
-const stepOneSchema = z.object({
-  NomeComplete: z
-    .string({ required_error: "Campo de 'Nome Completo' obrigatorio" })
-    .min(3, { message: "Nome completo deve ter pelo menos 3 caracteres" })
-    .min(5, "O nome deve ter pelo menos mais de 5 caracter")
-    .regex(/^[a-zA-ZÀ-ú\s]+$/, "Apenas é permitido Letras no 'Nome Completo'"),
-
-  Email: z.string().email({ message: "Email inválido" }),
-  Nif: z
-    .string()
-    .min(9, { message: "NIF deve ter pelo menos 9 caracteres" })
-    .regex(/^\d{9}[A-Z]{2}\d{3}$/, {
-      message: "Número de Identificação Fiscal inválido",
-    }),
-  Telefone: z
-    .string()
-    .regex(/^[0-9]*$/, "Só é permitido números para o campo de Nº de Telemóvel")
-    .min(9, { message: "Telefone deve ter pelo menos 9 caracteres" }),
-});
-
-const stepTwoSchema = z.object({
-  MeioTransporte: z.string().array().min(1, { message: "Selecione pelo menos um 'Meio de Transporte'" }),
-  ClassificacaoProdutoTransportado: z.string().min(1, { message: "Selecione Uma 'Classificação de Produto Transportado'" }),
-});
-
-const stepThreeSchema = z.object({
-  PaisOrigem: z.array(z.object({ id: z.string(), name: z.string() })).min(1, { message: "Selecione pelo menos um 'País de Origem'" }),
-  PaisDestino: z.array(z.object({ id: z.string(), name: z.string() })).min(1, { message: "Selecione pelo menos um 'País de Destino'" }),
-});
-
-const stepThreeSchemaProvincias = z.array(z.object({ id: z.string(), name: z.string() })).min(1, { message: "Selecione pelo menos uma 'Província'" });
 
 export default function Transporte() {
   // var step 1
@@ -81,7 +50,7 @@ export default function Transporte() {
   const [Coberturas, setCoberturas] = useState<string>("");
   const [DiasduracaoApolice, setDiasduracaoApolice] = useState<string>("");
   const [ValorMaximoMercadoria, setValorMaximoMercadoria] = useState<string>("");
-
+  // Others
   const [current, setCurrent] = useState(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [apiListDataResponse, setApiListDataResponse] = useState<IApiListData>({
@@ -112,6 +81,7 @@ export default function Transporte() {
       })
       .catch((error) => {
         console.log(error);
+        Lib.Sonner({ type: "error", message: "Erro ao carregar dados da API" });
       })
       .finally(() => {
         setIsLoading(false);
@@ -242,13 +212,17 @@ export default function Transporte() {
           return;
         }
       }
-    }else if (current === 3) {
+    } else if (current === 3) {
       const validation = stepFourSchema.safeParse({
         CondicoesEspeciais,
         DetalhesAdicionais,
       });
+      if (!validation.success) {
+        const errosMessages = validation.error.errors.map((error) => error.message);
+        Lib.Sonner({ messages: errosMessages, type: "error" });
+        return;
+      }
     }
-
     setCurrent(current + 1);
   };
 
@@ -259,8 +233,47 @@ export default function Transporte() {
   const items = steps.map((item) => ({ key: item.title, title: item.title }));
 
   function handleSubmitFn() {
-    alert("Exemplo de Envio");
-    window.location.reload();
+    const validation = stepFiveSchema.safeParse({
+      Coberturas,
+      CondicoesManuseioEmbalagemMercadoria,
+      ValorMaximoMercadoria,
+      DiasduracaoApolice,
+    });
+    if (!validation.success) {
+      const errosMessages = validation.error.errors.map((error) => error.message);
+      Lib.Sonner({ messages: errosMessages, type: "error" });
+      return;
+    }
+    const dataBody = {
+      NomeComplete,
+      Email,
+      Nif,
+      Telefone,
+      MeioTransporte,
+      ClassificacaoProdutoTransportado,
+      PaisOrigem,
+      PaisDestino,
+      Provincias,
+      CondicoesEspeciais,
+      DetalhesAdicionais,
+      Coberturas,
+      CondicoesManuseioEmbalagemMercadoria,
+      ValorMaximoMercadoria,
+      DiasduracaoApolice,
+    };
+
+    console.table(dataBody)
+    
+    // fetch(`${API_LOCATION}/`,{
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(dataBody),
+    // })
+    // .then((response) => response.json())
+    Lib.Sonner({ messages: ["Simulação enviada com sucesso!"], type: "success" });
+    // window.location.reload();
   }
 
   return (
@@ -394,8 +407,8 @@ function StepTwo({
         <div>
           <StepHeader title="Classificação do Produto Transportado" />
           <Check.Radio
-            itemList={merchandisesList}
             // defaultValue={merchandisesList[0].id}
+            itemList={merchandisesList}
             value={ClassificacaoProdutoTransportado}
             setValuesFn={setClassificacaoProdutoTransportadoFn}
             className="grid grid-cols-2 gap-2 items-start *:w-full gap-y-2 *:text-start *:justify-start"
