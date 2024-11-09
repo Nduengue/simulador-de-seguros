@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 
 import "./globals.css";
 import { ConfigProvider } from "antd";
+import { Toaster } from "sonner";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -17,8 +18,7 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "Simulador de Seguros",
-  description:
-    "Este é um simulador de seguros, que te permite simular o valor de um seguro de acordo com o seu perfil.",
+  description: "Este é um simulador de seguros, que te permite simular o valor de um seguro de acordo com o seu perfil.",
 };
 
 export default function RootLayout({
@@ -47,6 +47,17 @@ export default function RootLayout({
         >
           {children}
         </ConfigProvider>
+        <Toaster
+          position="top-right"
+          richColors={true}
+          duration={5000}
+          expand
+          closeButton
+          // toastOptions={{
+          // unstyled: true,
+          // className:"p-4 rounded-lg ",
+          // }}
+        />
       </body>
     </html>
   );

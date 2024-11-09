@@ -52,7 +52,7 @@ function BoxItem({
   useEffect(() => {
     console.log(myClassName);
     const allHtmlElements = Array.from(window.document.getElementsByClassName(myClassName));
-    const avaliableValues = allHtmlElements.filter((html) => html.checked == true).map((html) => html.value);
+    const avaliableValues = allHtmlElements.filter((html): html is HTMLInputElement => html instanceof HTMLInputElement && html.checked).map((html) => html.value);
     setSelectedValues(avaliableValues);
     console.log(avaliableValues);
   }, [check]);

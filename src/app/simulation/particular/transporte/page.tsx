@@ -1,13 +1,11 @@
 "use client";
 
-// TODO lidar com checkbox e radios vazias
-// TODO obter dados de api
-// TODO criar função para obter dados da api
 // TODO validações
+// TODO obter dados de api
 // TODO salvar dados
 
 import { useEffect, useState } from "react";
-import { Button, Steps } from "antd";
+import { Button, message, Steps } from "antd";
 import { Input } from "@/components/input";
 import { CalendarDays, IdCardIcon, MailIcon, PhoneIcon, Search, User2Icon } from "lucide-react";
 import { Check } from "@/components/check";
@@ -16,6 +14,8 @@ import { AutoCompleteTagInputListType } from "@/components/input/auto-complete-t
 import { GET_MT_LIST } from "@/mocks/dto-mt";
 import { IGetIdAndNameMapperResponse, GetIdAndNameMapper } from "@/util/function/mappers";
 import Loading from "@/app/loading";
+import { z } from "zod";
+import { Lib } from "@/lib";
 
 interface IApiListData {
   merchandises: IGetIdAndNameMapperResponse[];
@@ -27,6 +27,31 @@ interface IApiListData {
   coverages: IGetIdAndNameMapperResponse[];
   packaging: IGetIdAndNameMapperResponse[];
 }
+
+const stepOneSchema = z.object({
+  NomeComplete: z
+    .string({ required_error: "Campo de 'Nome Completo' obrigatorio" })
+    .min(3, { message: "Nome completo deve ter pelo menos 3 caracteres" })
+    .min(5, "O nome deve ter pelo menos mais de 5 caracter")
+    .regex(/^[a-zA-ZÀ-ú\s]+$/, "Apenas é permitido Letras no 'Nome Completo'"),
+
+  Email: z.string().email({ message: "Email inválido" }),
+  Nif: z
+    .string()
+    .min(9, { message: "NIF deve ter pelo menos 9 caracteres" })
+    .regex(/^\d{9}[A-Z]{2}\d{3}$/, {
+      message: "Número de Identificação Fiscal inválido",
+    }),
+  Telefone: z
+    .string()
+    .regex(/^[0-9]*$/, "Só é permitido números para o campo de Nº de Telemóvel")
+    .min(9, { message: "Telefone deve ter pelo menos 9 caracteres" }),
+});
+
+const stepTwoSchema = z.object({
+  MeioTransporte: z.string().array().min(1, { message: "Selecione pelo menos um 'Meio de Transporte'" }),
+  ClassificacaoProdutoTransportado: z.string().min(2, { message: "Selecione Uma 'Classificação de Produto Transportado'" }),
+});
 
 export default function Transporte() {
   // var step 1
@@ -108,8 +133,8 @@ export default function Transporte() {
       title: "2º Passo",
       content: (
         <StepTwo
-          apiMerchandises={apiListDataResponse.merchandises}
-          apiWays={apiListDataResponse.ways}
+          merchandisesList={apiListDataResponse.merchandises}
+          waysList={apiListDataResponse.ways}
           MeioTransporte={MeioTransporte}
           setMeioTransporteFn={setMeioTransporte}
           setClassificacaoProdutoTransportadoFn={setClassificacaoProdutoTransportado}
@@ -165,6 +190,32 @@ export default function Transporte() {
   ];
 
   const next = () => {
+    if (current === 0) {
+      const validation = stepOneSchema.safeParse({
+        NomeComplete,
+        Email,
+        Nif,
+        Telefone,
+      });
+
+      if (!validation.success) {
+        const errosMessages = validation.error.errors.map((error) => error.message);
+        Lib.Sonner({ messages: errosMessages, type: "error" });
+        return;
+      }
+    } else if (current === 1) {
+      const validation = stepTwoSchema.safeParse({
+        MeioTransporte,
+        ClassificacaoProdutoTransportado,
+      });
+
+      if (!validation.success) {
+        const errosMessages = validation.error.errors.map((error) => error.message);
+        Lib.Sonner({ messages: errosMessages, type: "error" });
+        return;
+      }
+    }
+
     setCurrent(current + 1);
   };
 
@@ -181,7 +232,6 @@ export default function Transporte() {
 
   return (
     <div className="text-gray-600 bg-[#eff4f9] lg:bg-[url('/blob-scene1.svg')] bg-cover bg-center bg-no-repeat bg-fixed min-h-screen p-4 grid place-items-center">
-      {/* <div className="text-gray-600 bg-[#eff4f9] lg:bg-[url('/wavess.svg')] bg-cover bg-center bg-no-repeat bg-fixed min-h-screen p-4 grid place-items-center"> */}
       <div className="bg-white w-[62rem] p-4 rounded-lg min-h-[35rem] shadow-lg flex flex-col justify-between">
         {isLoading ? (
           <Loading className="h-[35rem]" />
@@ -293,15 +343,15 @@ function StepOne({
 function StepTwo({
   MeioTransporte,
   ClassificacaoProdutoTransportado,
-  apiMerchandises,
-  apiWays,
+  merchandisesList,
+  waysList,
   setMeioTransporteFn,
   setClassificacaoProdutoTransportadoFn,
 }: {
   MeioTransporte: string[];
   ClassificacaoProdutoTransportado: string;
-  apiMerchandises: IGetIdAndNameMapperResponse[];
-  apiWays: IGetIdAndNameMapperResponse[];
+  merchandisesList: IGetIdAndNameMapperResponse[];
+  waysList: IGetIdAndNameMapperResponse[];
   setMeioTransporteFn: (e: string[]) => void;
   setClassificacaoProdutoTransportadoFn: (e: string) => void;
 }) {
@@ -311,7 +361,7 @@ function StepTwo({
         <div>
           <StepHeader title="Classificação do Produto Transportado" />
           <Check.Radio
-            itemList={apiMerchandises}
+            itemList={merchandisesList}
             value={ClassificacaoProdutoTransportado}
             setValuesFn={setClassificacaoProdutoTransportadoFn}
             className="grid grid-cols-2 gap-2 items-start *:w-full gap-y-2 *:text-start *:justify-start"
@@ -319,7 +369,7 @@ function StepTwo({
         </div>
         <div>
           <StepHeader title="Meio de Transporte" />
-          <Check.CheckBox className="gap-2 *:p-3 grid grid-cols-2" values={MeioTransporte} setValuesFn={setMeioTransporteFn} data={apiWays} />
+          <Check.CheckBox className="gap-2 *:p-3 grid grid-cols-2" values={MeioTransporte} setValuesFn={setMeioTransporteFn} data={waysList} />
         </div>
       </div>
     </div>
