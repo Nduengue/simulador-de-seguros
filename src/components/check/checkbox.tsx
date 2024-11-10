@@ -53,7 +53,7 @@ function BoxItem({
   const [check, setCheck] = useState(boxState);
   // TODO verify dependencies
   useEffect(() => {
-    console.log(myClassName);
+    // console.log(myClassName);
     const allHtmlElements = Array.from(window.document.getElementsByClassName(myClassName));
 
     const avaliableValues = allHtmlElements.filter((html): html is HTMLInputElement => html instanceof HTMLInputElement && html.checked).map((html) => html.value);

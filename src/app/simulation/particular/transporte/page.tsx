@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Button, Steps } from "antd";
 import { Input } from "@/components/input";
-import { CalendarDays, CheckIcon, Home, IdCardIcon, MailIcon, PhoneIcon, Search, User2Icon } from "lucide-react";
+import { CalendarDays, IdCardIcon, MailIcon, PhoneIcon, Search, User2Icon } from "lucide-react";
 import { Check } from "@/components/check";
 import { ContinentsCountry } from "@/util/data/country";
 import { AutoCompleteTagInputListType } from "@/components/input/auto-complete-tag-input";
