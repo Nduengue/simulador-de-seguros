@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Button, Steps } from "antd";
 import { Input } from "@/components/input";
-import { CalendarDays, IdCardIcon, MailIcon, PhoneIcon, Search, User2Icon } from "lucide-react";
+import { CalendarDays, CheckIcon, Home, IdCardIcon, MailIcon, PhoneIcon, Search, User2Icon } from "lucide-react";
 import { Check } from "@/components/check";
 import { ContinentsCountry } from "@/util/data/country";
 import { AutoCompleteTagInputListType } from "@/components/input/auto-complete-tag-input";
@@ -84,7 +84,7 @@ export default function Transporte() {
 
   const steps = [
     {
-      title: "1º Passo",
+      title: "",
 
       content: (
         <StepOne
@@ -101,7 +101,7 @@ export default function Transporte() {
       ),
     },
     {
-      title: "2º Passo",
+      title: "",
       content: (
         <StepTwo
           merchandisesList={apiListDataResponse.merchandises}
@@ -114,7 +114,7 @@ export default function Transporte() {
       ),
     },
     {
-      title: "3º Passo",
+      title: "",
       content: (
         <StepThree
           listOfCountries={apiListDataResponse.countries}
@@ -129,7 +129,7 @@ export default function Transporte() {
       ),
     },
     {
-      title: "4º Passo",
+      title: "",
       content: (
         <StepFour
           aditionalDetailsList={apiListDataResponse.from_tos}
@@ -142,7 +142,7 @@ export default function Transporte() {
       ),
     },
     {
-      title: "5º Passo",
+      title: "",
       content: (
         <StepFive
           coveragesList={apiListDataResponse.coverages}
@@ -197,7 +197,7 @@ export default function Transporte() {
         return;
       }
 
-      if (PaisDestino.every(pais=> pais.name== "Angola") ) {
+      if (PaisDestino.every((pais) => pais.name == "Angola")) {
         const validationStates = stepThreeSchemaProvincias.safeParse(Provincias);
 
         if (!validationStates.success) {
@@ -256,8 +256,8 @@ export default function Transporte() {
       DiasduracaoApolice,
     };
 
-    console.table(dataBody)
-    
+    console.table(dataBody);
+
     // fetch(`${API_LOCATION}/`,{
     //   method: "POST",
     //   headers: {
@@ -271,14 +271,20 @@ export default function Transporte() {
   }
 
   return (
-    <div className="text-gray-600 bg-[#eff4f9] lg:bg-[url('/blob-scene1.svg')] bg-cover bg-center bg-no-repeat bg-fixed min-h-screen p-4 grid place-items-center">
-      <div className="bg-white w-[62rem] p-4 rounded-lg min-h-[35rem] shadow-lg flex flex-col justify-between">
+    <div className="text-gray-600 bg-[#eff4f9] bg-[url('/blob-scene1.svg')] bg-cover bg-center bg-no-repeat bg-fixed min-h-screen p-4 grid place-items-center">
+      <div className="bg-white w-[95%] lg:w-[62rem] p-4 rounded-lg min-h-[35rem] shadow-lg flex flex-col justify-between">
         {isLoading ? (
           <Loading className="h-[35rem]" />
         ) : (
           <>
             <div>
-              <Steps current={current} items={items} />
+              <div className="hidden sm:flex items-center">
+                <Steps current={current} items={items} />
+              </div>
+              <div className="flex items-center sm:hidden gap-x-2 justify-end font-bold text-sm   ">
+                <p>Etapas para a conclusão</p>
+                <div className="bg-[#fba94c] text-zinc-100 p-2 rounded-full">{`${current + 1} de ${steps.length}`}</div>
+              </div>
               <div className="h-[30rem] w-full overflow-y-auto mt-4">{steps[current].content}</div>
             </div>
             <div className="mt-6 self-end ">
@@ -339,7 +345,7 @@ function StepOne({
   return (
     <div className="  pt-4 px-2 ">
       <StepHeader title={title} />
-      <div className="grid grid-cols-2 gap-6 ">
+      <div className="grid sm:grid-cols-2 gap-6 ">
         <Input.Default
           icon={User2Icon}
           onChange={(e) => setNomeCompleteFn(e.target.value)}
@@ -405,12 +411,12 @@ function StepTwo({
             itemList={merchandisesList}
             value={ClassificacaoProdutoTransportado}
             setValuesFn={setClassificacaoProdutoTransportadoFn}
-            className="grid grid-cols-2 gap-2 items-start *:w-full gap-y-2 *:text-start *:justify-start"
+            className="grid sm:grid-cols-2 gap-2 items-start *:w-full gap-y-2 *:text-start *:justify-start"
           />
         </div>
         <div>
           <StepHeader title="Meio de Transporte" />
-          <Check.CheckBox className="gap-2 *:p-3 grid grid-cols-2" values={MeioTransporte} setValuesFn={setMeioTransporteFn} itemList={waysList} />
+          <Check.CheckBox className="sm:grid-cols-2" values={MeioTransporte} setValuesFn={setMeioTransporteFn} itemList={waysList} />
         </div>
       </div>
     </div>
@@ -511,11 +517,11 @@ function StepFour({
       <div className="grid gap-6  ">
         <div>
           <StepHeader title="Detalhes Adicionais" />
-          <Check.CheckBox className="gap-2 *:p-3 grid grid-cols-2" values={DetalhesAdicionais} setValuesFn={setDetalhesAdicionaisFn} itemList={aditionalDetailsList} />
+          <Check.CheckBox className="sm:grid-cols-2" values={DetalhesAdicionais} setValuesFn={setDetalhesAdicionaisFn} itemList={aditionalDetailsList} />
         </div>
         <div>
           <StepHeader title="Condições Especiais" />
-          <Check.CheckBox className="gap-2 *:p-3 grid grid-cols-2" values={CondicoesEspeciais} setValuesFn={setCondicoesEspeciaisFn} itemList={specificConditionsList} />
+          <Check.CheckBox className="sm:grid-cols-2" values={CondicoesEspeciais} setValuesFn={setCondicoesEspeciaisFn} itemList={specificConditionsList} />
         </div>
       </div>
     </div>
@@ -554,7 +560,7 @@ function StepFive({
             itemList={packagingList}
             value={CondicoesManuseioEmbalagemMercadoria}
             setValuesFn={setCondicoesManuseioEmbalagemMercadoriaFn}
-            className="grid grid-cols-2 gap-2 items-start *:w-full gap-y-2 *:text-start *:justify-start"
+            className="grid sm:grid-cols-2 gap-2 items-start *:w-full gap-y-2 *:text-start *:justify-start"
           />
         </div>
         <div>
@@ -563,7 +569,7 @@ function StepFive({
             itemList={coveragesList}
             value={Coberturas}
             setValuesFn={setCoberturasFn}
-            className="grid grid-cols-2 gap-2 items-start *:w-full gap-y-2 *:text-start *:justify-start"
+            className="grid sm:grid-cols-2 gap-2 items-start *:w-full gap-y-2 *:text-start *:justify-start"
           />
           <div className="space-y-2 mt-4">
             <Input.Default

@@ -1,3 +1,4 @@
+import { Lib } from "@/lib";
 import { PackageOpen } from "lucide-react";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
@@ -11,12 +12,13 @@ interface ICheckBox extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export default function CheckBox({ itemList, values, setValuesFn, className, useNameOnValue, ...rest }: ICheckBox) {
-  const uuid = crypto.randomUUID();
+  const { createId } = Lib.Cuid();
+  const uuid = createId({ length: 10 });
 
   return (
     <div>
       {itemList.length > 0 ? (
-        <div className={twMerge("grid grid-cols-2 gap-2 ", className)} {...rest}>
+        <div className={twMerge("grid gap-2", className)} {...rest}>
           {/* {JSON.stringify(value, null, 2)} */}
           {itemList.map((item) => (
             <BoxItem myClassName={uuid} key={item.id} setSelectedValues={setValuesFn} useNameOnValue={useNameOnValue} boxState={values.includes(String(item.id))} item={item} />
@@ -64,7 +66,8 @@ function BoxItem({
   }
 
   // const uuid = Math.random().toString(36).substring(2, 15);
-  const uuid = crypto.randomUUID();
+  const { createId } = Lib.Cuid();
+  const uuid = createId({ length: 10 });
 
   return (
     <label

@@ -10,9 +10,9 @@ export const stepOneSchema = z.object({
   Email: z.string().email({ message: "Email inválido" }),
   Nif: z
     .string()
-    .min(9, { message: "NIF deve ter pelo menos 9 caracteres" })
+    .length(14, { message: "NIF deve ter 14 caracteres" })
     .regex(/^\d{9}[A-Z]{2}\d{3}$/, {
-      message: "Número de Identificação Fiscal inválido",
+      message: "NIF inserido é inválido",
     }),
   Telefone: z
     .string()
