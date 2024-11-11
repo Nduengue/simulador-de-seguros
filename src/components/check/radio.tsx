@@ -45,7 +45,7 @@ export default function Radio({ value: Value, itemList, className, defaultValue,
   // });
 
   const onChange = (e: RadioChangeEvent) => {
-    console.log("radio checked", e.target.value);
+    // console.log("radio checked", e.target.value);
     setValue(e.target.value);
   };
 

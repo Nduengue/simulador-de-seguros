@@ -58,7 +58,7 @@ function BoxItem({
 
     const avaliableValues = allHtmlElements.filter((html): html is HTMLInputElement => html instanceof HTMLInputElement && html.checked).map((html) => html.value);
     setSelectedValues(avaliableValues);
-    console.log(avaliableValues);
+    // console.log(avaliableValues);
   }, [check, setSelectedValues]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {

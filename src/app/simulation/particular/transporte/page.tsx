@@ -1,16 +1,18 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Button, Steps } from "antd";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/input";
 import { CalendarDays, IdCardIcon, MailIcon, PhoneIcon, Search, User2Icon } from "lucide-react";
 import { Check } from "@/components/check";
 import { ContinentsCountry } from "@/util/data/country";
 import { AutoCompleteTagInputListType } from "@/components/input/auto-complete-tag-input";
-import { GET_MT_LIST } from "@/mocks/dto-mt";
 import { IGetIdAndNameMapperResponse, GetIdAndNameMapper } from "@/util/function/mappers";
 import Loading from "@/app/loading";
 import { stepOneSchema, stepTwoSchema, stepThreeSchema, stepThreeSchemaProvincias, stepFourSchema, stepFiveSchema } from "./schema-validation";
 import { Lib } from "@/lib";
+import { API_LOCATION, API_LOCATION_2 } from "@/util/api";
+import { Dialog } from "@/components/dialog";
 
 interface IApiListData {
   merchandises: IGetIdAndNameMapperResponse[];
@@ -45,8 +47,14 @@ export default function Transporte() {
   const [DiasduracaoApolice, setDiasduracaoApolice] = useState<string>("");
   const [ValorMaximoMercadoria, setValorMaximoMercadoria] = useState<string>("");
   // Others
+  const searchParams = useSearchParams();
+
+  const insurance_id = Number(searchParams.get("insurance_id"));
+  const policy_type_id = Number(searchParams.get("policy_type_id"));
+
   const [current, setCurrent] = useState(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
   const [apiListDataResponse, setApiListDataResponse] = useState<IApiListData>({
     merchandises: [],
     ways: [],
@@ -58,29 +66,58 @@ export default function Transporte() {
     packaging: [],
   });
 
+  const route = useRouter();
+
+  const provicesAllowed = () => PaisDestino.every((pais) => pais.name == "Angola");
+
   useEffect(() => {
-    GET_MT_LIST()
-      .then((response: GoodsTransportedType) => {
-        const { merchandises, ways, countries, states, from_tos, conditions, coverages, packaging } = response;
-        setApiListDataResponse({
-          merchandises: GetIdAndNameMapper(merchandises),
-          ways: GetIdAndNameMapper(ways),
-          countries: GetIdAndNameMapper(countries),
-          states: GetIdAndNameMapper(states),
-          from_tos: GetIdAndNameMapper(from_tos),
-          conditions: GetIdAndNameMapper(conditions),
-          coverages: GetIdAndNameMapper(coverages),
-          packaging: GetIdAndNameMapper(packaging),
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-        Lib.Sonner({ type: "error", message: "Erro ao carregar dados da API" });
-      })
-      .finally(() => {
-        setIsLoading(false);
+    const getListData = async () => {
+      const response = await fetch(`${API_LOCATION}/mt_datas`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          insurance_id: insurance_id,
+          policy_type_id: policy_type_id,
+        }),
       });
-  }, []);
+
+      const data = await response.json();
+      // setApiListDataResponse(data);
+      // console.log(data);
+
+      return data;
+    };
+
+    if (insurance_id && policy_type_id) {
+      getListData()
+        .then((response: GoodsTransportedType) => {
+          const { merchandises, ways, countries, states, from_tos, conditions, coverages, packaging } = response;
+          // console.log(GetIdAndNameMapper(merchandises));
+          setApiListDataResponse({
+            merchandises: GetIdAndNameMapper(merchandises),
+            ways: GetIdAndNameMapper(ways),
+            countries: GetIdAndNameMapper(countries),
+            states: GetIdAndNameMapper(states),
+            from_tos: GetIdAndNameMapper(from_tos),
+            conditions: GetIdAndNameMapper(conditions),
+            coverages: GetIdAndNameMapper(coverages),
+            packaging: GetIdAndNameMapper(packaging),
+          });
+          // Lib.Sonner({ type: "success", message: "Dados carregados com sucesso" });
+        })
+        .catch((error) => {
+          console.log(error);
+          Lib.Sonner({ type: "error", message: "Erro ao carregar dados da API" });
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    } else {
+      route.replace("/");
+    }
+  }, [insurance_id, policy_type_id,route]);
 
   const steps = [
     {
@@ -197,7 +234,7 @@ export default function Transporte() {
         return;
       }
 
-      if (PaisDestino.every((pais) => pais.name == "Angola")) {
+      if (provicesAllowed()) {
         const validationStates = stepThreeSchemaProvincias.safeParse(Provincias);
 
         if (!validationStates.success) {
@@ -226,7 +263,7 @@ export default function Transporte() {
 
   const items = steps.map((item) => ({ key: item.title, title: item.title }));
 
-  function handleSubmitFn() {
+  function handleOpenModalToSubmitFn() {
     const validation = stepFiveSchema.safeParse({
       Coberturas,
       CondicoesManuseioEmbalagemMercadoria,
@@ -236,38 +273,73 @@ export default function Transporte() {
     if (!validation.success) {
       const errosMessages = validation.error.errors.map((error) => error.message);
       Lib.Sonner({ messages: errosMessages, type: "error" });
-      return;
+      return false;
     }
+
+    return true;
+  }
+
+  async function handleSubmitFn() {
     const dataBody = {
-      NomeComplete,
-      Email,
-      Nif,
-      Telefone,
-      MeioTransporte,
-      ClassificacaoProdutoTransportado,
-      PaisOrigem,
-      PaisDestino,
-      Provincias,
-      CondicoesEspeciais,
-      DetalhesAdicionais,
-      Coberturas,
-      CondicoesManuseioEmbalagemMercadoria,
-      ValorMaximoMercadoria,
-      DiasduracaoApolice,
+      user: {
+        name: NomeComplete,
+        nif: Nif,
+        phone_number: Telefone,
+        email: Email,
+      },
+      merchandise_id: Number(ClassificacaoProdutoTransportado),
+      way_ids: MeioTransporte.map((value) => Number(value)),
+
+      country_from_ids: PaisOrigem.map((value) => Number(value.id)),
+      country_to_ids: PaisDestino.map((value) => Number(value.id)),
+      states_to_ids: provicesAllowed() ? Provincias.map((value) => Number(value.id)) : [],
+
+      from_to_ids: DetalhesAdicionais.map((value) => Number(value)),
+      condition_ids: CondicoesEspeciais.map((value) => Number(value)),
+
+      packaging_id: Number(CondicoesManuseioEmbalagemMercadoria),
+      coverage_id: Number(Coberturas),
+      value: Number(ValorMaximoMercadoria),
+      duration: Number(DiasduracaoApolice),
+
+      insurance_id: insurance_id,
+      policy_type_id: policy_type_id,
+      //TODO must be verified with time
+      state_from_ids: [],
+      insurance_type_id: 1,
+      company_ids: [1],
+      category_id: 1,
     };
 
-    console.table(dataBody);
+    console.log(dataBody);
 
-    // fetch(`${API_LOCATION}/`,{
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(dataBody),
-    // })
-    // .then((response) => response.json())
-    Lib.Sonner({ messages: ["Simulação enviada com sucesso!"], type: "success" });
-    // window.location.reload();
+    try {
+      const res = await fetch(`${API_LOCATION_2}/api/simulator/mt/save`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataBody),
+      });
+
+      if (res.ok) Lib.Sonner({ messages: ["Simulação enviada com sucesso!"], type: "success" });
+      else Lib.Sonner({ messages: ["Ocorreu um erro no processo da simulação!\nTente novamente ou contacte o suporte."], type: "error" });
+
+      console.log("->", res);
+    } catch (error) {
+      console.error(error);
+      Lib.Sonner({
+        messages: ["Ocorreu um erro no envio da simulação, Actualiza a página e certifica-se que esteja conectado com a internet.\nTente novamente ou contacte o suporte."],
+        type: "error",
+      });
+    }
+
+    await new Promise((resolve) =>
+      setTimeout(() => {
+        resolve(true);
+        // window.location.reload();
+      }, 1000)
+    );
   }
 
   return (
@@ -302,9 +374,18 @@ export default function Transporte() {
                 </Button>
               )}
               {current === steps.length - 1 && (
-                <Button type="primary" onClick={handleSubmitFn}>
-                  Concluir
-                </Button>
+                // <Button type="primary" onClick={handleSubmitFn}>
+                //   Concluir
+                // </Button>
+                <Dialog.Async
+                  buttonTitle="Concluir"
+                  buttonProps={{ type: "primary" }}
+                  onOpenModal={handleOpenModalToSubmitFn}
+                  onOkFn={handleSubmitFn}
+                  modalTitle="Conclusão da Simulação"
+                >
+                  <p>Deseja concluir a simulação e receber o relatório da simulação?</p>
+                </Dialog.Async>
               )}
             </div>
           </>
