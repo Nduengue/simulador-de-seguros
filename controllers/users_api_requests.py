@@ -1,6 +1,6 @@
 from flask_restful import abort
 import requests, json
-from env import *
+from .env import *
 
 # users api base url
 API_POST_HEADERS = {"Content-Type": "application/json"}
