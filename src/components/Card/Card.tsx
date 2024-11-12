@@ -1,29 +1,22 @@
+import { IInsurance } from "@/util/option/option";
 import Image from "next/image";
-import Link from "next/link";
-
-interface IOption {
-  id: number;
-  name: string;
-  icon: string;
-  description?: string;
-}
+// import Link from "next/link";
 
 interface IProps {
-  option: IOption;
-  link: string;
+  option: IInsurance;
+  // link?: string;
   index: number;
   onClick: () => void;
 }
 
 const Card = ({
   option,
-  link,
+  // link,
   index,
   onClick
 }: IProps) => {
   return (
-    <Link
-      href={link}
+    <div
       className={`flex rounded-2xl  shadow-lg ${index % 2 === 0 ? "bg-[#d18f46]" : "bg-[#34475b]"
         } transition ease-in-out group grid grid-cols-3`}
       onClick={onClick}
@@ -43,7 +36,7 @@ const Card = ({
         <h3 className="text-[#eff4f9] font-bold mb-2 ">{option.name}</h3>
         <p className="text-[#fafcfd]">{option.description}</p>
       </div>
-    </Link>
+    </div>
   );
 }
 

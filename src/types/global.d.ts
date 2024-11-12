@@ -21,3 +21,8 @@ interface ISeguradora {
   abbreviation: string;
 }
 
+interface IInsurance extends Group {
+  icon: string;
+  route?: string;
+  description?: string;
+}

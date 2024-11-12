@@ -1,37 +1,44 @@
 // Mark the component as a client component
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Spinner from "../Spinner/Spinner";
 import Card from "@/components/Card/Card";
 import { API_LOCATION } from "@/util/api";
+import { useRouter, useSearchParams } from 'next/navigation';
+import Loading from "@/app/loading";
+// import { IInsurance } from "@/types/global";
+// import { IInsurance } from "@/util/option/option";
 
 interface IProps {
   route: string;
-  link: string;
-}
-
-interface IOption {
-  id: number;
-  name: string;
-  icon: string;
-  description?: string;
+  link?: string;
 }
 
 const CardGroup = ({ route, link }: IProps) => {
-  const [loading, setLoading] = React.useState<boolean>(true);
-  const [options, setOptions] = React.useState<IOption[]>([]);
-  let category_id = undefined;
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const [loading, setLoading] = useState<boolean>(true);
+  const [options, setOptions] = useState<IInsurance[]>([]);
+  // const [linkParam, setLinkParam] = useState<string | null>(null);
+
+
+  /* let category_id = undefined;
   let insurance_id = undefined;
   let insurance_type_id = undefined;
   let policy_type_id = undefined;
 
   if (typeof window !== "undefined") {
-    category_id = Number(localStorage.getItem("category_id"));
-    insurance_id = Number(localStorage.getItem("insurance_id"));
-    insurance_type_id = Number(localStorage.getItem("insurance_type_id"));
-    policy_type_id = Number(localStorage.getItem("policy_type_id"));
-  }
+    category_id = Number(searchParams.get("category_id"));
+    insurance_id = Number(searchParams.get("insurance_id"));
+    insurance_type_id = Number(searchParams.get("insurance_type_id"));
+    policy_type_id = Number(searchParams.get("policy_type_id"));
+  } */
 
+  const category_id = searchParams.get("category_id") ? Number(searchParams.get("category_id")) : undefined;
+  const insurance_id = searchParams.get("insurance_id") ? Number(searchParams.get("insurance_id")) : undefined;
+  const insurance_type_id = searchParams.get("insurance_type_id") ? Number(searchParams.get("insurance_type_id")) : undefined;
+  const policy_type_id = searchParams.get("policy_type_id") ? Number(searchParams.get("policy_type_id")) : undefined;
   useEffect(() => {
     // Fetch data from API
     fetch(`${API_LOCATION}/${route}`, {
@@ -48,20 +55,31 @@ const CardGroup = ({ route, link }: IProps) => {
       .then((data) => {
         setOptions(data);
         setLoading(false);
+
+        if (data.length === 1 && route === "insurance_type") {
+          const routeParam = searchParams?.get("route")
+          router.replace(`${link}?category_id=${category_id}&insurance_id=${insurance_id}&route=${routeParam}&insurance_type_id=${data[0].id}`);
+        }
       })
       .catch((error) => {
         console.error(error);
         setLoading(false);
       });
-  }, [category_id, insurance_id, insurance_type_id, policy_type_id, route]);
+  }, [route, router, category_id, insurance_id, insurance_type_id, policy_type_id, link, searchParams]);
 
-  const handleCardClick = (option: IOption) => {
+  const handleCardClick = (option: IInsurance) => {
     if (route === "insurance") {
-      localStorage.setItem("insurance_id", option.id.toString());
+      router.push(`${link}?category_id=${category_id}&insurance_id=${option.id}`);
+      if (option.route) {
+        const routeParam = encodeURIComponent(option.route)
+        router.push(`${link}?category_id=${category_id}&insurance_id=${option.id}&route=${routeParam}`);
+      }
     } else if (route === "insurance_type") {
-      localStorage.setItem("insurance_type_id", option.id.toString());
+      const routeParam = encodeURIComponent(searchParams.get("route") || "")
+      router.push(`${link}?category_id=${category_id}&insurance_id=${insurance_id}&route=${routeParam}&insurance_type_id=${option.id}`);
     } else if (route === "policy_type") {
-      localStorage.setItem("policy_type_id", option.id.toString());
+      const routeParam = decodeURIComponent(searchParams.get("route") || "")
+      router.push(`${routeParam}?category_id=${category_id}&insurance_id=${insurance_id}&insurance_type_id=${insurance_type_id}&policy_type_id=${option.id}`);
     }
   };
 
@@ -69,8 +87,7 @@ const CardGroup = ({ route, link }: IProps) => {
     <>
       {loading ? (
         <div className="flex *:flex *:items-center *:gap-x-1 gap-6 items-center">
-          <Spinner />
-          <p>Loading...</p>
+          <Loading/>
         </div>
       ) : options.length > 0 ? (
         options.map((option, index) => (
@@ -79,7 +96,6 @@ const CardGroup = ({ route, link }: IProps) => {
             key={index}
             option={option}
             index={index}
-            link={link}
           />
         ))
       ) : (

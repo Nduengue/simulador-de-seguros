@@ -13,16 +13,17 @@ import { stepOneSchema, stepTwoSchema, stepThreeSchema, stepThreeSchemaProvincia
 import { Lib } from "@/lib";
 import { API_LOCATION, API_LOCATION_2 } from "@/util/api";
 import { Dialog } from "@/components/dialog";
+import { GoodsTransportedType, OptionDTOType } from "@/types/dto-doods-transported";
 
 interface IApiListData {
-  merchandises: IGetIdAndNameMapperResponse[];
-  ways: IGetIdAndNameMapperResponse[];
-  countries: IGetIdAndNameMapperResponse[];
-  states: IGetIdAndNameMapperResponse[];
-  from_tos: IGetIdAndNameMapperResponse[];
-  conditions: IGetIdAndNameMapperResponse[];
-  coverages: IGetIdAndNameMapperResponse[];
-  packaging: IGetIdAndNameMapperResponse[];
+  merchandises: IGetIdAndNameMapperResponse[]; //IGetIdAndNameMapperResponse
+  ways: OptionDTOType[]; //IGetIdAndNameMapperResponse
+  countries: IGetIdAndNameMapperResponse[]; //IGetIdAndNameMapperResponse
+  states: IGetIdAndNameMapperResponse[]; //IGetIdAndNameMapperResponse
+  from_tos: IGetIdAndNameMapperResponse[]; //IGetIdAndNameMapperResponse
+  conditions: OptionDTOType[]; //IGetIdAndNameMapperResponse
+  coverages: IGetIdAndNameMapperResponse[]; //IGetIdAndNameMapperResponse
+  packaging: IGetIdAndNameMapperResponse[]; //IGetIdAndNameMapperResponse
 }
 
 export default function Transporte() {
@@ -33,14 +34,14 @@ export default function Transporte() {
   const [Telefone, setTelefone] = useState<string>("");
   // var step 2
   const [ClassificacaoProdutoTransportado, setClassificacaoProdutoTransportado] = useState<string>("");
-  const [MeioTransporte, setMeioTransporte] = useState<string[]>([]);
+  const [MeioTransporte, setMeioTransporte] = useState<number[]>([]);
   // var step 3
   const [PaisOrigem, setPaisOrigem] = useState<AutoCompleteTagInputListType[]>([]);
   const [PaisDestino, setPaisDestino] = useState<AutoCompleteTagInputListType[]>([]);
   const [Provincias, setProvincias] = useState<AutoCompleteTagInputListType[]>([]);
   // var step 4
-  const [DetalhesAdicionais, setDetalhesAdicionaisFn] = useState<string[]>([]);
-  const [CondicoesEspeciais, setCondicoesEspeciaisFn] = useState<string[]>([]);
+  const [DetalhesAdicionais, setDetalhesAdicionaisFn] = useState<string>("");
+  const [CondicoesEspeciais, setCondicoesEspeciaisFn] = useState<number[]>([]);
   // var step 5
   const [CondicoesManuseioEmbalagemMercadoria, setCondicoesManuseioEmbalagemMercadoria] = useState<string>("");
   const [Coberturas, setCoberturas] = useState<string>("");
@@ -51,6 +52,7 @@ export default function Transporte() {
 
   const insurance_id = Number(searchParams.get("insurance_id"));
   const policy_type_id = Number(searchParams.get("policy_type_id"));
+  const insurance_type_id = Number(searchParams.get("insurance_type_id"));
 
   const [current, setCurrent] = useState(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -90,20 +92,20 @@ export default function Transporte() {
       return data;
     };
 
-    if (insurance_id && policy_type_id) {
+    if (insurance_id && policy_type_id && insurance_type_id) {
       getListData()
         .then((response: GoodsTransportedType) => {
           const { merchandises, ways, countries, states, from_tos, conditions, coverages, packaging } = response;
           // console.log(GetIdAndNameMapper(merchandises));
           setApiListDataResponse({
-            merchandises: GetIdAndNameMapper(merchandises),
-            ways: GetIdAndNameMapper(ways),
-            countries: GetIdAndNameMapper(countries),
-            states: GetIdAndNameMapper(states),
-            from_tos: GetIdAndNameMapper(from_tos),
-            conditions: GetIdAndNameMapper(conditions),
-            coverages: GetIdAndNameMapper(coverages),
-            packaging: GetIdAndNameMapper(packaging),
+            merchandises: GetIdAndNameMapper(merchandises), //GetIdAndNameMapper
+            ways: ways, //GetIdAndNameMapper
+            countries: GetIdAndNameMapper(countries), //
+            states: GetIdAndNameMapper(states), //
+            from_tos: GetIdAndNameMapper(from_tos), //GetIdAndNameMapper
+            conditions: conditions, //GetIdAndNameMapper
+            coverages: GetIdAndNameMapper(coverages), //GetIdAndNameMapper
+            packaging: GetIdAndNameMapper(packaging), //GetIdAndNameMapper
           });
           // Lib.Sonner({ type: "success", message: "Dados carregados com sucesso" });
         })
@@ -117,7 +119,7 @@ export default function Transporte() {
     } else {
       route.replace("/");
     }
-  }, [insurance_id, policy_type_id,route]);
+  }, [insurance_id, policy_type_id, route, insurance_type_id]);
 
   const steps = [
     {
@@ -169,6 +171,7 @@ export default function Transporte() {
       title: "",
       content: (
         <StepFour
+          MeioTransporte={MeioTransporte}
           aditionalDetailsList={apiListDataResponse.from_tos}
           specificConditionsList={apiListDataResponse.conditions}
           CondicoesEspeciais={CondicoesEspeciais}
@@ -223,6 +226,11 @@ export default function Transporte() {
         return;
       }
     } else if (current === 2) {
+      // console.log({
+      //   PaisOrigem,
+      //   PaisDestino,
+      // });
+
       const validation = stepThreeSchema.safeParse({
         PaisOrigem,
         PaisDestino,
@@ -294,7 +302,7 @@ export default function Transporte() {
       country_to_ids: PaisDestino.map((value) => Number(value.id)),
       states_to_ids: provicesAllowed() ? Provincias.map((value) => Number(value.id)) : [],
 
-      from_to_ids: DetalhesAdicionais.map((value) => Number(value)),
+      from_to_ids: Number(DetalhesAdicionais),
       condition_ids: CondicoesEspeciais.map((value) => Number(value)),
 
       packaging_id: Number(CondicoesManuseioEmbalagemMercadoria),
@@ -304,9 +312,9 @@ export default function Transporte() {
 
       insurance_id: insurance_id,
       policy_type_id: policy_type_id,
+      insurance_type_id: insurance_type_id,
       //TODO must be verified with time
       state_from_ids: [],
-      insurance_type_id: 1,
       company_ids: [1],
       category_id: 1,
     };
@@ -475,11 +483,11 @@ function StepTwo({
   setMeioTransporteFn,
   setClassificacaoProdutoTransportadoFn,
 }: {
-  MeioTransporte: string[];
   ClassificacaoProdutoTransportado: string;
   merchandisesList: IGetIdAndNameMapperResponse[];
-  waysList: IGetIdAndNameMapperResponse[];
-  setMeioTransporteFn: (e: string[]) => void;
+  waysList: OptionDTOType[];
+  MeioTransporte: number[];
+  setMeioTransporteFn: React.Dispatch<React.SetStateAction<number[]>>;
   setClassificacaoProdutoTransportadoFn: (e: string) => void;
 }) {
   return (
@@ -497,6 +505,7 @@ function StepTwo({
         </div>
         <div>
           <StepHeader title="Meio de Transporte" />
+          {/* <Check.CheckBox className="sm:grid-cols-2" values={selectedAgravamento} setValuesFn={setSelectedAgravamento} itemList={agravamentos} /> */}
           <Check.CheckBox className="sm:grid-cols-2" values={MeioTransporte} setValuesFn={setMeioTransporteFn} itemList={waysList} />
         </div>
       </div>
@@ -583,22 +592,34 @@ function StepFour({
   DetalhesAdicionais,
   aditionalDetailsList,
   specificConditionsList,
+  MeioTransporte,
   setCondicoesEspeciaisFn,
   setDetalhesAdicionaisFn,
 }: {
-  DetalhesAdicionais: string[];
-  CondicoesEspeciais: string[];
+  DetalhesAdicionais: string;
+  CondicoesEspeciais: number[];
+  specificConditionsList: OptionDTOType[];
   aditionalDetailsList: IGetIdAndNameMapperResponse[];
-  specificConditionsList: IGetIdAndNameMapperResponse[];
-  setDetalhesAdicionaisFn: (e: string[]) => void;
-  setCondicoesEspeciaisFn: (e: string[]) => void;
+  MeioTransporte: number[];
+  setDetalhesAdicionaisFn: React.Dispatch<React.SetStateAction<string>>;
+  setCondicoesEspeciaisFn: React.Dispatch<React.SetStateAction<number[]>>;
 }) {
   return (
     <div className="  pt-4 px-2 ">
       <div className="grid gap-6  ">
         <div>
           <StepHeader title="Detalhes Adicionais" />
-          <Check.CheckBox className="sm:grid-cols-2" values={DetalhesAdicionais} setValuesFn={setDetalhesAdicionaisFn} itemList={aditionalDetailsList} />
+          {/* <Check.Radio className="sm:grid-cols-2" values={DetalhesAdicionais} setValuesFn={setDetalhesAdicionaisFn} itemList={aditionalDetailsList} /> */}
+
+          <Check.Radio
+            disableAllChanges={MeioTransporte.length > 1}
+            defaultValue={MeioTransporte.length > 1 ? String(aditionalDetailsList.find((item) => item.name == "Com Transbordo")?.id) : undefined}
+            // defaultValue={undefined}
+            itemList={aditionalDetailsList}
+            value={DetalhesAdicionais}
+            setValuesFn={setDetalhesAdicionaisFn}
+            className="grid sm:grid-cols-2 gap-2 items-start *:w-full gap-y-2 *:text-start *:justify-start"
+          />
         </div>
         <div>
           <StepHeader title="Condições Especiais" />

@@ -11,10 +11,11 @@ interface IRadio {
   className?: string;
   useNameOnValue?: boolean;
   defaultValue?: string;
+  disableAllChanges?: boolean
   setValuesFn: (e: string) => void;
 }
 
-export default function Radio({ value: Value, itemList, className, defaultValue, setValuesFn, useNameOnValue }: IRadio) {
+export default function Radio({ value: Value, itemList, className, defaultValue,disableAllChanges, setValuesFn, useNameOnValue }: IRadio) {
   const [value, setValue] = useState<string>(Value);
   const [defaultRadioValue] = useState<string>(() => {
     if (defaultValue) {
@@ -31,6 +32,12 @@ export default function Radio({ value: Value, itemList, className, defaultValue,
     }
   });
   
+
+  // useEffect(() => {
+  //   console.log(">>> ",defaultRadioValue);
+    
+  // }, []);
+
   // const [defaultRadioValue] = useState<string>(() => {
   //   if (defaultValue) {
   //     !value && setValue(defaultValue);
@@ -60,7 +67,8 @@ export default function Radio({ value: Value, itemList, className, defaultValue,
       {/* <p>V -{Value}</p> */}
       {itemList.length > 0 ? (
         <RadioAntd.Group
-          defaultValue={value ? value : defaultRadioValue}
+        disabled={disableAllChanges}
+          defaultValue={defaultRadioValue ? defaultRadioValue : value}
           onChange={onChange}
           className={twMerge(
             "*:border *:rounded-xl *:p-3 *:text-gray-600 font-bold  rounded-xl *:border-primary *:flex-1 *:items-center *:justify-center flex items-center ",

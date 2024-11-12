@@ -45,10 +45,7 @@ const Categories = () => {
                 :
                 categories.map((category) => (
                     <Link
-                        onClick={() => {
-                            localStorage.setItem('category_id', category.id.toString());
-                        }}
-                        href={"/simulation"} key={category.id}>
+                        href={`/simulation?category_id=${category.id}`} key={category.id}>
                         <i className={`text-2xl bi bi-${category.icon}`}></i>
                         {category.name}
                     </Link>

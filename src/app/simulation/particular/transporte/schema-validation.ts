@@ -21,7 +21,7 @@ export const stepOneSchema = z.object({
 });
 
 export const stepTwoSchema = z.object({
-  MeioTransporte: z.string().array().min(1, { message: "Selecione pelo menos um 'Meio de Transporte'" }),
+  MeioTransporte: z.number().array().min(1, { message: "Selecione pelo menos um 'Meio de Transporte'" }),
   ClassificacaoProdutoTransportado: z.string().min(1, { message: "Selecione Uma 'Classificação de Produto Transportado'" }),
 });
 
@@ -33,8 +33,8 @@ export const stepThreeSchema = z.object({
 export const stepThreeSchemaProvincias = z.array(z.object({ id: z.string(), name: z.string() })).min(1, { message: "Selecione pelo menos uma 'Província'" });
 
 export const stepFourSchema = z.object({
-  DetalhesAdicionais: z.string().array().min(1, { message: "Selecione pelo menos um 'Detalhes Adicionais'" }),
-  CondicoesEspeciais: z.string().array().min(1, { message: "Selecione pelo menos um 'Condições Especiais'" }),
+  DetalhesAdicionais: z.string().min(1, { message: "Selecione pelo menos um 'Detalhes Adicionais'" }),
+  CondicoesEspeciais: z.number().array().min(1, { message: "Selecione pelo menos um 'Condições Especiais'" }),
 });
 
 export const stepFiveSchema = z.object({

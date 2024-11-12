@@ -23,16 +23,31 @@ interface Policytype {
 interface OptionDTOType {
   id: number;
   name: string;
-  description: null | string;
+  description?: string;
   abbreviation: null;
   required: boolean;
   auto_select: boolean;
   selected: boolean;
-  taggle_ids: number[];
+  taggle_ids?: number[];
   groups?: Group[];
 }
 
 interface Group {
   id: number;
   name: string;
+}
+
+
+
+export interface IIdName {
+  id: number;
+  name: string;
+}
+
+export interface IOption extends IIdName {
+  required: boolean;
+  auto_select: boolean;
+  selected: boolean;
+  taggle_ids?: number[];
+  description?: string;
 }
