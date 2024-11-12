@@ -34,7 +34,7 @@ class PdfSiteControllers extends Controller{
                     'preco_apagar' => $data_pdf['count_formatted'], // Preço a pagar
                 ];
 
-                $pdf = PDF::loadView('view_'.$values['company']['id'], ['dados' => $data_env_view]);
+                $pdf = PDF::loadView('life.life_'.$values['company']['id'], ['dados' => $data_env_view]);
                 $pdfContent = $pdf->output();
     
                 // Adiciona o PDF codificado ao array
@@ -52,8 +52,32 @@ class PdfSiteControllers extends Controller{
 
             foreach ($data_site_pdf['body']['company_simulations'] as $values) {
                 
-                $data_env_view= [
+                $data_pdf = (new DadosPdfContrlloers)->DadosPdfMt($data_site_pdf);
 
+                $data_env_view= [
+                    'user' => $data_site_pdf['body']['user'],
+                    'value' => $data_site_pdf['value'],
+                    'duration' => $data_site_pdf['duration'],
+
+                    'merchandise'=> $data_site_pdf['body']['merchandise'],
+                    'packaging'=> $data_site_pdf['body']['packaging'],
+                    'coverage'=>$data_site_pdf['body']['coverage'],   
+                    'ways'=> $data_site_pdf['body']['ways'],
+                    'countries_from'=> $data_site_pdf['body']['countries_from'],
+                    'countries_to'=> $data_site_pdf['body']['countries_to'],
+                    'states_from'=> $data_site_pdf['body']['states_from'],
+                    'states_to'=> $data_site_pdf['body']['states_to'],
+
+
+                    'idade' => $data_pdf['idade'],
+                    'dataAtual' => $data_pdf['dataAtual'],
+                    'data_inicio' => $data_pdf['data_inicio'], // Data de início
+                    'hora_inicio' => $data_pdf['horaAtual'], // Hora de início
+                    'data_termo' => $data_pdf['dataTermino'], // Data de término
+                    'data_atual '=> $data_pdf['dataAtual'], // Data atual
+                    'preco_apagar' => $data_pdf['count_formatted'], // Preço a pagar
+                    'coverage_duration' => $data_pdf['coverage_duration'],
+                    'coverage_value' => $data_pdf['coverage_value'], 
                 ];
 
                 $pdf = PDF::loadView('mt.mt_'.$values['company']['id'], ['dados' => $data_env_view]);

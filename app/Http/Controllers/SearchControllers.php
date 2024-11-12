@@ -105,7 +105,7 @@ class SearchControllers extends Controller
         }
     }
 
-    public function SelectedAllSimulatorMt(Request $request)
+    public function SelectedAllSimulatorAll(Request $request)
     {
         try {
 

@@ -77,17 +77,26 @@ class SimulationMtControllers extends Controller
                 "body"=> $simulater_mt['body'],
                 "duration" => $request->duration    
             ];
-            $email = $simulater_mt['body']['user'];
-            if(empty($email['email'])){
+
+            if( $request->receber === "site"){
                $date_pdf_site_mt = $pdfSiteControllers->PdfSiteMt($date_params);
             return response()->json(['success'=> true ,'mensage' => 'Dados da simulação Mt salvos com sucesso!','pdf'=> $date_pdf_site_mt], 200);
-            }else{
-                $date_pdf_site_mt = $pdfEmailControllers->PdfEmailMt($date_params);
-            return response()->json(['success'=> true ,'mensage' => 'Dados da simulação Mt salvos com sucesso!','dados'=>$date_pdf_site_mt,'mt'=>$simulater_mt], 200);
-            }
-            
+            }else if( $request->receber === "email"){
 
-            
+                $date_pdf_email_mt = $pdfEmailControllers->PdfEmailMt($date_params);
+                
+                if($date_pdf_email_mt){
+                    return response()->json([
+                        'success'=> true ,
+                        'mensage' => 'Dados da simulação Mt salvos com sucesso! | Pdf enviado verifica o email',
+                        'pdf'=> $simulater_mt
+                    ], 200);
+                }else{
+                    return response()->json([
+                        'success'=> true ,
+                        'mensage' => 'Dados da simulação Mt salvos com sucesso! | Pdf nao enviado erro',], 200);
+                }
+            }
 
         } catch (\Throwable $e) {
             return response()->json([

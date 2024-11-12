@@ -242,6 +242,7 @@ class Validation extends Controller
             'packaging_id',
             'coverage_id',
             'condition_ids',
+            'receber',
         ];
         $Params = [];
 

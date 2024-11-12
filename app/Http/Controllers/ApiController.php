@@ -10,12 +10,12 @@ use App\Http\Controllers\rotaApi;
 
 class ApiController extends Controller{
 
-    public function ApiSimulater($dados,$rote_life){
+    public function ApiSimulater($date,$rote_life){
         try {
             $rotaApiControllers =  env('API_URL');
             
             // Faz uma requisição POST para a API externa
-            $response = Http::post($rotaApiControllers.$rote_life, $dados);
+            $response = Http::post($rotaApiControllers.$rote_life, $date);
             
             // Verifica se a requisição foi bem-sucedida
             if ($response->successful()) {
