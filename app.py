@@ -1,3 +1,5 @@
+import logging
+from logging.handlers import RotatingFileHandler
 from flask import Flask
 from flask_restful import Api
 from flask_cors import CORS
@@ -8,6 +10,22 @@ app = Flask(__name__)
 api = Api(app)
 
 CORS(app, resources={r"/*": {"origins": "*"}})
+
+# log register
+handler = RotatingFileHandler("flask_log.log", maxBytes=10000, backupCount=1)
+handler.setLevel(logging.INFO)
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+handler.setFormatter(formatter)
+app.logger.addHandler(handler)
+app.logger.setLevel(logging.INFO)
+
+
+class Home_Route(Resource):
+    def get(self):
+        return {"status": "success"}
+
+
+api.add_resource(Home_Route, "/")
 
 # ==============================================================================
 api.add_resource(Category_Controller, "/category")
@@ -73,4 +91,4 @@ def page_not_found(e):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5008, debug=True)
+    app.run()
