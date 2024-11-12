@@ -1,4 +1,4 @@
-import { IInsurance } from "@/util/option/option";
+// import { IInsurance } from "@/util/option/option";
 import Image from "next/image";
 // import Link from "next/link";
 

@@ -1,13 +1,10 @@
 // Mark the component as a client component
 "use client";
-import React, { useEffect, useState } from "react";
-import Spinner from "../Spinner/Spinner";
+import { useEffect, useState } from "react";
 import Card from "@/components/Card/Card";
 import { API_LOCATION } from "@/util/api";
 import { useRouter, useSearchParams } from 'next/navigation';
 import Loading from "@/app/loading";
-// import { IInsurance } from "@/types/global";
-// import { IInsurance } from "@/util/option/option";
 
 interface IProps {
   route: string;

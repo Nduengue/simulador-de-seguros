@@ -22,7 +22,9 @@ interface ISeguradora {
 }
 
 interface IInsurance extends Group {
+  id?: number;
   icon: string;
   route?: string;
+  name?:string;
   description?: string;
 }

@@ -321,8 +321,8 @@ export default function Transporte() {
       receber: "site",
     };
 
-    console.log(dataBody);
-    return;
+    // console.log(dataBody);
+    // return;
 
     try {
       const res = await fetch(`${API_LOCATION_2}/api/simulator/mt/save`, {
