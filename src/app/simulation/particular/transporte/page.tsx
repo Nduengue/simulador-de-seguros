@@ -302,7 +302,7 @@ export default function Transporte() {
       country_to_ids: PaisDestino.map((value) => Number(value.id)),
       states_to_ids: provicesAllowed() ? Provincias.map((value) => Number(value.id)) : [],
 
-      from_to_ids: Number(DetalhesAdicionais),
+      transhipment_id: Number(DetalhesAdicionais),
       condition_ids: CondicoesEspeciais.map((value) => Number(value)),
 
       packaging_id: Number(CondicoesManuseioEmbalagemMercadoria),
@@ -317,9 +317,12 @@ export default function Transporte() {
       state_from_ids: [],
       company_ids: [1],
       category_id: 1,
+
+      receber: "site",
     };
 
     console.log(dataBody);
+    return;
 
     try {
       const res = await fetch(`${API_LOCATION_2}/api/simulator/mt/save`, {
