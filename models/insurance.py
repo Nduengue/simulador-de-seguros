@@ -11,6 +11,7 @@ class Insurance(Base):
     domain_id = Column(Integer)
     name = Column(String)
     icon = Column(String)
+    description = Column(String)
     created_at = Column(DateTime(timezone=True))
     updated_at = Column(DateTime(timezone=True))
     deleted = Column(Boolean, default=False)
@@ -24,6 +25,7 @@ class Insurance(Base):
             "id": self.id,
             "name": self.name,
             "icon": self.icon,
+            "description": self.description,
             "route": route.name if route else None,
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,

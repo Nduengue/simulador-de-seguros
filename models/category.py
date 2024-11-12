@@ -10,6 +10,7 @@ class Category(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     description = Column(String)
+    icon = Column(String)
     created_at = Column(DateTime(timezone=True))
     updated_at = Column(DateTime(timezone=True))
     deleted = Column(Boolean, default=False)
@@ -18,7 +19,8 @@ class Category(Base):
         return {
             "id": self.id,
             "name": self.name,
-            "description": self.description
+            "icon": self.icon,
+            "description": self.description,
         }
 
     @staticmethod  # done

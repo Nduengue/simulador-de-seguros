@@ -19,4 +19,4 @@ class InsuranceType_Controller(Resource):
         insurance_types = [
             insurance_type.to_dict() for insurance_type in insurance_types
         ]
-        return {"status": "success", "insurance_types": insurance_types}
+        return insurance_types, 200

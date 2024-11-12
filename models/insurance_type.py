@@ -10,12 +10,18 @@ class InsuranceType(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     icon = Column(String)
+    description = Column(String)
     created_at = Column(DateTime(timezone=True))
     updated_at = Column(DateTime(timezone=True))
     deleted = Column(Boolean, default=False)
 
     def to_dict(self):
-        return {"id": self.id, "name": self.name, "icon": self.icon}
+        return {
+            "id": self.id,
+            "name": self.name,
+            "icon": self.icon,
+            "description": self.description,
+        }
 
     @staticmethod  # done
     def get(get_str):

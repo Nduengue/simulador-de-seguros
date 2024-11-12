@@ -10,6 +10,7 @@ class PolicyType(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     icon = Column(String)
+    description = Column(String)
     created_at = Column(DateTime(timezone=True))
     updated_at = Column(DateTime(timezone=True))
     deleted = Column(Boolean, default=False)
@@ -19,6 +20,7 @@ class PolicyType(Base):
             "id": self.id,
             "name": self.name,
             "icon": self.icon,
+            "description": self.description,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
             "deleted": self.deleted,
         }

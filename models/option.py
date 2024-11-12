@@ -223,18 +223,20 @@ class Option(Base):
             return {"status": "success", "option": option.to_dict()}
 
     @staticmethod
+    def get_options_id_name_js(ids):
+        return [
+            {"id": option.id, "name": option.name}
+            for option in map(Option.get, sorted(ids))
+            if option
+        ]
+
+    @staticmethod
     def get_options(ids):
-        ids = sorted(ids)
-        options = []
-        for opt_id in ids:
-            option = Option.get(opt_id)
-            if option:
-                options.append({"id": option.id, "name": option.name})
-        return options
+        return [option for option in map(Option.get, sorted(ids)) if option]
 
     @staticmethod
     def get_options_og_id(ids, option_group_id):
-        options = Option.get_options(ids)
+        options = Option.get_options_id_name_js(ids)
         return {"options": options, "option_group_id": option_group_id}
 
 

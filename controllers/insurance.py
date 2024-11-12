@@ -1,6 +1,7 @@
 from .imports import *
 from models import Insurance
 
+
 class Insurance_Controller(Resource):
 
     def get(self):
@@ -15,7 +16,7 @@ class Insurance_Controller(Resource):
         category_id = datas.get("category_id", None)
         insurances = Insurance.post(category_id)
         insurances = [insurance.to_dict() for insurance in insurances]
-        return {"status": "success", "insurances": insurances}
+        return insurances, 200
 
     def put(self):
         datas = request.get_json()
@@ -35,4 +36,3 @@ class Insurance_Controller(Resource):
         missing_fields(datas, ["id", "name", "rate_id"])
         res = Insurance.patch(datas["id"])
         return res
-

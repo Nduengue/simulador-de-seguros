@@ -25,10 +25,90 @@ class MtSimulator_Controller(Resource):
                 "state_from_ids",
                 "country_to_ids",
                 "states_to_ids",
-                "from_to_ids",
+                # to do alter name on front side: from_to_ids -> transhipment_id
+                "transhipment_id",
                 "value",
             ],
         )
+        # do the same for all
+        nacional_id = Option.get("Nacional").id
+        internacional_id = Option.get("Internacional").id
+        inter_provincial = Option.get("Interprovincial").id
+        intra_provincial = Option.get("Intra-provincial").id
+        other_continents = Option.get("Outros Continentes").id
+        sadc_countries = Option.get("Países da SADC").id
+
+        selected_from_to = []
+        selected_from_to.append(datas["transhipment_id"])
+
+        # Carregar IDs de grupos de opções
+        group_ids = {
+            "merchandise": OptionGroup.get(
+                "1. Classificação do Produto Transportado"
+            ).id,
+            "ways": OptionGroup.get("2. Meio de Transporte").id,
+            # "from_tos": OptionGroup.get("3. Distância e Destino").id,
+            "countries": OptionGroup.get("countries").id,
+            "states": OptionGroup.get("states").id,
+            "conditions": OptionGroup.get("4. Condições Especiais").id,
+            "packaging": OptionGroup.get("5. Condições de Manuseio e Embalagem").id,
+            "coverage": OptionGroup.get("10. Coberturas").id,
+            "from_tos": OptionGroup.get("transport_scope").id,
+        }
+
+        # Check if transport is national or international
+        countries_from = Option.get_options(datas["country_from_ids"])
+        countries_to = Option.get_options(datas["country_to_ids"])
+        states_from = Option.get_options(datas["state_from_ids"])
+        states_to = Option.get_options(datas["states_to_ids"])
+
+        is_national = (
+            len(countries_from) == 1
+            and countries_from[0].name == "Angola"
+            and len(countries_to) == 1
+            and countries_to[0].name == "Angola"
+        )
+
+        if is_national:
+            selected_from_to.append(nacional_id)
+        elif len(countries_from) > 0 and len(countries_to) > 0:
+            selected_from_to.append(internacional_id)
+
+        # Check provincial transport
+        if (
+            is_national
+            and len(states_from) == 1
+            and len(states_to) == 1
+            and states_from[0].name == states_to[0].name
+        ):
+            selected_from_to.append(intra_provincial)
+        elif is_national and len(states_from) > 0 and len(states_to) > 0:
+            selected_from_to.append(inter_provincial)
+
+        # Check SADC and other continents
+        def are_countries_of(countries, group_name):
+            if not countries:
+                return False
+            return all(
+                any(g["name"] == group_name for g in Option.get_groups(c.id))
+                for c in countries
+            )
+
+        if len(countries_from) > 0 and len(countries_to) > 0:
+            if not (
+                are_countries_of(countries_from, "africa")
+                and are_countries_of(countries_to, "africa")
+            ):
+                selected_from_to.append(other_continents)
+
+            if (
+                not is_national
+                and are_countries_of(countries_from, "sadc")
+                and are_countries_of(countries_to, "sadc")
+            ):
+                selected_from_to.append(sadc_countries)
+
+        print(selected_from_to)
 
         user = user_put({**datas["user"], "group_name": "Simuladores"})["user"]
         duration = datas.get("duration")
@@ -43,20 +123,6 @@ class MtSimulator_Controller(Resource):
         clear_states_if_needed(datas["country_from_ids"], datas["state_from_ids"])
         clear_states_if_needed(datas["country_to_ids"], datas["states_to_ids"])
 
-        # Carregar IDs de grupos de opções
-        group_ids = {
-            "merchandise": OptionGroup.get(
-                "1. Classificação do Produto Transportado"
-            ).id,
-            "ways": OptionGroup.get("2. Meio de Transporte").id,
-            "from_tos": OptionGroup.get("3. Distância e Destino").id,
-            "countries": OptionGroup.get("countries").id,
-            "states": OptionGroup.get("states").id,
-            "conditions": OptionGroup.get("4. Condições Especiais").id,
-            "packaging": OptionGroup.get("5. Condições de Manuseio e Embalagem").id,
-            "coverage": OptionGroup.get("10. Coberturas").id,
-        }
-
         # Obter opções e taxas
         def get_option_and_group(option_id, group_name):
             option = Option.get(option_id)
@@ -70,7 +136,10 @@ class MtSimulator_Controller(Resource):
         packaging = get_option_and_group(datas["packaging_id"], "packaging")
         coverage = get_option_and_group(datas["coverage_id"], "coverage")
         ways = Option.get_options_og_id(datas["way_ids"], group_ids["ways"])
-        from_tos = Option.get_options_og_id(datas["from_to_ids"], group_ids["from_tos"])
+        # from_tos = Option.get_options_og_id(datas["from_to_ids"], group_ids["from_tos"])
+        transport_scope = Option.get_options_og_id(
+            selected_from_to, group_ids["from_tos"]
+        )
         conditions = Option.get_options_og_id(
             datas["condition_ids"], group_ids["conditions"]
         )
@@ -125,7 +194,8 @@ class MtSimulator_Controller(Resource):
 
             for ids, group_name in [
                 (datas["way_ids"], "ways"),
-                (datas["from_to_ids"], "from_tos"),
+                (selected_from_to, "from_tos"),
+                # (datas["from_to_ids"], "from_tos"),
             ]:
                 ids_str = ",".join(map(str, sorted(ids)))
                 rate = Rate.get_by_option(*params, ids_str)
@@ -153,7 +223,7 @@ class MtSimulator_Controller(Resource):
 
         location_options = {
             key: {
-                "options": Option.get_options(datas[value[0]]),
+                "options": Option.get_options_id_name_js(datas[value[0]]),
                 "option_group_id": group_ids[value[1]],
             }
             for key, value in location_data.items()
@@ -167,7 +237,7 @@ class MtSimulator_Controller(Resource):
             "packaging": packaging,
             "coverage": coverage,
             "ways": ways,
-            "from_tos": from_tos,
+            "from_tos": transport_scope,
             "conditions": conditions,
             **location_options,
             "company_simulations": company_simulations,
