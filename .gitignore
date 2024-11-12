@@ -4,3 +4,4 @@ __pycache__/
 *_log*
 *.txt
 *note*.txt
+controllers/env.py

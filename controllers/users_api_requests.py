@@ -1,8 +1,8 @@
 from flask_restful import abort
 import requests, json
+from env import *
 
 # users api base url
-API_URL = "http://127.0.0.1:5006"
 API_POST_HEADERS = {"Content-Type": "application/json"}
 
 
