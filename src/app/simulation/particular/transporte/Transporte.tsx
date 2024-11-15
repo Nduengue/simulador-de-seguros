@@ -399,8 +399,36 @@ export default function Transporte() {
                 body: JSON.stringify(dataBody),
             });
 
-            if (res.ok) Lib.Sonner({ messages: ["Simulação enviada com sucesso!"], type: "success" });
-            else Lib.Sonner({ messages: ["Ocorreu um erro no processo da simulação!\nTente novamente ou contacte o suporte."], type: "error" });
+            if (res.ok) {
+                const response = await res.json();
+                if (response.pdf) {
+                    const openPdf = (pdfData: string) => {
+                        const byteCharacters = atob(pdfData);
+                        const byteNumbers = new Uint8Array(byteCharacters.length);
+                        for (let i = 0; i < byteCharacters.length; i++) {
+                            byteNumbers[i] = byteCharacters.charCodeAt(i);
+                        }
+
+                        const blob = new Blob([byteNumbers], { type: "application/pdf" });
+                        const blobUrl = window.URL.createObjectURL(blob);
+
+                        window.open(blobUrl);
+                        console.log("PDF recebido:", pdfData);
+                    };
+
+                    if (Array.isArray(response.pdf)) {
+                        response.pdf.forEach((element: string) => {
+                            openPdf(element);
+                        });
+                    } else {
+                        openPdf(response.pdf);
+                    }
+                }
+                Lib.Sonner({ messages: ["Simulação enviada com sucesso!"], type: "success" });
+            }
+            else {
+                Lib.Sonner({ messages: ["Ocorreu um erro no processo da simulação!\nTente novamente ou contacte o suporte."], type: "error" });
+            }
 
             console.log("->", res);
         } catch (error) {
@@ -470,8 +498,7 @@ export default function Transporte() {
             </div>
         </div>
     );
-}
-function StepHeader({ title }: { title: string }) {
+} function StepHeader({ title }: { title: string }) {
     return (
         <>
             <h2 className="font-bold text-xl ">{title}</h2>
