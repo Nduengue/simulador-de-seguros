@@ -1,6 +1,15 @@
 from .imports import *
 from .users_api_requests import user_put
-from models import OptionGroup, Option, Rate, Company
+from models import (
+    OptionGroup,
+    Option,
+    Rate,
+    Company,
+    Category,
+    Insurance,
+    InsuranceType,
+    PolicyType,
+)
 
 
 class MtSimulator_Controller(Resource):
@@ -25,11 +34,21 @@ class MtSimulator_Controller(Resource):
                 "state_from_ids",
                 "country_to_ids",
                 "states_to_ids",
-                # to do alter name on front side: from_to_ids -> transhipment_id
                 "transhipment_id",
                 "value",
+                "origin",
+                "destination",
+                "claim_history_id",
+                "franchise_id",
             ],
         )
+
+        # get simulation datas
+        category = Category.get(datas["category_id"]).to_dict()
+        insurance = Insurance.get(datas["insurance_id"]).to_dict()
+        insurance_type = InsuranceType.get(datas["insurance_type_id"]).to_dict()
+        policy_type = PolicyType.get(datas["policy_type_id"]).to_dict()
+
         # do the same for all
         nacional_id = Option.get("Nacional").id
         internacional_id = Option.get("Internacional").id
@@ -47,13 +66,14 @@ class MtSimulator_Controller(Resource):
                 "1. Classificação do Produto Transportado"
             ).id,
             "ways": OptionGroup.get("2. Meio de Transporte").id,
-            # "from_tos": OptionGroup.get("3. Distância e Destino").id,
             "countries": OptionGroup.get("countries").id,
             "states": OptionGroup.get("states").id,
             "conditions": OptionGroup.get("4. Condições Especiais").id,
             "packaging": OptionGroup.get("5. Condições de Manuseio e Embalagem").id,
             "coverage": OptionGroup.get("10. Coberturas").id,
             "from_tos": OptionGroup.get("transport_scope").id,
+            "claim_histories": OptionGroup.get("claim_histories").id,
+            "franchises": OptionGroup.get("9. Franquia - prejuízos indemnizáveis").id,
         }
 
         # Check if transport is national or international
@@ -136,7 +156,11 @@ class MtSimulator_Controller(Resource):
         packaging = get_option_and_group(datas["packaging_id"], "packaging")
         coverage = get_option_and_group(datas["coverage_id"], "coverage")
         ways = Option.get_options_og_id(datas["way_ids"], group_ids["ways"])
-        # from_tos = Option.get_options_og_id(datas["from_to_ids"], group_ids["from_tos"])
+        claim_history = get_option_and_group(
+            datas["claim_history_id"], "claim_histories"
+        )
+        franchise = get_option_and_group(datas["franchise_id"], "franchises")
+
         transport_scope = Option.get_options_og_id(
             selected_from_to, group_ids["from_tos"]
         )
@@ -165,6 +189,8 @@ class MtSimulator_Controller(Resource):
                 (datas["packaging_id"], "packaging"),
                 (datas["coverage_id"], "coverage"),
                 (datas["condition_ids"], "conditions"),
+                (datas["claim_history_id"], "claim_histories"),
+                (datas["franchise_id"], "franchises"),
             ]:
                 if isinstance(option_id, list):
                     rates_ = []
@@ -195,9 +221,11 @@ class MtSimulator_Controller(Resource):
             for ids, group_name in [
                 (datas["way_ids"], "ways"),
                 (selected_from_to, "from_tos"),
-                # (datas["from_to_ids"], "from_tos"),
             ]:
-                ids_str = ",".join(map(str, sorted(ids)))
+                if len(ids) > 1:
+                    ids_str = ",".join(map(str, sorted(ids)))
+                else:
+                    ids_str = ids[0]
                 rate = Rate.get_by_option(*params, ids_str)
                 rates.append(
                     {
@@ -231,6 +259,10 @@ class MtSimulator_Controller(Resource):
 
         res = {
             "status": "success",
+            "category": category,
+            "insurance": insurance,
+            "insurance_type": insurance_type,
+            "policy_type": policy_type,
             "user": user,
             "duration": duration,
             "merchandise": merchandise,
@@ -239,6 +271,8 @@ class MtSimulator_Controller(Resource):
             "ways": ways,
             "from_tos": transport_scope,
             "conditions": conditions,
+            "claim_history": claim_history,
+            "franchise": franchise,
             **location_options,
             "company_simulations": company_simulations,
         }, 200

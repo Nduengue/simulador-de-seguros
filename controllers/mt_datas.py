@@ -28,9 +28,10 @@ class MtDatas_Controller(Resource):
         from_tos = get_options("3. Distância e Destino")
         conditions = get_options("4. Condições Especiais")
         packaging = get_options("5. Condições de Manuseio e Embalagem")
-        # discount = get_options("8. Factores de Descontos")
         franchise = get_options("9. Franquia - prejuízos indemnizáveis")
         coverages = get_options("10. Coberturas")
+        # discount = get_options("8. Factores de Descontos")
+        claim_histories = get_options("claim_histories")
 
         countries = Option.post(option_group_name="countries")
         countries = [
@@ -47,8 +48,9 @@ class MtDatas_Controller(Resource):
             "states": states,
             "conditions": conditions,
             "packaging": packaging,
-            # "discount": discount,
             "franchise": franchise,
             "coverages": coverages,
             "policy_type": policy_type.to_dict(),
+            "claim_histories": claim_histories,
+            # "discount": discount,
         }, 200
