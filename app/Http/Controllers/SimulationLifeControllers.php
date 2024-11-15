@@ -98,7 +98,7 @@ class SimulationLifeControllers extends Controller{
             ], 500);
         }
     }   
-
+        //MAria
     public function Simulator($dados_simulater,$user_id){
         try {
             $user_id = $user_id['user']['id'];
