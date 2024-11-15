@@ -296,4 +296,17 @@ class Validation extends Controller
         }
         return $Params;
     }
+
+    function gerarCodigoSimulacao()
+    {
+        do {
+            // Gera um número aleatório de 6 dígitos (ou modifique conforme necessário).
+            $codigo = random_int(100000, 999999);
+
+            // Verifica se o código já existe no banco de dados (tabela `simulacoes`, coluna `codigo`).
+            $existe = \DB::table('simulations')->where('codigo', $codigo)->exists();
+        } while ($existe); // Continua gerando enquanto o código já existir.
+
+        return $codigo;
+    }
 }

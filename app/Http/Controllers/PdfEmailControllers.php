@@ -79,6 +79,35 @@ class PdfEmailControllers extends Controller{
             foreach ($data_mt_pdf['body']['company_simulations'] as $values) {
 
                 $data_pdf = (new DadosPdfContrlloers)->DadosPdfMt($data_mt_pdf);
+
+                $coverage_rate_count = isset($values['coverage_rate']['value']) ? $values['coverage_rate']['value'] : 0;
+
+                $discount_rate_count = 0; // Inicialize para evitar erros
+                if (isset($values['discounts_rates']) && is_array($values['discounts_rates'])) {
+                    foreach ($values['discounts_rates'] as $discounts_Rates) {
+                        $discount_rate_count += isset($discounts_Rates['value']) ? $discounts_Rates['value'] : 0;
+                    }
+                }
+                
+                $rate_count = 0; // Inicialize para evitar erros
+                if (isset($values['rates']) && is_array($values['rates'])) {
+
+                    foreach ($values['rates'] as $routas) {
+
+                        if (isset($routas['rates']) && is_array($routas['rates'])) {
+                            
+                            foreach ($routas['rates'] as $subRate) {
+                                $rate_count += isset($subRate['value']) ? $subRate['value'] : 0;
+                            }
+                        } else {
+                            $rate_count += isset($routas['value']) ? $routas['value'] : 0;
+                        }
+                    }
+                }
+           
+                $result_rate = $rate_count + $rate_count * ($discount_rate_count / 100);
+             
+                $result_rate = $result_rate * ($coverage_rate_count / 100);
                
                 $data_env_view = [
                     'nome' => "Global Nduengue",
@@ -100,7 +129,7 @@ class PdfEmailControllers extends Controller{
                     'hora_inicio' => $data_pdf['horaAtual'], // Hora de início
                     'data_termo' => $data_pdf['dataTermino'], // Data de término
                     'data_atual '=> $data_pdf['dataAtual'], // Data atual
-                    'preco_apagar' => $data_pdf['count_formatted'], // Preço a pagar
+                    'preco_apagar' => $result_rate, // Preço a pagar
                     'coverage_duration' => $data_mt_pdf['duration'],
                     'coverage_value' => $data_pdf['coverage_value'], 
                 ];

@@ -55,7 +55,7 @@ class SimulationLifeControllers extends Controller{
                     ] ,204);
                 }
 
-                $simulater = $this->Simulator($request->all(),$simulaterLife['body']);
+                $simulater = $this->Simulator($request->all(),$simulaterLife['body'],$validation);
                 if(!$simulater['success']){
                     $this->date_error[] = $simulater;
                 }
@@ -99,9 +99,11 @@ class SimulationLifeControllers extends Controller{
         }
     }   
 
-    public function Simulator($dados_simulater,$user_id){
+    public function Simulator($dados_simulater,$user_id,$validation){
         try {
+
             $user_id = $user_id['user']['id'];
+            $codigo = $validation->gerarCodigoSimulacao();
 
             $simulator = new Simulation();
             $simulator->user_id = $user_id;
@@ -111,6 +113,10 @@ class SimulationLifeControllers extends Controller{
             $simulator->insurance_id = $dados_simulater['insurance_id'];
             $simulator->innsurance_type_id = $dados_simulater['insurance_type_id'];
             $simulator->polici_type_id = $dados_simulater['policy_type_id'];
+            $simulator->origin = "";
+            $simulator->destination = "";
+            $simulator->receber = $dados_simulater['receber'];
+            $simulator->codigo = $codigo;
 
             $simulator->save();
     

@@ -59,6 +59,7 @@ class DadosPdfContrlloers extends Controller
         $idade = Carbon::parse($data_site_pdf['body']['user']['birth_date'])->age;
         $count = 0;
 
+
         $dataAtual = Carbon::now();
         $dataFinal = $dataAtual->copy()->addYears($data_site_pdf['duration']); // Cópia para não modificar $dataAtual
         $horaAtual = $dataAtual->format('H:i:s');
@@ -74,9 +75,11 @@ class DadosPdfContrlloers extends Controller
 
         $count_formatted = number_format($count, 0, ',', '.');
 
+    
+        $formatada = $dataAtual->translatedFormat('d \d\e F \d\e Y');
 
 
-        return [   
+        return [
             'idade' => $idade,
             'dataAtual' => $dataAtual,
             'data_inicio' => $dataAtual->format('Y-m-d'), // Data de início
@@ -84,7 +87,8 @@ class DadosPdfContrlloers extends Controller
             'coverage_duration' => $coverage_duration_months,
             'dataTermino' => $dataTermino,
             'coverage_value' => $coverage_value_formatted,
-            'count_formatted' => $count_formatted
+            'count_formatted' => $count_formatted,
+            'data'=> $formatada,
         ];
     }
 

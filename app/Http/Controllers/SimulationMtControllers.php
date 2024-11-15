@@ -17,12 +17,12 @@ class SimulationMtControllers extends Controller
     public $date_error = [];
 
     public function SalvarSimulacaoMt(
-        Request $request, ApiController $apiController,
+        Request $request,
+        ApiController $apiController,
         Validation $validation,
         PdfSiteControllers $pdfSiteControllers,
         PdfEmailControllers $pdfEmailControllers
-        )
-    {
+    ) {
 
         try {
             $Params = $validation->ValidParamsMt($request->all());
@@ -51,7 +51,7 @@ class SimulationMtControllers extends Controller
             }
 
 
-            $simulater = $this->Simulater($request->all(), $simulater_mt['body']['user']);
+            $simulater = $this->Simulater($request->all(), $simulater_mt['body']['user'],$validation);
             if (!$simulater['success']) {
                 $this->date_error[] = $simulater;
             }
@@ -73,28 +73,43 @@ class SimulationMtControllers extends Controller
                 ], 500);
             }
             $date_params = [
-                "value"=> $request->value,
-                "body"=> $simulater_mt['body'],
-                "duration" => $request->duration    
+                "value" => $request->value,
+                "body" => $simulater_mt['body'],
+                "duration" => $request->duration,
+                'origin'=> $request->origin,
+                'destination'=> $request->destination,
             ];
 
-            if( $request->receber === "site"){
-               $date_pdf_site_mt = $pdfSiteControllers->PdfSiteMt($date_params);
-            return response()->json(['success'=> true ,'mensage' => 'Dados da simulação Mt salvos com sucesso!','pdf'=> $date_pdf_site_mt], 200);
-            }else if( $request->receber === "email"){
+            if ($request->receber === "site") {
+
+                $date_pdf_site_mt = $pdfSiteControllers->PdfSiteMt($date_params);
+
+                return response()->json(
+                    [
+                        'success' => true,
+                        'mensage' =>
+                            'Dados da simulação Mt salvos com sucesso!',
+                        //'dados' => $simulater_mt,
+                        'pdf' => $date_pdf_site_mt,
+                    ],
+                    200
+                );
+
+            } else if ($request->receber === "email") {
 
                 $date_pdf_email_mt = $pdfEmailControllers->PdfEmailMt($date_params);
-                
-                if($date_pdf_email_mt){
+
+                if ($date_pdf_email_mt) {
                     return response()->json([
-                        'success'=> true ,
+                        'success' => true,
                         'mensage' => 'Dados da simulação Mt salvos com sucesso! | Pdf enviado verifica o email',
-                        'pdf'=> $simulater_mt
+                        'dados' => $simulater_mt,
                     ], 200);
-                }else{
+                } else {
                     return response()->json([
-                        'success'=> true ,
-                        'mensage' => 'Dados da simulação Mt salvos com sucesso! | Pdf nao enviado erro',], 200);
+                        'success' => true,
+                        'mensage' => 'Dados da simulação Mt salvos com sucesso! | Pdf nao enviado erro',
+                    ], 200);
                 }
             }
 
@@ -107,9 +122,12 @@ class SimulationMtControllers extends Controller
 
     }
 
-    public function Simulater($data, $user_id)
+    public function Simulater($data, $user_id,$validation)
     {
         try {
+
+            $codigo = $validation->gerarCodigoSimulacao();
+
 
             $simulator = new Simulation();
             $simulator->user_id = $user_id['id'];
@@ -119,12 +137,17 @@ class SimulationMtControllers extends Controller
             $simulator->insurance_id = $data['insurance_id'];
             $simulator->innsurance_type_id = $data['insurance_type_id'];
             $simulator->polici_type_id = $data['policy_type_id'];
+            $simulator->origin = $data['origin'];
+            $simulator->destination = $data['destination'];
+            $simulator->receber = $data['receber'];
+            $simulator->codigo = $codigo;
 
             $simulator->save();
 
             return [
                 'success' => true,
-                'simulator_id' => $simulator->id // Removido espaço extra
+                'simulator_id' => $simulator->id,
+                'codigo' => $codigo,
             ];
 
         } catch (\Throwable $th) {
@@ -151,9 +174,26 @@ class SimulationMtControllers extends Controller
                 $company->company_id = $simulation['company']['id'];
                 $company->save();
 
+                //Add taxas Coberturas
+                $coverage_rate = new Rate();
+                $coverage_rate->rate_id = $simulation['coverage_rate']['id'];
+                $coverage_rate->compania_id = $company->id;
+                $coverage_rate->group_id = $simulation['coverage_rate']['option_group_id'];
+                $coverage_rate->save();
+            
+                //Add discounts_rates
+                foreach ($simulation['discounts_rates'] as $discounts_Rates) {
+                    $discounts_rates = new Rate();
+                    $discounts_rates->rate_id = $discounts_Rates['id'];
+                    $discounts_rates->compania_id = $company->id;
+                    $discounts_rates->group_id = $discounts_Rates['option_group_id'];
+                    $discounts_rates->save();
+                }
+
+                //Add Taxas
                 foreach ($simulation['rates'] as $routas) {
 
-                    if(isset($routas['rates'])){
+                    if (isset($routas['rates'])) {
 
                         foreach ($routas['rates'] as $subRate) {
                             $rate_new = new Rate();
@@ -163,7 +203,7 @@ class SimulationMtControllers extends Controller
                             $rate_new->save();
                         }
 
-                    }else{
+                    } else {
 
                         $rate_new = new Rate();
                         $rate_new->rate_id = $routas['id'];
@@ -171,20 +211,11 @@ class SimulationMtControllers extends Controller
                         $rate_new->group_id = $routas['option_group_id'];
                         $rate_new->save();
                     }
-                    /* 
-                   /*  if (isset($rates['rates']) && is_array($rates['rates'])) {
-                        foreach ($rates['rates'] as $subRate) {
-                            $rate_new = new Rate();
-                            $rate_new->rate_id = $subRate['option_group_id'];
-                            $rate_new->compania_id = $company->id;
-                            $rate_new->group_id = $subRate['option_group_id'];
-                            $rate_new->save();
-                        }
-                    } */ 
+                   
                 }
             }
 
-            
+
             return ['success' => true,];
 
         } catch (\Throwable $th) {
@@ -195,45 +226,6 @@ class SimulationMtControllers extends Controller
             ];
         }
     }
- /*    public function Rates($data, $company_id, $controlador)
-    {
-        try {
-
-            foreach ($data['company_simulations'] as $index => $simulation) {
-
-                if ($index === $controlador) {
-
-                    foreach ($simulation['rates'] as $value) {
-
-                        $rate = new Rate();
-                        $rate->compania_id = $company_id;
-                        $rate->rate_id = $value['id'];
-                        $rate->group_id = $value['option_group_id'];
-                        $rate->save();
-
-                        if (isset($value['rates']) && is_array($value['rates'])) {
-
-                            foreach ($value['rates'] as $rota_r) {
-                                $rate_rate = new Rate();
-                                $rate_rate->compania_id = $company_id;
-                                $rate_rate->rate_id = $rota_r['id'];
-                                $rate_rate->group_id = $rota_r['option_group_id'];
-                                $rate_rate->save();
-                            }
-                        }
-                    }
-                    break;
-                }
-            }
-
-        } catch (\Throwable $th) {
-            return [
-                'success' => false,
-                'mensagem' => 'Erro ao salvar dados da Company',
-                'erros' => $th->getMessage()
-            ];
-        }
-    } */
     public function Options($data, $simulation_id, )
     {
         try {
@@ -255,6 +247,18 @@ class SimulationMtControllers extends Controller
             $option_coverage->option_id = $data['coverage']['id'];
             $option_coverage->option_group_id = $data['coverage']['option_group_id'];
             $option_coverage->save();
+
+            $option_claim_history = new Option();
+            $option_claim_history->simulation_id = $simulation_id;
+            $option_claim_history->option_id = $data['claim_history']['id'];
+            $option_claim_history->option_group_id = $data['claim_history']['option_group_id'];
+            $option_claim_history->save();
+
+            $option_franchise = new Option();
+            $option_franchise->simulation_id = $simulation_id;
+            $option_franchise->option_id = $data['franchise']['id'];
+            $option_franchise->option_group_id = $data['franchise']['option_group_id'];
+            $option_franchise->save();
 
 
             foreach ($data['ways']['options'] as $value) {

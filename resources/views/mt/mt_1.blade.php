@@ -350,7 +350,12 @@
                             <tr>
                                 <td>Duração:</td>
                                 <td class="text-right">
-                                    Anual;
+                                    @if (isset($dados['duration']))
+                                        Temporria;
+                                    @else
+                                        Anual;
+                                    @endif
+                                    
                                 </td>
                             </tr>
                             <tr>
@@ -366,7 +371,7 @@
                                     trânsito:
                                 </td>
                                 <td style="vertical-align: top;" class="text-right">
-                                    Armazém | Armazém.
+                                    {{ $dados['origin'] }} | {{ $dados['destination'] }}.
                                 </td>
                             </tr>
                         </tbody>
@@ -440,8 +445,8 @@
                         <tr>
                             <td style="vertical-align: text-top; padding-right: 20px;">9.1.</td>
                             <td>
-                                {{ $dados['merchandise']['name'] }} - {{ $dados['packaging']['name'] }} - AOA 20 000
-                                000,00;
+                                {{ $dados['merchandise']['name'] }} - {{ $dados['packaging']['name'] }} - AOA 
+                                {{ $dados['value'] }};
                             </td>
                         </tr>
                     </tbody>
@@ -459,7 +464,7 @@
             </div>
             <div class="article-content">
                 <div class="follow-up">
-                    10% dos prejuízos indemnizáveis, no mínimo de AOA 1 000 000,00.
+                    {{ $dados['franchise'] }} dos prejuízos indemnizáveis, no mínimo de AOA 1 000 000,00.
                 </div>
             </div>
         </article>
@@ -476,7 +481,7 @@
                 <div class="follow-up">
                     <ul style="margin: 0; padding:0; list-style-type: none;">
                         <li>Fracionamento Semestral: AOA 7 083 145,80;</li>
-                        <li>Premio Anual Não Estornável: AOA 14 166 291,60;</li>
+                        <li>Premio Anual Não Estornável: AOA {{ $dados['preco_apagar'] }} </li>
                     </ul>
                 </div>
             </div>
@@ -492,7 +497,7 @@
             </div>
             <div class="article-content">
                 <div class="follow-up">
-                    Taxa Total: 1,25% aplicável ao valor transportado por transporte e viagem
+                    Taxa Total: {{ $dados['taxa_total'] }}% aplicável ao valor transportado por transporte e viagem
                 </div>
             </div>
         </article>
@@ -595,7 +600,7 @@
             </div>
         </article>
 
-        <p class="p-date-time text-right">Luanda, 28 de Dezembro de 2022</p>
+        <p class="p-date-time text-right">Luanda, {{ $dados['data'] }}</p>
 
     </section>
 
