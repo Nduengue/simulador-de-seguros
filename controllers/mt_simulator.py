@@ -187,10 +187,10 @@ class MtSimulator_Controller(Resource):
             for option_id, group_name in [
                 (datas["merchandise_id"], "merchandise"),
                 (datas["packaging_id"], "packaging"),
-                (datas["coverage_id"], "coverage"),
+                # (datas["coverage_id"], "coverage"),
                 (datas["condition_ids"], "conditions"),
-                (datas["claim_history_id"], "claim_histories"),
-                (datas["franchise_id"], "franchises"),
+                # (datas["claim_history_id"], "claim_histories"),
+                # (datas["franchise_id"], "franchises"),
             ]:
                 if isinstance(option_id, list):
                     rates_ = []
@@ -235,9 +235,36 @@ class MtSimulator_Controller(Resource):
                     }
                 )
 
+            # get coverage rate
+            coverage_rate = Rate.get_by_option(*params, datas["coverage_id"])
+            # get discountes rates
+            discount_rates = []
+            for option_id, group_name in [
+                (datas["claim_history_id"], "claim_histories"),
+                (datas["franchise_id"], "franchises"),
+            ]:
+                rate = Rate.get_by_option(*params, option_id)
+                discount_rates.append(
+                    {
+                        "id": rate.id if rate else None,
+                        "value": rate.value if rate else None,
+                        "option_group_id": group_ids[group_name],
+                    }
+                )
+
             company_simulations.append(
                 {
                     "company": company.to_dict(),
+                    "coverage_rate": (
+                        {
+                            "id": coverage_rate.id,
+                            "value": coverage_rate.value,
+                            "option_group_id": group_ids["coverage"],
+                        }
+                        if coverage_rate
+                        else None
+                    ),
+                    "discounts_rates": discount_rates,
                     "rates": rates,
                 }
             )
@@ -271,9 +298,9 @@ class MtSimulator_Controller(Resource):
             "ways": ways,
             "from_tos": transport_scope,
             "conditions": conditions,
+            **location_options,
             "claim_history": claim_history,
             "franchise": franchise,
-            **location_options,
             "company_simulations": company_simulations,
         }, 200
 
