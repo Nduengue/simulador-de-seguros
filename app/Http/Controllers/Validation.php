@@ -154,10 +154,15 @@ class Validation extends Controller
             'states_to_ids' => 'required|array|min:1',
             'states_to_ids.*' => 'integer',
 
-            'from_to_ids' => 'required|array|min:1',
-            'from_to_ids.*' => 'integer',
+            'transhipment_id' => 'required|integer|min:1',
 
-            'value' => 'required|numeric|min:1'
+            'value' => 'required|numeric|min:1',
+            'receber' => 'required|string',
+            'origin'=> 'required|string',
+            'destination'=> 'required|string',
+            'claim_history_id'=> 'required.numeric',
+            'franchise_id'=> 'required.numeric',
+
         ], [
             'company_ids.required' => 'É necessário selecionar ao menos uma companhia.',
             'company_ids.*.exists' => 'Uma das companhias selecionadas é inválida.',
@@ -210,11 +215,18 @@ class Validation extends Controller
             'states_to_ids.required' => 'É necessário selecionar ao menos um estado de destino.',
             'states_to_ids.*.exists' => 'Um dos estados de destino selecionados é inválido.',
 
-            'from_to_ids.required' => 'É necessário selecionar ao menos uma rota de origem e destino.',
-            'from_to_ids.*.exists' => 'Uma das rotas de origem e destino selecionadas é inválida.',
+            ' transhipment_id.required' => 'Selecione o tipo de transbordo.',
 
             'value.required' => 'O valor é obrigatório.',
-            'value.numeric' => 'O valor deve ser numérico.'
+            'value.numeric' => 'O valor deve ser numérico.',
+            'receber.required' => 'O valor deve ser string.',
+            'origin.required'=> 'campos obrigatorio',
+            'destination.required'=> 'campos obrigatorio',
+            'claim_history_id.required'=> 'campos obrigatorio',
+            'claim_history_id.numeric' => 'O valor deve ser numérico.',
+            'franchise_id.required'=> 'campos obrigatorio',
+            'franchise_id.numeric' => 'O valor deve ser numérico.',
+
         ]);
 
         return $validatedData->fails();
@@ -237,11 +249,15 @@ class Validation extends Controller
             'state_from_ids',
             'country_to_ids',
             'states_to_ids',
-            'from_to_ids',
+            'transhipment_id',
             'value',
             'packaging_id',
             'coverage_id',
             'condition_ids',
+            'origin',
+            'destination',
+            'claim_history_id',
+            'franchise_id',
             'receber',
         ];
         $Params = [];

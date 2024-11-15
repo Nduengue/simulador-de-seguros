@@ -81,7 +81,7 @@ class PdfEmailControllers extends Controller{
                 $data_pdf = (new DadosPdfContrlloers)->DadosPdfMt($data_mt_pdf);
                
                 $data_env_view = [
-                    'nome' => "Lopes Raimundo Cristovao",
+                    'nome' => "Global Nduengue",
                     'texto' => "Olá, tudo bem?",
                     'user' => $data_mt_pdf['body']['user'],
 

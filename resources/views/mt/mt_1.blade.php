@@ -87,7 +87,7 @@
         }
 
         article {
-            margin-top: 20px;
+            margin-top: 14px;
             /*page-break-inside: avoid;*/
         }
 
@@ -95,23 +95,19 @@
             font-family: 'Times New Roman', Times, serif !important;
             font-size: 12pt;
             font-weight: bold;
-            color: #404040;
+            color: #1F3864;
             height: 50px;
             background-image: url('img/gg3.jpg');
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
+            margin-bottom: 7px;
+            page-break-inside: avoid;
+
         }
 
         .article-content {
             text-align: justify;
-        }
-
-        .article-content ul {
-            margin: 0;
-            padding: 0;
-            padding-left: 62px;
-            padding-right: 20px;
         }
 
         .page-number {
@@ -121,13 +117,16 @@
             font-size: 12px;
         }
 
-        .ul {
+        .article-content .follow-up {
             display: block;
+            margin: 0;
+            padding: 0;
+            margin-left: 59px;
+            margin-right: 19px;
         }
 
-        .ul>.li {
-            /*font-weight: bold;*/
-            list-style: none;
+        table td {
+            padding: 0;
         }
 
         footer {
@@ -176,6 +175,14 @@
             padding-top: 0 !important;
         }
 
+        .w-100 {
+            width: 100%;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
         .spacoo {
             margin-left: 1rem;
             margin-top: 5rem;
@@ -212,21 +219,9 @@
                 </div>
             </div>
             <div class="article-content">
-                <ul class="ul">
-                    <li class="li">Nome: {{ $dados['user']['name'] }} </li>
-                    <li class="li">NIF: {{ $dados['user']['nif'] }} </li>
-                    <li class="li">Sexo: 
-                        @if ( $dados['user']['gender'] == "M" ) 
-                            Masculino
-                        @endif 
-                        @if ( $dados['user']['gender'] == "F" )
-                            Feminino
-                        @endif
-                    
-                    </li>
-                    <li class="li">Idade: {{ $dados['idade'] }} </li>
-                    <li class="li">Email: {{ $dados['user']['email'] }} </li>
-                </ul>
+                <div class="follow-up">
+                    {{ $dados['user']['name'] }}
+                </div>
             </div>
         </article>
 
@@ -239,12 +234,12 @@
                 </div>
             </div>
             <div class="article-content">
-                <ul class="ul">
-                    <li class="li">A presente proposta de seguro determina a obrigação de indemnizar até ao
-                        montante do capital seguro, as perdas ou danos, decorrentes de qualquer
-                        acontecimento de carácter fortuito, súbito e imprevisto, susceptível de fazer
-                        funcionar as garantias do Contrato.</li>
-                </ul>
+                <div class="follow-up">
+                    A presente proposta de seguro determina a obrigação de indemnizar até ao
+                    montante do capital seguro, as perdas ou danos, decorrentes de qualquer
+                    acontecimento de carácter fortuito, súbito e imprevisto, susceptível de fazer
+                    funcionar as garantias do Contrato.
+                </div>
             </div>
         </article>
 
@@ -256,16 +251,17 @@
                     <span class="text" style="margin-left: 25px;">TIPO DE MERCADORIA</span>
                 </div>
             </div>
-            <div class="article-content">
-                <ul class="ul">
-                    <li class="li"></li>
-                    <li class="li">
-                        3.1. {{ $dados['merchandise']['name'] }} em cisterna ou garrafas em vasilhames próprio e adequado
-                        ao transporte terrestre;
-                    </li>
-                    <li class="li">3.2. {{ $dados['packaging']['name'] }}, incluindo carga destinada à actividade petrolífera;
-                    </li>
-                </ul>
+            <div class="article-content" style="padding-left: 20px;">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td style="vertical-align: text-top; padding-right: 20px;">3.1.</td>
+                            <td>
+                                {{ $dados['merchandise']['name'] }} - {{ $dados['packaging']['name'] }};
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </article>
 
@@ -278,16 +274,15 @@
                 </div>
             </div>
             <div class="article-content">
-                <ul class="ul">
-                    <li class="li">O Tomador de Seguro obriga-se a declarar todo e qualquer transporte das
-                        mercadorias acima indicadas, mediante o preenchimento e entrega de um
-                        Certificado de Aplicação, sempre antes do início da viagem, dependendo a
-                        validade do seguro do cumprimento estrito de tal obrigação. No referido
-                        Certificado de Aplicação devem constar os montantes transportados, que,
-                        desde que referido no Certificado, podem incluir 10% para lucros esperados,
-                        a data de início do transporte e a origem.
-                    </li>
-                </ul>
+                <div class="follow-up">
+                    O Tomador de Seguro obriga-se a declarar todo e qualquer transporte das
+                    mercadorias acima indicadas, mediante o preenchimento e entrega de um
+                    Certificado de Aplicação, sempre antes do início da viagem, dependendo a
+                    validade do seguro do cumprimento estrito de tal obrigação. No referido
+                    Certificado de Aplicação devem constar os montantes transportados, que,
+                    desde que referido no Certificado, podem incluir 10% para lucros esperados,
+                    a data de início do transporte e a origem.
+                </div>
             </div>
         </article>
 
@@ -300,40 +295,36 @@
                 </div>
             </div>
             <div class="article-content">
-                <ul class="ul">
+                <div class="follow-up">
+                    As garantias do presente contrato são válidas em caso de sinistro ocorrido
+                    em transporte
 
-                 
-                    <li class="li">As garantias do presente contrato são válidas em caso de sinistro ocorrido
-                        em transporte aéreos, marítimo e 
-                            
-                            @foreach ($dados['ways']['options'] as $options)
-                                {{ $options['name'] }}, 
-                            @endforeach
-                            efectuado entre  
-                            Pais de Partida:
-                            @foreach ($dados['countries_from']['options'] as $options)
-                                {{ $options['name'] }}, 
-                            @endforeach 
-                            <br>
-                            
-                            Provincia de Partida:
-                            @foreach ($dados['states_from']['options'] as $options)
-                                {{ $options['name'] }}, 
-                            @endforeach
-                            <br>
-                            
-                            Pais: de Chegada:
-                            @foreach ($dados['countries_to']['options'] as $options)
-                                {{ $options['name'] }}, 
-                            @endforeach
-                            <br>
-                            
-                            Provincia de Chegada: 
-                            @foreach ($dados['states_to']['options'] as $options)
-                                {{ $options['name'] }}, 
-                            @endforeach
-                        / Luanda-Angola.</li>
-                </ul>
+                    @foreach ($dados['ways']['options'] as $options)
+                        {{ $options['name'] }},
+                    @endforeach
+
+                    @foreach ($dados['states_from']['options'] as $options)
+                        {{ $options['name'] }},
+                    @endforeach
+                    -
+                    efectuado entre
+                    @foreach ($dados['countries_from']['options'] as $options)
+                        {{ $options['name'] }},
+                    @endforeach
+
+                    /
+
+                    @foreach ($dados['states_to']['options'] as $options)
+                        {{ $options['name'] }},
+                    @endforeach
+
+                    -
+
+                    @foreach ($dados['countries_to']['options'] as $options)
+                        {{ $options['name'] }},
+                    @endforeach
+
+                </div>
             </div>
         </article>
 
@@ -346,17 +337,41 @@
                 </div>
             </div>
             <div class="article-content">
-                <ul class="ul">
-                    <li class="li">Início do Seguro: Considera-se como início do risco, as {{ $dados['hora_inicio'] }} do dia
-                        seguinte ao informado pelo cliente;
-                        Duração: Anual {{ $dados['coverage_duration'] }} ;
-                        Períodos: Múltiplos;
-                        Locais definidos para
-                        início {{ $dados['data_inicio'] }} e termino {{ $dados['data_termo'] }} do
-                        trânsito:
-                        Armazém | Armazém.
-                    </li>
-                </ul>
+                <div class="follow-up">
+                    <table class="table-dates w-100">
+                        <tbody>
+                            <tr>
+                                <td style="vertical-align: top; text-align: left;">Início do Seguro:</td>
+                                <td class="text-right">
+                                    Considera-se como início do risco, as 0:00h do dia
+                                    <br>seguinte ao informado pelo cliente;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Duração:</td>
+                                <td class="text-right">
+                                    Anual;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Períodos:</td>
+                                <td class="text-right">
+                                    Múltiplos;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Locais definidos para <br>
+                                    início e termo do <br>
+                                    trânsito:
+                                </td>
+                                <td style="vertical-align: top;" class="text-right">
+                                    Armazém | Armazém.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </article>
 
@@ -369,15 +384,18 @@
                 </div>
             </div>
             <div class="article-content">
-                <ul class="ul">
-                    <li class="li"><span>Nos termos e até aos limites fixados nas Condições Particulares da
-                            Apólice é
-                            garantido o pagamento da indemnização ao Tomador do Seguro pelos riscos
-                            contratados, de acordo com as Condições Gerais aplicáveis, nos termos
-                            seguintes:
-                             SEGURO DE CARGA -{{ $dados['coverage']['name'] }} </span></li>
-                    </li>
-                </ul>
+                <div class="follow-up">
+                    Nos termos e até aos limites fixados nas Condições Particulares da
+                    Apólice é
+                    garantido o pagamento da indemnização ao Tomador do Seguro pelos riscos
+                    contratados, de acordo com as Condições Gerais aplicáveis, nos termos
+                    seguintes:
+                    <ul style="margin: 0;">
+                        <li>
+                            SEGURO DE CARGA -{{ $dados['coverage']['name'] }}
+                        </li>
+                    </ul>
+                </div>
             </div>
         </article>
 
@@ -385,14 +403,97 @@
             <div class="article-title">
                 <div style="height: 10px;"></div>
                 <div style="margin-left: 20px">
-                    <span class="number">4</span>
-                    <span class="text" style="margin-left: 25px;">VALOR DE SEGURO</span>
+                    <span class="number">8</span>
+                    <span class="text" style="margin-left: 25px;">EXCLUSÕES GERAIS</span>
                 </div>
             </div>
             <div class="article-content">
-                <ul class="ul">
-                    <li class="li">Valor: {{ $dados['coverage_value'] }}</li>
-                </ul>
+                <div class="follow-up">
+                    Conforme Exclusões constantes das Condições Gerais – Mercadorias
+                    Transportadas, ficheiro anexo.
+                    Exclusões aplicáveis a todo e qualquer transporte:
+                    <ul style="margin: 0;">
+                        <li>Institute. Radio active Contamination Exclusion Clause;</li>
+                        <li>Rust Oxidation Discoloration Exclusion Clause;</li>
+                        <li>Warand Strikes;</li>
+                        <li>
+                            Transportes efectuados em navios que não se encontrem devidamente
+                            classificados segundo a “Institute Classification Clause” e certificados
+                            pelo SMC (Safety Management Certificate), ao abrigo do Código ISM.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <article>
+            <div class="article-title">
+                <div style="height: 10px;"></div>
+                <div style="margin-left: 20px">
+                    <span class="number">9</span>
+                    <span class="text" style="margin-left: 25px;">VALOR MÁXIMO POR VIAGEM</span>
+                </div>
+            </div>
+            <div class="article-content" style="padding-left: 20px;">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td style="vertical-align: text-top; padding-right: 20px;">9.1.</td>
+                            <td>
+                                {{ $dados['merchandise']['name'] }} - {{ $dados['packaging']['name'] }} - AOA 20 000
+                                000,00;
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </article>
+
+        <article>
+            <div class="article-title">
+                <div style="height: 10px;"></div>
+                <div style="margin-left: 20px">
+                    <span class="number">10</span>
+                    <span class="text" style="margin-left: 25px;">FRANQUIA</span>
+                </div>
+            </div>
+            <div class="article-content">
+                <div class="follow-up">
+                    10% dos prejuízos indemnizáveis, no mínimo de AOA 1 000 000,00.
+                </div>
+            </div>
+        </article>
+
+        <article>
+            <div class="article-title">
+                <div style="height: 10px;"></div>
+                <div style="margin-left: 20px">
+                    <span class="number">11</span>
+                    <span class="text" style="margin-left: 25px;">PRÉMIO ESTIMADO</span>
+                </div>
+            </div>
+            <div class="article-content">
+                <div class="follow-up">
+                    <ul style="margin: 0; padding:0; list-style-type: none;">
+                        <li>Fracionamento Semestral: AOA 7 083 145,80;</li>
+                        <li>Premio Anual Não Estornável: AOA 14 166 291,60;</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <article>
+            <div class="article-title">
+                <div style="height: 10px;"></div>
+                <div style="margin-left: 20px">
+                    <span class="number">12</span>
+                    <span class="text" style="margin-left: 25px;">TAXA TOTAL</span>
+                </div>
+            </div>
+            <div class="article-content">
+                <div class="follow-up">
+                    Taxa Total: 1,25% aplicável ao valor transportado por transporte e viagem
+                </div>
             </div>
         </article>
 
@@ -404,30 +505,44 @@
                     <span class="text" style="margin-left: 25px;">OUTRAS INDICAÇÕES / PROCEDIMENTOS</span>
                 </div>
             </div>
-            <div class="article-content">
-                <ul class="ul">
-                    <li class="li">A Apólice funciona com emissão de Certificados de Transporte e emitidos pela
-                        Seguradora.
-                        O Certificado será emitido no mínimo, no dia do início do transporte (na data em
-                        que a mercadoria saí do armazém do fornecedor).
-                        Será enviado por email para os seguintes e-mails:
-                        Seguradora: Operacoes@globalseguros.ao
-                        No caso do valor a transportar exceder o limite seguro por transporte do
-                        contravalor já referidos no ponto 13, o certificado deverá ser emitido com uma
-                        antecedência mínima de 5 dias úteis.
-                        Procedimento de emissão de recibos:
-                        13.1. Mensalmente será elaborado pelo corretor um mapa, com as informações
-                        de cada transporte/certificado efectuado.</li>
-                    <li>13.2. Este mapa ser-vos-á enviado por email, para vossa conferência. Deverá nos
-                        ser informado, por email, num prazo máximo de 5 dias, se está ou não em
-                        conformidade com os vossos registos.
-                        13.3. O Prémio Estimado será cobrado no início de cada anuidade, sendo
-                        posteriormente ajustado no fim de cada anuidade, através da operação Taxa Total
-                        (no ponto 12) * Total do Valor Transportado anual (no ponto 13.1) havendo lugar
-                        à emissão de recibo suplementar sempre que o resultado for superior ao
-                        inicialmente cobrado.</li>
-                    </li>
-                </ul>
+            <div class="article-content" style="padding-left: 20px;">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td style="vertical-align: text-top;">.</td>
+                            <td>
+                                A Apólice funciona com emissão de Certificados de Transporte e emitidos pela
+                                Seguradora.
+                                O Certificado será emitido no mínimo, no dia do início do transporte (na data em
+                                que a mercadoria saí do armazém do fornecedor).
+                                Será enviado por email para os seguintes e-mails:
+                                Seguradora: <a href="Operacoes@globalseguros.ao">Operacoes@globalseguros.ao</a>
+                                No caso do valor a transportar exceder o limite seguro por transporte do
+                                contravalor já referidos no ponto 13, o certificado deverá ser emitido com uma
+                                antecedência mínima de 5 dias úteis.
+                                Procedimento de emissão de recibos:
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: text-top;">13.1.</td>
+                            <td>
+                                Este mapa ser-vos-á enviado por email, para vossa conferência. Deverá nos
+                                ser informado, por email, num prazo máximo de 5 dias, se está ou não em
+                                conformidade com os vossos registos.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: text-top;">13.3.</td>
+                            <td>
+                                O Prémio Estimado será cobrado no início de cada anuidade, sendo
+                                posteriormente ajustado no fim de cada anuidade, através da operação Taxa Total
+                                (no ponto 12) * Total do Valor Transportado anual (no ponto 13.1) havendo lugar
+                                à emissão de recibo suplementar sempre que o resultado for superior ao
+                                inicialmente cobrado.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </article>
 
@@ -436,15 +551,51 @@
                 <div style="height: 10px;"></div>
                 <div style="margin-left: 20px">
                     <span class="number">14</span>
-                    <span class="text" style="margin-left: 25px;">Prêmio</span>
+                    <span class="text" style="margin-left: 25px;">ANULAÇÕES DE CERTIFICADOS</span>
                 </div>
             </div>
             <div class="article-content">
-                <ul class="ul">
-                    <li class="li">{{ $dados['preco_apagar'] }}</li>
+                <div class="follow-up">
+                    Sempre que um certificado seja anulado ou inutilizado deverá ser dado de
+                    imediato conhecimento desse facto à seguradora, utilizando os mesmos
+                    contactos de email já referidos no ponto 13 dos Procedimentos de actuação para
+                    os seguros de transporte
+                </div>
+            </div>
+        </article>
+
+        <article>
+            <div class="article-title">
+                <div style="height: 10px;"></div>
+                <div style="margin-left: 20px">
+                    <span class="number">15</span>
+                    <span class="text" style="margin-left: 25px;">OUTRAS CONDIÇÕES</span>
+                </div>
+            </div>
+            <div class="article-content">
+                <ul>
+                    <li>
+                        Obrigações do Destinatário dos Bens Seguros
+                        Em caso de avaria, e sem prejuízo da vistoria a realizar nos termos previstos
+                        nas Condições Gerais, o destinatário dos bens seguros, obriga-se a
+                        apresentar imediata reclamação à entidade transportadora, dentro dos prazos
+                        estabelecidos nas disposições contratuais ou nos regulamentos aplicáveis em
+                        vigor, à data da ocorrência, não devendo receber os bens danificados,
+                        enquanto esse facto não for devidamente certificado num documento escrito
+                        e assinado pelo representante dessa entidade, sem o qual não poderá
+                        efectuar qualquer reclamação ao abrigo desta cobertura. O não cumprimento
+                        destas disposições isenta a Seguradora de qualquer responsabilidade em
+                        caso de sinistro;
+
+                    </li>
+                    <li>
+                        Esta proposta tem a validade de 30 dias.
+                    </li>
                 </ul>
             </div>
         </article>
+
+        <p class="p-date-time text-right">Luanda, 28 de Dezembro de 2022</p>
 
     </section>
 

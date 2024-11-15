@@ -93,7 +93,7 @@ class SimulationLifeControllers extends Controller{
                }
         }catch (\Throwable $th) {
             return response()->json([
-                'message' => 'Erro ao salvar dados da simulação',
+                'message' => 'Erro na simulação Life',
                 'erros' => $th->getMessage()
             ], 500);
         }

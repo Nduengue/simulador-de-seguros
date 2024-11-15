@@ -171,7 +171,7 @@ class SimulationMtControllers extends Controller
                         $rate_new->group_id = $routas['option_group_id'];
                         $rate_new->save();
                     }
-/* 
+                    /* 
                    /*  if (isset($rates['rates']) && is_array($rates['rates'])) {
                         foreach ($rates['rates'] as $subRate) {
                             $rate_new = new Rate();
