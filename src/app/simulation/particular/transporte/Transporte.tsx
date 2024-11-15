@@ -154,8 +154,16 @@ export default function Transporte() {
     }, [origin, destination]);
 
     useEffect(() => {
-        originLocal === 'Outro' ? setOrigin(customOrigin) : setOrigin(originLocal);
-        destinationLocal === 'Outro' ? setDestination(customDestination) : setDestination(destinationLocal);
+        if (originLocal === 'Outro') {
+            setOrigin(customOrigin);
+        } else {
+            setOrigin(originLocal);
+        }
+        if (destinationLocal === 'Outro') {
+            setDestination(customDestination);
+        } else {
+            setDestination(destinationLocal);
+        }
     }, [originLocal, destinationLocal, customOrigin, customDestination]);
 
     const steps = [
