@@ -1,3 +1,5 @@
+"use client";
+
 import { Radio as RadioAntd, RadioChangeEvent } from "antd";
 import { PackageOpen } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -31,25 +33,6 @@ export default function Radio({ value: Value, itemList, className, defaultValue,
       return "";
     }
   });
-  
-
-  // useEffect(() => {
-  //   console.log(">>> ",defaultRadioValue);
-    
-  // }, []);
-
-  // const [defaultRadioValue] = useState<string>(() => {
-  //   if (defaultValue) {
-  //     !value && setValue(defaultValue);
-  //     return defaultValue;
-  //   } else if (!defaultValue && !value) {
-  //     const value = useNameOnValue ? itemList[0].name : itemList[0].id;
-  //     setValue(value);
-  //     return value;
-  //   } else {
-  //     return "";
-  //   }
-  // });
 
   const onChange = (e: RadioChangeEvent) => {
     // console.log("radio checked", e.target.value);
@@ -90,3 +73,23 @@ export default function Radio({ value: Value, itemList, className, defaultValue,
     </>
   );
 }
+
+  
+
+  // useEffect(() => {
+  //   console.log(">>> ",defaultRadioValue);
+    
+  // }, []);
+
+  // const [defaultRadioValue] = useState<string>(() => {
+  //   if (defaultValue) {
+  //     !value && setValue(defaultValue);
+  //     return defaultValue;
+  //   } else if (!defaultValue && !value) {
+  //     const value = useNameOnValue ? itemList[0].name : itemList[0].id;
+  //     setValue(value);
+  //     return value;
+  //   } else {
+  //     return "";
+  //   }
+  // });

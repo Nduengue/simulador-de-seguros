@@ -9,6 +9,7 @@ interface GoodsTransportedType {
   franchise: OptionDTOType[];
   coverages: OptionDTOType[];
   policy_type: Policytype;
+  claim_histories: OptionDTOType[];
 }
 
 interface Policytype {
