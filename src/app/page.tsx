@@ -39,19 +39,18 @@ export default function Home() {
 
   useEffect(() => {
     AOS.init({
-      duration: 1000, // Duração da animação em milissegundos
+      duration: 1000,
     });
 
   }, []);
   return (
-    // <div className="min-h-screen p-8 sm:p-20 font-[family-name:var(--font-geist-sans)]">
     <div className="min-h-screen  font-[family-name:var(--font-geist-sans)] translate ease-in-out">
 
       <AppLayout.PublicHeader />
 
       <main className="row-start-2 items-center sm:items-start  text-[#2c2c2c]" id="inicio">
 
-        <div className="relative h-[calc(100vh-89px)] bg-[#eff4f9]">
+        <div className="relative h-[calc(90vh-89px)] bg-[#eff4f9]">
           <Swiper
             slidesPerView={1}
             spaceBetween={30}
@@ -66,25 +65,17 @@ export default function Home() {
             className="swiper"
           >
             <SwiperSlide>
-              <div>
-                Slide 1
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className="flex flex-col items-center justify-center">
-                <Image
-                  className=""
-                  src="/app-icons/save-money.png"
-                  alt="Next.js logo"
-                  width={680}
-                  height={168}
-                  priority
-                />
-                <div className="flex flex-col items-center gap-y-3 px-6 mb-10 text-center">
+              <div className="h-full w-full flex flex-col items-center justify-center" style={{
+                backgroundImage: "url('/insurance.jpg')",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                height: '100%'
+              }}>
+                <div className="h-full  w-full flex flex-col justify-center items-center gap-y-3 px-6 text-center bg-black/50 p-8">
                   <h2 className="text-[#d18f46] font-bold text-3xl ">
                     Simule Seu Seguro em Minutos – Rápido e Fácil!
                   </h2>
-                  <p>
+                  <p className="text-white">
                     Encontre o seguro perfeito para você, comparando opções e preços
                     em um só lugar.
                   </p>
@@ -104,42 +95,14 @@ export default function Home() {
                 </div>
               </div>
             </SwiperSlide>
+            <SwiperSlide>
+              <div>
+                Slide 2
+              </div>
+            </SwiperSlide>
             <SwiperSlide>Slide 3</SwiperSlide>
           </Swiper>
         </div>
-
-        {/* <div className="bg-[#eff4f9] flex flex-col items-center justify-center h-[calc(100vh-89px)]">
-          <Image
-            className=""
-            src="/app-icons/save-money.png"
-            alt="Next.js logo"
-            width={680}
-            height={168}
-            priority
-          />
-          <div className="flex flex-col items-center gap-y-3 px-6 mb-10 text-center">
-            <h2 className="text-[#d18f46] font-bold text-3xl ">
-              Simule Seu Seguro em Minutos – Rápido e Fácil!
-            </h2>
-            <p>
-              Encontre o seguro perfeito para você, comparando opções e preços
-              em um só lugar.
-            </p>
-
-            <div className="flex *:flex *:items-center *:gap-x-1 gap-6 items-center *:bg-[#d18f46] *:p-3 *:rounded-2xl font-bold text-[#fff]">
-              {
-                categories.map((category) => (
-                  <Link
-                    href={`/simulation?category_id=${category.id}`} key={category.id}>
-                    <i className={`text-2xl bi bi-${category.icon}`}></i>
-                    {category.name}
-                  </Link>
-                ))
-              }
-            </div>
-
-          </div>
-        </div> */}
 
         <div className="bg-[#d18f46] flex flex-col items-center p-8 space-y-4">
           <h2 className="font-bold text-5xl text-[#eff4f9] mb-4">Benefícios</h2>
@@ -151,7 +114,6 @@ export default function Home() {
         </div>
 
         <div className="bg-[#eff4f9] py-10">
-          {/* <div className="flex gap-6 gap-x-10 items-center justify-center max-w-6xl mx-auto" id="contacto"> */}
           <div data-aos="zoom-in" className="grid lg:grid-cols-2 gap-4 sm:gap-8 sm:px-0 sm:text-sm md:px-14 max-w-6xl mx-auto">
 
             <div className="sm:flex justify-center items-center mx-auto">
