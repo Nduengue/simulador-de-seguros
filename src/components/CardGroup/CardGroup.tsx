@@ -16,21 +16,7 @@ const CardGroup = ({ route, link }: IProps) => {
   const searchParams = useSearchParams();
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [options, setOptions] = useState<IInsurance[]>([]);
-  // const [linkParam, setLinkParam] = useState<string | null>(null);
-
-
-  /* let category_id = undefined;
-  let insurance_id = undefined;
-  let insurance_type_id = undefined;
-  let policy_type_id = undefined;
-
-  if (typeof window !== "undefined") {
-    category_id = Number(searchParams.get("category_id"));
-    insurance_id = Number(searchParams.get("insurance_id"));
-    insurance_type_id = Number(searchParams.get("insurance_type_id"));
-    policy_type_id = Number(searchParams.get("policy_type_id"));
-  } */
+  const [options, setOptions] = useState<IChoice[]>([]);
 
   const category_id = searchParams.get("category_id") ? Number(searchParams.get("category_id")) : undefined;
   const insurance_id = searchParams.get("insurance_id") ? Number(searchParams.get("insurance_id")) : undefined;
@@ -47,6 +33,7 @@ const CardGroup = ({ route, link }: IProps) => {
         insurance_type_id: insurance_type_id,
         policy_type_id: policy_type_id,
       }),
+      next: { revalidate: 3600 },
     })
       .then((data) => data.json())
       .then((data) => {
@@ -64,7 +51,7 @@ const CardGroup = ({ route, link }: IProps) => {
       });
   }, [route, router, category_id, insurance_id, insurance_type_id, policy_type_id, link, searchParams]);
 
-  const handleCardClick = (option: IInsurance) => {
+  const handleCardClick = (option: IChoice) => {
     if (route === "insurance") {
       router.push(`${link}?category_id=${category_id}&insurance_id=${option.id}`);
       if (option.route) {
@@ -84,7 +71,7 @@ const CardGroup = ({ route, link }: IProps) => {
     <>
       {loading ? (
         <div className="flex *:flex *:items-center *:gap-x-1 gap-6 items-center">
-          <Loading/>
+          <Loading />
         </div>
       ) : options.length > 0 ? (
         options.map((option, index) => (

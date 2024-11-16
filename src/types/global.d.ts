@@ -21,10 +21,10 @@ interface ISeguradora {
   abbreviation: string;
 }
 
-interface IInsurance extends Group {
-  id?: number;
+interface IChoice {
+  id: number;
+  name: string;
   icon: string;
-  route?: string;
-  name?:string;
   description?: string;
+  route?: string;
 }

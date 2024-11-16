@@ -667,7 +667,7 @@ function StepThree({
                         values={PaisOrigem}
                         listOfOptions={listOfCountries}
                         icon={Search}
-                        inputClassName="p-3 rounded-xl border-[#075985]"
+                        inputClassName="px-3 rounded-xl border-[#075985]"
                         suggestionLiClassName="hover:bg-primary"
                         selectedTagsClassName="bg-primary"
                     />
@@ -679,7 +679,7 @@ function StepThree({
                         values={PaisDestino}
                         listOfOptions={listOfCountries}
                         icon={Search}
-                        inputClassName="p-3 rounded-xl border-[#075985]"
+                        inputClassName="px-3 rounded-xl border-[#075985]"
                         suggestionLiClassName="hover:bg-primary"
                         selectedTagsClassName="bg-primary"
                     />
@@ -692,7 +692,7 @@ function StepThree({
                             values={Provincias}
                             listOfOptions={listOfProvinces}
                             icon={Search}
-                            inputClassName="p-3 rounded-xl border-[#075985]"
+                            inputClassName="px-3 rounded-xl border-[#075985]"
                             suggestionLiClassName="hover:bg-primary"
                             selectedTagsClassName="bg-primary"
                         />

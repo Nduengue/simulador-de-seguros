@@ -112,9 +112,7 @@ export function AutoCompleteTagInput({
     setInputValue("");
     setFocusedIndex(-1);
     setIsKeyboardNavigation(false);
-    setSuggestions(suggestions.filter(
-      (suggestion) => suggestion.id !== option.id
-    ));
+    setSuggestions(suggestions.filter((suggestion) => suggestion.id !== option.id));
     setIsListOpen(false);
   };
 
@@ -129,7 +127,7 @@ export function AutoCompleteTagInput({
           {Icon && <Icon className={twMerge("text-gray-400", iconClassName)} />}
           <input
             type="text"
-            className="w-full outline-none"
+            className="w-full outline-none h-11"
             placeholder={placeholder ? placeholder : "Digite para buscar..."}
             value={inputValue}
             onChange={handleInputChange}

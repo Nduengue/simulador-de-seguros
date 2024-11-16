@@ -3,7 +3,7 @@ import Image from "next/image";
 // import Link from "next/link";
 
 interface IProps {
-  option: IInsurance;
+  option: IChoice;
   // link?: string;
   index: number;
   onClick: () => void;

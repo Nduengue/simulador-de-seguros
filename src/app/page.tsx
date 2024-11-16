@@ -2,18 +2,33 @@ import { Input } from "@/components/input";
 import { AppLayout } from "@/components/layout";
 import { APP_BENEFITS } from "@/mocks/benefes";
 import { MailIcon, Phone, Send, User2 } from "lucide-react";
-import Categories from "@/components/Categories/Categories";
+// import Categories from "@/components/Categories/Categories";
 import Image from "next/image";
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import Link from "next/link";
 
 export default function Home() {
+
+  const categories: IChoice[] = [
+    {
+      "id": 1,
+      "name": "Particular",
+      "icon": "person",
+      "description": "Projetado para empresas de todos os portes, oferecendo proteção para ativos empresariais, como equipamentos, instalações e funcionários. Garantir a segurança da sua empresa é essencial para o sucesso e continuidade do seu negócio."
+    },
+    {
+      "id": 2,
+      "name": "Empresarial",
+      "icon": "building",
+      "description": "Ideal para indivíduos que buscam proteger seus bens pessoais, como veículos, imóveis, ou contratar um seguro de vida. Escolha essa opção para garantir sua segurança e tranquilidade no dia a dia."
+    }
+  ];
+
   return (
     // <div className="min-h-screen p-8 sm:p-20 font-[family-name:var(--font-geist-sans)]">
     <div className="min-h-screen  font-[family-name:var(--font-geist-sans)] translate ease-in-out">
 
-     <AppLayout.PublicHeader/>
-
-
+      <AppLayout.PublicHeader />
 
       <main className="row-start-2 items-center sm:items-start  text-[#2c2c2c]" id="inicio">
         <div className="bg-[#eff4f9] flex flex-col items-center justify-center">
@@ -38,8 +53,23 @@ export default function Home() {
               <Link href={"/simulation/business"}><Building2 />Empresarial</Link>
             </div> */}
 
-<Categories />
-            
+            <div className="flex *:flex *:items-center *:gap-x-1 gap-6 items-center  *:bg-[#d18f46] *:p-3 *:rounded-2xl font-bold text-[#fff]">
+              {/* loading ?
+                <div className='flex *:flex *:items-center *:gap-x-1 gap-6 items-center'>
+                    <Spinner />
+                    <p>Loading...</p>
+                </div>
+                : */
+                categories.map((category) => (
+                  <Link
+                    href={`/simulation?category_id=${category.id}`} key={category.id}>
+                    <i className={`text-2xl bi bi-${category.icon}`}></i>
+                    {category.name}
+                  </Link>
+                ))
+              }
+            </div>
+
           </div>
         </div>
 
@@ -62,7 +92,7 @@ export default function Home() {
             priority
           />
 
-<div className="text-[#0F1B2D] md:w-2/5 w-full px-10 ">
+          <div className="text-[#0F1B2D] md:w-2/5 w-full px-10 ">
             <h2 className="font-bold text-3xl sm:text-4xl mb-2">Entrar em contacto</h2>
             <div className="space-y-4 flex flex-col">
               <Input.Default
@@ -93,7 +123,7 @@ export default function Home() {
         </div>
 
       </main>
-     <AppLayout.PublicFooter/>
+      <AppLayout.PublicFooter />
     </div>
   );
 }
