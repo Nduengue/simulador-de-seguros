@@ -5,7 +5,7 @@ interface IProps {
     title: string;
     description: string;
     image: string;
-    // className?: string;
+    // className?: string;s
 }
 
 const SwiperContent = ({ title, description, image/* , className */ }: IProps) => {
