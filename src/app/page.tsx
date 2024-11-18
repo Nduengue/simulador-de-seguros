@@ -19,6 +19,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
 import './styles.css';
+import SwiperContent from "@/components/SwiperContent/SwiperContent";
 
 export default function Home() {
 
@@ -65,35 +66,11 @@ export default function Home() {
             className="swiper"
           >
             <SwiperSlide>
-              <div className="h-full w-full flex flex-col items-center justify-center" style={{
-                backgroundImage: "url('/insurance.jpg')",
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                height: '100%'
-              }}>
-                <div className="h-full  w-full flex flex-col justify-center items-center gap-y-3 px-6 text-center bg-black/50 p-8">
-                  <h2 className="text-[#d18f46] font-bold text-3xl ">
-                    Simule Seu Seguro em Minutos – Rápido e Fácil!
-                  </h2>
-                  <p className="text-white">
-                    Encontre o seguro perfeito para você, comparando opções e preços
-                    em um só lugar.
-                  </p>
-
-                  <div className="flex *:flex *:items-center *:gap-x-1 gap-6 items-center *:bg-[#d18f46] *:p-3 *:rounded-2xl font-bold text-[#fff]">
-                    {
-                      categories.map((category) => (
-                        <Link
-                          href={`/simulation?category_id=${category.id}`} key={category.id}>
-                          <i className={`text-2xl bi bi-${category.icon}`}></i>
-                          {category.name}
-                        </Link>
-                      ))
-                    }
-                  </div>
-
-                </div>
-              </div>
+              <SwiperContent
+                title="Simule Seu Seguro em Minutos – Rápido e Fácil!"
+                description="Encontre o seguro perfeito para você, comparando opções e preços em um só lugar."
+                image="/insurance.jpg"
+              />
             </SwiperSlide>
             <SwiperSlide>
               <div>

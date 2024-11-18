@@ -19,3 +19,11 @@
   height: 100%;
   object-fit: cover;
 }
+
+@media (max-width: 600px) {
+
+  .swiper-button-next,
+  .swiper-button-prev {
+    display: none;
+  }
+}
