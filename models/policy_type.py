@@ -39,7 +39,7 @@ class PolicyType(Base):
             return policy_type
 
     @staticmethod  # done
-    def put(name):
+    def put(name, description=None):
         with DB_Session() as db_session:
             # verify if policy_type already exists
             policy_type = (
@@ -59,6 +59,7 @@ class PolicyType(Base):
             datetime = (current_date_time(),)
             policy_type = PolicyType(
                 name=name,
+                description=description,
                 created_at=datetime,
             )
             db_session.add(policy_type)

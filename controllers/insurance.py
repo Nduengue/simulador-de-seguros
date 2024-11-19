@@ -21,8 +21,9 @@ class Insurance_Controller(Resource):
     def put(self):
         datas = request.get_json()
         missing_fields(datas, ["name"])
+        description = datas.get("description", None)
         icon = datas.get("icon", None)
-        res = Insurance.put(datas["name"], icon)
+        res = Insurance.put(datas["name"], description, icon)
         return res
 
     def delete(self):

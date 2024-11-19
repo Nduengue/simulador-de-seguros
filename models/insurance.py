@@ -50,7 +50,7 @@ class Insurance(Base):
             return insurance
 
     @staticmethod  # done
-    def put(name, icon=None):
+    def put(name, description=None, icon=None):
         with DB_Session() as db_session:
             insurance = Insurance.get(name)
             if insurance:
@@ -61,6 +61,7 @@ class Insurance(Base):
                 }
             insurance = Insurance(
                 name=name,
+                description=description,
                 icon=icon,
                 created_at=current_date_time(),
             )

@@ -1,5 +1,5 @@
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import Column, String, Integer, Boolean, DateTime, desc
+from sqlalchemy import Column, String, Integer, Boolean, DateTime
 from .db_connection import Base, DB_Session, engine, logger, Base
 from .methods import current_date_time
 

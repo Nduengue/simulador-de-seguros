@@ -7,7 +7,8 @@ class PolicyType_Controller(Resource):
     def put(self):
         datas = request.get_json()
         missing_fields(datas, ["name"])
-        res = PolicyType.put(datas["name"])
+        description = datas.get("description", None)
+        res = PolicyType.put(datas["name"], description)
         return res
 
     def post(self):

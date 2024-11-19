@@ -25,4 +25,6 @@ class Category_Controller(Resource):
     def post(self):
         categories = Category.post()
         categories = [category.to_dict() for category in categories]
+        print(categories)
+        print(len(categories))
         return categories, 200
