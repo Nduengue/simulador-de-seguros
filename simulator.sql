@@ -5,7 +5,7 @@
 -- Dumped from database version 16.2
 -- Dumped by pg_dump version 16.2
 
--- Started on 2024-11-15 14:12:25
+-- Started on 2024-11-19 16:27:12
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -161,8 +161,7 @@ CREATE TABLE public.company (
     email character varying,
     created_at timestamp with time zone,
     updated_at timestamp with time zone,
-    deleted boolean,
-    pdf character varying
+    deleted boolean
 );
 
 
@@ -881,10 +880,10 @@ COPY public.ciip_pt (id, ciip_id, policy_type_id, created_at, updated_at, delete
 -- Data for Name: company; Type: TABLE DATA; Schema: public; Owner: simulator_user
 --
 
-COPY public.company (id, name, email, created_at, updated_at, deleted, pdf) FROM stdin;
-1	Global Seguros	global@seguros.ao	2024-10-19 19:15:55.581817+01	\N	f	\N
-2	Giant Seguros SA	giant@seguros.ao	2024-10-19 19:15:55.625509+01	\N	f	\N
-3	Fidelidade Seguros	fidelidade@seguros.ao	2024-10-19 19:15:55.63648+01	\N	f	\N
+COPY public.company (id, name, email, created_at, updated_at, deleted) FROM stdin;
+1	Global Seguros	global@seguros.ao	2024-10-19 19:15:55.581817+01	\N	f
+2	Giant Seguros SA	giant@seguros.ao	2024-10-19 19:15:55.625509+01	\N	f
+3	Fidelidade Seguros	fidelidade@seguros.ao	2024-10-19 19:15:55.63648+01	\N	f
 \.
 
 
@@ -934,10 +933,10 @@ COPY public.insurance (id, domain_id, name, icon, created_at, updated_at, delete
 --
 
 COPY public.insurance_type (id, name, icon, created_at, updated_at, deleted, description) FROM stdin;
-1	\N	seg-resp-civil.png	2024-10-19 20:01:36.3671+01	\N	f	\N
-2	Individual	seg-resp-civil.png	2024-10-19 20:01:44.060396+01	\N	f	\N
-3	Coletivo	seg-resp-civil.png	2024-10-19 20:01:52.211673+01	\N	f	\N
-4	Grupo	seg-resp-civil.png	2024-10-19 20:01:56.493535+01	\N	f	\N
+1	\N	seg-resp-civil.png	2024-10-19 20:01:36.3671+01	\N	f	Nenhuma informação adicional fornecida.
+2	Individual	seg-resp-civil.png	2024-10-19 20:01:44.060396+01	\N	f	Seguro destinado a uma única pessoa, geralmente para proteger contra riscos pessoais, como saúde ou vida.
+3	Coletivo	seg-resp-civil.png	2024-10-19 20:01:52.211673+01	\N	f	Seguro que cobre um grupo de pessoas, como funcionários de uma empresa ou membros de uma associação.
+4	Grupo	seg-resp-civil.png	2024-10-19 20:01:56.493535+01	\N	f	Variante do seguro coletivo com foco em pequenas comunidades ou grupos específicos.
 \.
 
 
@@ -1573,10 +1572,10 @@ COPY public.option_group (id, insurance_id, name, required, created_at, updated_
 13	1	coverages	t	2024-10-21 11:38:13.651444+01	\N	f
 14	1	aggravations	f	2024-10-21 11:38:13.651444+01	\N	f
 15	2	africa	f	2024-10-21 11:38:13.651444+01	\N	f
-16	2	sadc	\N	2024-10-21 11:38:13.651444+01	\N	f
 5	2	5. Condições de Manuseio e Embalagem	t	2024-10-21 11:36:50.054362+01	\N	f
-17	2	transport_scope	\N	2024-10-21 11:38:13.651444+01	\N	f
 18	2	claim_histories	f	2024-10-21 11:38:13.651444+01	\N	f
+16	2	sadc	f	2024-10-21 11:38:13.651444+01	\N	f
+17	2	transport_scope	f	2024-10-21 11:38:13.651444+01	\N	f
 \.
 
 
@@ -1735,17 +1734,17 @@ COPY public.orc (id, ciip_pt_id, company_id, option_id, rate_id, condition_id, v
 --
 
 COPY public.policy_type (id, name, icon, created_at, updated_at, deleted, description) FROM stdin;
-1	Temporária	seg-resp-civil.png	2024-10-19 20:12:20.917286+01	\N	f	\N
-2	Permanente	seg-resp-civil.png	2024-10-19 20:12:31.38923+01	\N	f	\N
-3	Anual	seg-resp-civil.png	2024-10-19 20:12:35.439649+01	\N	f	\N
-4	Aberta	seg-resp-civil.png	2024-10-19 20:12:51.206963+01	\N	f	\N
-5	Universal	seg-resp-civil.png	2024-10-19 20:12:55.298214+01	\N	f	\N
-6	Variável	seg-resp-civil.png	2024-10-19 20:12:59.534442+01	\N	f	\N
-7	Universal Variável	seg-resp-civil.png	2024-10-19 20:13:04.375651+01	\N	f	\N
-8	Indexado	seg-resp-civil.png	2024-10-19 20:13:07.792887+01	\N	f	\N
-9	Despesas Finais	seg-resp-civil.png	2024-10-19 20:13:11.444421+01	\N	f	\N
-10	Conjunto	seg-resp-civil.png	2024-10-19 20:13:14.651137+01	\N	f	\N
-11	Ipotecário	seg-resp-civil.png	2024-10-19 20:13:19.190246+01	\N	f	\N
+1	Temporária	seg-resp-civil.png	2024-10-19 20:12:20.917286+01	\N	f	Apólice válida por um período específico e curto, ideal para coberturas pontuais.
+2	Permanente	seg-resp-civil.png	2024-10-19 20:12:31.38923+01	\N	f	Apólice com cobertura contínua, sem prazo de validade predeterminado.
+3	Anual	seg-resp-civil.png	2024-10-19 20:12:35.439649+01	\N	f	Apólice que oferece cobertura por um ano, com possibilidade de renovação.
+4	Aberta	seg-resp-civil.png	2024-10-19 20:12:51.206963+01	\N	f	Apólice que permite ajustes contínuos nos valores segurados ou itens cobertos durante a vigência.
+5	Universal	seg-resp-civil.png	2024-10-19 20:12:55.298214+01	\N	f	Apólice flexível que combina elementos de seguro e investimento, permitindo alterações na cobertura e prêmios.
+6	Variável	seg-resp-civil.png	2024-10-19 20:12:59.534442+01	\N	f	Apólice cuja cobertura e valores segurados podem variar conforme as condições de mercado ou necessidades do segurado.
+7	Universal Variável	seg-resp-civil.png	2024-10-19 20:13:04.375651+01	\N	f	Combina a flexibilidade do seguro universal com a variação dos valores garantidos, baseada em investimentos.
+8	Indexado	seg-resp-civil.png	2024-10-19 20:13:07.792887+01	\N	f	Apólice com valores e prêmios ajustados com base em índices econômicos, como inflação.
+9	Despesas Finais	seg-resp-civil.png	2024-10-19 20:13:11.444421+01	\N	f	Apólice específica para cobrir custos finais, como funeral e dívidas pendentes.
+10	Conjunto	seg-resp-civil.png	2024-10-19 20:13:14.651137+01	\N	f	Apólice que cobre vários indivíduos ou bens de forma integrada.
+11	Ipotecário	seg-resp-civil.png	2024-10-19 20:13:19.190246+01	\N	f	Seguro vinculado a um empréstimo imobiliário, garantindo o pagamento do saldo devedor em caso de imprevistos.
 \.
 
 
@@ -1811,8 +1810,8 @@ COPY public.rate (id, value, created_at, updated_at, deleted) FROM stdin;
 --
 
 COPY public.route (id, insurance_id, name, created_at, updated_at, deleted) FROM stdin;
-2	2	/simulation/particular/transporte	2024-10-18 19:07:56.155583+01	\N	f
-1	1	/simulation/particular/vida	2024-10-18 19:07:56.155583+01	\N	f
+2	2	/seguros/tiposdeseguros/tiposdeapolices/form/mt	2024-10-18 19:07:56.155583+01	\N	f
+1	1	/seguros/tiposdeseguros/tiposdeapolices/form/vida	2024-10-18 19:07:56.155583+01	\N	f
 \.
 
 
@@ -1822,7 +1821,7 @@ COPY public.route (id, insurance_id, name, created_at, updated_at, deleted) FROM
 -- Name: category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: simulator_user
 --
 
-SELECT pg_catalog.setval('public.category_id_seq', 2, true);
+SELECT pg_catalog.setval('public.category_id_seq', 5, true);
 
 
 --
@@ -2221,7 +2220,7 @@ ALTER TABLE ONLY public.route
     ADD CONSTRAINT route_insurance_id_fkey FOREIGN KEY (insurance_id) REFERENCES public.insurance(id);
 
 
--- Completed on 2024-11-15 14:12:32
+-- Completed on 2024-11-19 16:27:19
 
 --
 -- PostgreSQL database dump complete
