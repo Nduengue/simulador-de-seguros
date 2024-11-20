@@ -121,6 +121,7 @@ class Rate(Base):
                     ),
                     (
                         and_(
+                            # explain: ignore age condition if age is None
                             # cast(Condition.first_value, Integer) <= age,
                             # cast(Condition.second_value, Integer) >= age,
                             # cast(func.regexp_replace(Condition.first_value, '[^0-9]', ''), Integer) <= age,
