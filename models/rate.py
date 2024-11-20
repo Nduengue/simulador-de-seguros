@@ -9,6 +9,7 @@ from sqlalchemy import (
     and_,
     cast,
     desc,
+    func,
 )
 from .db_connection import Base, DB_Session, engine, logger, Base
 from .methods import current_date_time
@@ -120,8 +121,14 @@ class Rate(Base):
                     ),
                     (
                         and_(
-                            cast(Condition.first_value, Integer) <= age,
-                            cast(Condition.second_value, Integer) >= age,
+                            # cast(Condition.first_value, Integer) <= age,
+                            # cast(Condition.second_value, Integer) >= age,
+                            # cast(func.regexp_replace(Condition.first_value, '[^0-9]', ''), Integer) <= age,
+                            # cast(func.regexp_replace(Condition.second_value, '[^0-9]', ''), Integer) >= age,
+                            func.regexp_match(Condition.first_value, r'^[0-9]+$') != None,
+                            func.regexp_match(Condition.second_value, r'^[0-9]+$') != None,
+                            cast(func.regexp_replace(Condition.first_value, '[^0-9]', '', 'g'), Integer) <= age,
+                            cast(func.regexp_replace(Condition.second_value, '[^0-9]', '', 'g'), Integer) >= age,
                             Condition.deleted == False,
                         )
                         if age
