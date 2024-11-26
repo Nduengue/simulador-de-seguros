@@ -32,6 +32,7 @@ class MtDatas_Controller(Resource):
         coverages = get_options("10. Coberturas")
         # discount = get_options("8. Factores de Descontos")
         claim_histories = get_options("claim_histories")
+        min_franchises = get_options("Franquia Mínima")
 
         countries = Option.post(option_group_name="countries")
         countries = [
@@ -52,5 +53,6 @@ class MtDatas_Controller(Resource):
             "coverages": coverages,
             "policy_type": policy_type.to_dict(),
             "claim_histories": claim_histories,
+            "min_franchises": min_franchises,
             # "discount": discount,
         }, 200

@@ -40,8 +40,25 @@ class MtSimulator_Controller(Resource):
                 "destination",
                 "claim_history_id",
                 "franchise_id",
+                # "min_franchise_id",
             ],
         )
+
+        # Carregar IDs de grupos de opções
+        group_ids = {
+            "merchandise": OptionGroup.get("1. Classificação do Produto Transportado").id,
+            "ways": OptionGroup.get("2. Meio de Transporte").id,
+            "countries": OptionGroup.get("countries").id,
+            "states": OptionGroup.get("states").id,
+            "conditions": OptionGroup.get("4. Condições Especiais").id,
+            "packaging": OptionGroup.get("5. Condições de Manuseio e Embalagem").id,
+            "coverage": OptionGroup.get("10. Coberturas").id,
+            "from_tos": OptionGroup.get("transport_scope").id,
+            "claim_histories": OptionGroup.get("claim_histories").id,
+            "franchises": OptionGroup.get("9. Franquia - prejuízos indemnizáveis").id,
+            "min_franchises": OptionGroup.get("Franquia Mínima").id,
+            "value": OptionGroup.get("Valor", datas["insurance_id"]).id,
+        }
 
         # get simulation datas
         category = Category.get(datas["category_id"]).to_dict()
@@ -56,25 +73,11 @@ class MtSimulator_Controller(Resource):
         intra_provincial = Option.get("Intra-provincial").id
         other_continents = Option.get("Outros Continentes").id
         sadc_countries = Option.get("Países da SADC").id
+        option_value_id = Option.get("tran_value").id
+        
 
         selected_from_to = []
         selected_from_to.append(datas["transhipment_id"])
-
-        # Carregar IDs de grupos de opções
-        group_ids = {
-            "merchandise": OptionGroup.get(
-                "1. Classificação do Produto Transportado"
-            ).id,
-            "ways": OptionGroup.get("2. Meio de Transporte").id,
-            "countries": OptionGroup.get("countries").id,
-            "states": OptionGroup.get("states").id,
-            "conditions": OptionGroup.get("4. Condições Especiais").id,
-            "packaging": OptionGroup.get("5. Condições de Manuseio e Embalagem").id,
-            "coverage": OptionGroup.get("10. Coberturas").id,
-            "from_tos": OptionGroup.get("transport_scope").id,
-            "claim_histories": OptionGroup.get("claim_histories").id,
-            "franchises": OptionGroup.get("9. Franquia - prejuízos indemnizáveis").id,
-        }
 
         # Check if transport is national or international
         countries_from = Option.get_options(datas["country_from_ids"])
@@ -160,6 +163,7 @@ class MtSimulator_Controller(Resource):
             datas["claim_history_id"], "claim_histories"
         )
         franchise = get_option_and_group(datas["franchise_id"], "franchises")
+        min_franchise = get_option_and_group(datas["min_franchise_id"], "min_franchises")
 
         transport_scope = Option.get_options_og_id(
             selected_from_to, group_ids["from_tos"]
@@ -187,8 +191,8 @@ class MtSimulator_Controller(Resource):
             for option_id, group_name in [
                 (datas["merchandise_id"], "merchandise"),
                 (datas["packaging_id"], "packaging"),
-                # (datas["coverage_id"], "coverage"),
                 (datas["condition_ids"], "conditions"),
+                # (datas["coverage_id"], "coverage"),
                 # (datas["claim_history_id"], "claim_histories"),
                 # (datas["franchise_id"], "franchises"),
             ]:
@@ -234,7 +238,6 @@ class MtSimulator_Controller(Resource):
                         "option_group_id": group_ids[group_name],
                     }
                 )
-
             # get coverage rate
             coverage_rate = Rate.get_by_option(*params, datas["coverage_id"])
             # get discountes rates
@@ -242,6 +245,7 @@ class MtSimulator_Controller(Resource):
             for option_id, group_name in [
                 (datas["claim_history_id"], "claim_histories"),
                 (datas["franchise_id"], "franchises"),
+                (datas["min_franchise_id"], "min_franchises"),
             ]:
                 rate = Rate.get_by_option(*params, option_id)
                 discount_rates.append(
@@ -249,6 +253,16 @@ class MtSimulator_Controller(Resource):
                         "id": rate.id if rate else None,
                         "value": rate.value if rate else None,
                         "option_group_id": group_ids[group_name],
+                    }
+                )
+            
+            rate = Rate.get_by_option(*params, option_value_id, interval_value=datas["value"])
+            if rate:
+                discount_rates.append(
+                    {
+                        "id": rate.id,
+                        "value": rate.value,
+                        "option_group_id": group_ids["value"],
                     }
                 )
 
@@ -301,6 +315,7 @@ class MtSimulator_Controller(Resource):
             **location_options,
             "claim_history": claim_history,
             "franchise": franchise,
+            "min_franchise": min_franchise,
             "company_simulations": company_simulations,
         }, 200
 

@@ -4,6 +4,7 @@ from sqlalchemy import (
     Column,
     Float,
     Integer,
+    BIGINT,
     Boolean,
     DateTime,
     and_,
@@ -98,7 +99,7 @@ class Rate(Base):
         insurance_type_id,
         policy_type_id,
         option_id,
-        age=None,
+        interval_value=None,
     ):
         with DB_Session() as db_session:
             from models import ORC
@@ -121,18 +122,18 @@ class Rate(Base):
                     ),
                     (
                         and_(
-                            # explain: ignore age condition if age is None
-                            # cast(Condition.first_value, Integer) <= age,
-                            # cast(Condition.second_value, Integer) >= age,
-                            # cast(func.regexp_replace(Condition.first_value, '[^0-9]', ''), Integer) <= age,
-                            # cast(func.regexp_replace(Condition.second_value, '[^0-9]', ''), Integer) >= age,
+                            # explain: ignore interval_value condition if interval_value is None
+                            # cast(Condition.first_value, Integer) <= interval_value,
+                            # cast(Condition.second_value, Integer) >= interval_value,
+                            # cast(func.regexp_replace(Condition.first_value, '[^0-9]', ''), Integer) <= interval_value,
+                            # cast(func.regexp_replace(Condition.second_value, '[^0-9]', ''), Integer) >= interval_value,
                             func.regexp_match(Condition.first_value, r'^[0-9]+$') != None,
                             func.regexp_match(Condition.second_value, r'^[0-9]+$') != None,
-                            cast(func.regexp_replace(Condition.first_value, '[^0-9]', '', 'g'), Integer) <= age,
-                            cast(func.regexp_replace(Condition.second_value, '[^0-9]', '', 'g'), Integer) >= age,
+                            cast(func.regexp_replace(Condition.first_value, '[^0-9]', '', 'g'), BIGINT) <= interval_value,
+                            cast(func.regexp_replace(Condition.second_value, '[^0-9]', '', 'g'), BIGINT) >= interval_value,
                             Condition.deleted == False,
                         )
-                        if age
+                        if interval_value
                         else True
                     ),
                     Ciip.category_id == category_id,

@@ -54,8 +54,7 @@ class LifeSimulator_Controller(Resource):
         def get_rates(ids, params, age=None):
             rates = []
             for id_ in sorted(ids):
-
-                rate = Rate.get_by_option(*params, id_, age=age)
+                rate = Rate.get_by_option(*params, id_, interval_value=age)
                 if rate:
                     rates.append({"id": rate.id, "value": rate.value})
             return rates
