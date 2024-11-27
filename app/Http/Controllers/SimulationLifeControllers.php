@@ -55,7 +55,8 @@ class SimulationLifeControllers extends Controller{
                     ] ,204);
                 }
 
-                $simulater = $this->Simulator($request->all(),$simulaterLife['body'],$validation);
+                $codigo = $validation->gerarCodigoSimulacao();
+                $simulater = $this->Simulator($request->all(),$simulaterLife['body'],$codigo);
                 if(!$simulater['success']){
                     $this->date_error[] = $simulater;
                 }
@@ -81,6 +82,7 @@ class SimulationLifeControllers extends Controller{
                     "value"=> $request->coverage_value,
                     "duration" => $request->coverage_duration,
                     "body"=> $simulaterLife['body'],
+                    "codigo"=> $codigo,
                 ];
 
                if($request->receber === "site"){
@@ -98,11 +100,10 @@ class SimulationLifeControllers extends Controller{
         }
     }   
 
-    public function Simulator($dados_simulater,$user_id,$validation){
+    public function Simulator($dados_simulater,$user_id,$codigo){
         try {
 
             $user_id = $user_id['user']['id'];
-            $codigo = $validation->gerarCodigoSimulacao();
 
             $simulator = new Simulation();
             $simulator->user_id = $user_id;

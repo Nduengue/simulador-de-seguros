@@ -316,8 +316,8 @@
             </section>
 
             <section class="section simulation">
-                <p><strong>Simulação Nº:</strong> 5 10.2024/06</p>
-                <p><strong>Acta Nº:</strong> 0-2024</p>
+                <p><strong>Simulação Nº:</strong>{{ $dados['codigo'] }}</p>
+                <p><strong>Acta Nº:</strong> XXXXX</p>
                 <p><strong>Data de Emissão:</strong> {{ $dados['data_inicio'] }}</p>
                 <p><strong>Ramo:</strong> VIDA CRÉDITO</p>
                 <p><strong>Data de Vencimento:</strong>{{ $dados['data_termo'] }}</p>
@@ -359,7 +359,7 @@
         </section>
 
         <div class="right2">
-            Processado por programa validado n°. 209/AGT/2019
+            Processado por programa validado n°. XXXXXXX
         </div>
 
         <hr>
@@ -473,7 +473,7 @@
         </div>
 
         <div class="right2">
-            Processado por programa validado n°. 209/AGT/2019
+            Processado por programa validado n°. XXXXXXXXX
         </div>
         <footer class="footer">
             <div class="footer-footer">

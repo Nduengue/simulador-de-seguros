@@ -166,7 +166,7 @@
                 <p><strong>Doc Id.:</strong> </p>
                 <p><strong>Tel:</strong> </p>
                 <p><strong>Email:</strong></p>
-                <p><strong>Agente Produtor:</strong> 1881</p>
+                <p><strong>Agente Produtor:</strong> 000</p>
             </section>
 
             <section class="dados-simulacao">
@@ -179,17 +179,17 @@
                             <th></th>
                             <th>
                                 <strong>Efectuado Por:</strong>
-                                <p style="margin:0;">Jelson Pedro Costa</p>
+                                <p style="margin:0;">XXXXX XXXXXX XXXX</p>
                             </th>
                         </tr>
                         <tr class="tabela_row">
                             <td>
                                 <strong>Ramo</strong>
-                                <p style="margin:0;">Jelson Pedro Costa</p>
+                                <p style="margin:0;">XXXXXX XXXXX XXXXXX</p>
                             </td>
                             <td>
                                 <strong>Simulação Nº</strong>
-                                <p style="margin:0;">12345</p>
+                                <p style="margin:0;">{{ $dados['codigo'] }}</p>
                             </td>
                             <td>
                                 <strong>Data Simulação:</strong>
@@ -244,11 +244,18 @@
                         <tr style="border: none; margin: 0; padding: 0;">
                             <td style="margin: 0; padding: 0;">
                                 <strong>Sexo:</strong>
-                                <p style="margin: 0; padding: 0;">Masculino</p>
+                                <p style="margin: 0; padding: 0;">
+                                    @if ($dados['user']['gender'] == 'M')
+                                        Maculino
+                                    @endif
+                                    @if ($dados['user']['gender'] == 'F')
+                                        Feminino
+                                    @endif
+                                </p>
                             </td>
                             <td style="margin: 0; padding: 0;">
                                 <strong>Valor Crédito:</strong>
-                                <p style="margin: 0; padding: 0;">25.000.0000,00 AKZ</p>
+                                <p style="margin: 0; padding: 0;"> </p>
                             </td>
                         </tr>
                         <tr style="border: none; margin: 0; padding: 0;">

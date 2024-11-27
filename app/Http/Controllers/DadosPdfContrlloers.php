@@ -50,6 +50,7 @@ class DadosPdfContrlloers extends Controller
             'aggravations' => $data_lefe['body']['aggravations']['options'],
             'user' => $data_lefe['body']['user'],
 
+            'codigo' => $data_lefe['codigo'],
             'idade' => $idade,
             'coverage_value' => $coverage_value_formatted,
             'coverage_duration' => $data_lefe['duration'],

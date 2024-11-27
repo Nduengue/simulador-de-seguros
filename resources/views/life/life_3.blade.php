@@ -195,8 +195,8 @@
         <section class="person-info">
             <div class="text-end" style="font-size: 10px; margin-bottom: 10px;">
                 <span><strong>Data de Simulação: </strong>{{ $dados['data_atual'] }}</span>
-                <span><strong>Código da Simulação: </strong>121000000000000106493</span>
-                <span><strong>Código do Mediador: </strong>100</span>
+                <span><strong>Código da Simulação: </strong>{{ $dados['codigo'] }}</span>
+                <span><strong>Código do Mediador: </strong>000</span>
             </div>
             <h3>PESSOA SEGURA</h3>
             <p><strong>Nome:</strong> {{ $dados['user']['name'] }} </p>
@@ -219,7 +219,7 @@
                         <td><strong>Fracionamento: </strong>Único</td>
                     </tr>
                     <tr>
-                        <td colspan="3"><strong>Cobrador: </strong>100</td>
+                        <td colspan="3"><strong>Cobrador: </strong>000</td>
                     </tr>
                 </tbody>
             </table>
