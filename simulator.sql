@@ -5,7 +5,7 @@
 -- Dumped from database version 16.2
 -- Dumped by pg_dump version 16.2
 
--- Started on 2024-11-19 16:27:12
+-- Started on 2024-11-27 08:47:33
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -856,7 +856,11 @@ COPY public.category (id, name, description, created_at, updated_at, deleted, ic
 COPY public.ciip (id, category_id, insurance_id, insurance_type_id, created_at, updated_at, deleted) FROM stdin;
 1	1	2	1	2024-10-22 17:05:55.313015+01	\N	f
 2	1	1	2	2024-10-22 17:05:55.313015+01	\N	f
-3	1	1	3	2024-10-22 17:05:55.313015+01	\N	f
+4	2	2	1	2024-10-22 17:05:55.313015+01	\N	f
+3	1	1	5	2024-10-22 17:05:55.313015+01	\N	f
+6	2	1	3	2024-10-22 17:05:55.313015+01	\N	f
+7	2	1	6	2024-10-22 17:05:55.313015+01	\N	f
+5	2	1	4	2024-10-22 17:05:55.313015+01	\N	t
 \.
 
 
@@ -869,8 +873,18 @@ COPY public.ciip (id, category_id, insurance_id, insurance_type_id, created_at, 
 COPY public.ciip_pt (id, ciip_id, policy_type_id, created_at, updated_at, deleted) FROM stdin;
 1	1	1	2024-10-22 17:08:11.166373+01	\N	f
 2	2	1	2024-10-22 17:08:11.166373+01	\N	f
-3	1	3	\N	\N	\N
-4	1	4	\N	\N	\N
+3	1	3	2024-10-22 17:08:11.166373+01	\N	f
+4	1	4	2024-10-22 17:08:11.166373+01	\N	f
+5	2	12	2024-10-22 17:08:11.166373+01	\N	f
+6	2	13	2024-10-22 17:08:11.166373+01	\N	f
+7	2	14	2024-10-22 17:08:11.166373+01	\N	f
+8	2	15	2024-10-22 17:08:11.166373+01	\N	f
+9	2	16	2024-10-22 17:08:11.166373+01	\N	f
+10	2	17	2024-10-22 17:08:11.166373+01	\N	f
+11	3	18	2024-10-22 17:08:11.166373+01	\N	f
+12	3	19	2024-10-22 17:08:11.166373+01	\N	f
+13	6	20	2024-10-22 17:08:11.166373+01	\N	f
+14	6	21	2024-10-22 17:08:11.166373+01	\N	f
 \.
 
 
@@ -911,6 +925,10 @@ COPY public.condition (id, first_value, second_value, created_at, updated_at, de
 15	\N	21,22,23	2024-10-25 15:14:51.194507+01	\N	f
 16	\N	21,24,258	2024-10-25 15:15:02.90396+01	\N	f
 17	\N	21,23,258	2024-10-25 15:15:15.833102+01	\N	f
+18	10000000	50000000	2024-10-25 15:15:15.833102+01	\N	f
+19	50000001	100000000	2024-10-25 15:15:15.833102+01	\N	f
+20	100000001	999999999999999	2024-10-25 15:15:15.833102+01	\N	f
+21	1	9999999 	2024-10-25 15:15:15.833102+01	\N	f
 \.
 
 
@@ -937,6 +955,8 @@ COPY public.insurance_type (id, name, icon, created_at, updated_at, deleted, des
 2	Individual	seg-resp-civil.png	2024-10-19 20:01:44.060396+01	\N	f	Seguro destinado a uma única pessoa, geralmente para proteger contra riscos pessoais, como saúde ou vida.
 3	Coletivo	seg-resp-civil.png	2024-10-19 20:01:52.211673+01	\N	f	Seguro que cobre um grupo de pessoas, como funcionários de uma empresa ou membros de uma associação.
 4	Grupo	seg-resp-civil.png	2024-10-19 20:01:56.493535+01	\N	f	Variante do seguro coletivo com foco em pequenas comunidades ou grupos específicos.
+5	Conjunto	seg-resp-civil.png	2024-10-19 20:01:56.493535+01	\N	f	Variante do seguro coletivo com foco em pequenas comunidades ou grupos específicos.
+6	Benefícios Empresariais	seg-resp-civil.png	2024-10-19 20:01:56.493535+01	\N	f	Variante do seguro coletivo com foco em pequenas comunidades ou grupos específicos.
 \.
 
 
@@ -1270,8 +1290,6 @@ COPY public.ogo (id, option_group_id, option_id, created_at, updated_at, deleted
 517	9	261	2024-10-25 16:54:44.769548+01	\N	f
 518	9	262	2024-10-25 16:54:56.861297+01	\N	f
 519	9	263	2024-10-25 16:54:59.135943+01	\N	f
-520	4	27	\N	\N	\N
-521	4	30	\N	\N	\N
 522	17	17	2024-10-25 16:45:53.765979+01	\N	f
 523	17	20	2024-10-25 16:45:53.765979+01	\N	f
 524	17	21	2024-10-25 16:45:53.765979+01	\N	f
@@ -1282,6 +1300,12 @@ COPY public.ogo (id, option_group_id, option_id, created_at, updated_at, deleted
 529	17	258	2024-10-25 16:45:53.765979+01	\N	f
 530	18	264	2024-10-25 16:45:53.765979+01	\N	f
 531	18	265	2024-10-25 16:45:53.765979+01	\N	f
+532	19	266	2024-10-24 10:55:46.164731+01	\N	f
+533	19	267	2024-10-24 10:55:46.164731+01	\N	f
+534	19	268	2024-10-24 10:55:46.164731+01	\N	f
+535	20	269	2024-10-24 10:55:47.652598+01	\N	f
+521	4	30	2024-10-25 16:45:53.765979+01	\N	f
+520	4	27	2024-10-25 16:45:53.765979+01	\N	f
 \.
 
 
@@ -1550,6 +1574,10 @@ COPY public.option (id, name, description, abbreviation, required, created_at, u
 259	5%	\N	\N	f	2024-10-25 16:54:05.104915+01	\N	f	f	f
 264	Sim	Sim, se a entidade transportadora possui um ou mais históricos de sinistros.	Y	f	2024-10-25 16:54:05.104915+01	\N	f	f	f
 265	Não	Não, se a entidade não tem nenhum histórico de sinistro.	N	f	2024-10-25 16:54:05.104915+01	\N	f	f	f
+268	AOA 1 500 000,00	\N	\N	f	2024-10-21 13:05:57.493342+01	\N	f	f	f
+267	AOA 750 000,00	\N	\N	f	2024-10-21 13:05:57.493342+01	\N	f	f	f
+266	AOA 150 000,00	\N	\N	f	2024-10-21 13:05:57.493342+01	\N	f	f	t
+269	tran_value	\N	\N	f	2024-10-19 21:11:03.235934+01	\N	f	f	f
 \.
 
 
@@ -1576,6 +1604,8 @@ COPY public.option_group (id, insurance_id, name, required, created_at, updated_
 18	2	claim_histories	f	2024-10-21 11:38:13.651444+01	\N	f
 16	2	sadc	f	2024-10-21 11:38:13.651444+01	\N	f
 17	2	transport_scope	f	2024-10-21 11:38:13.651444+01	\N	f
+19	2	Franquia Mínima	t	2024-10-21 11:38:13.651444+01	\N	f
+20	2	Valor	t	2024-10-21 11:38:13.651444+01	\N	f
 \.
 
 
@@ -1723,7 +1753,14 @@ COPY public.orc (id, ciip_pt_id, company_id, option_id, rate_id, condition_id, v
 81	1	1	37	43	\N	t	2024-10-28 17:17:15.137376+01	\N	f
 82	1	1	38	44	\N	t	2024-10-28 17:17:25.938243+01	\N	f
 83	1	1	264	23	\N	t	2024-10-22 18:07:48.582851+01	\N	f
-84	1	1	265	45	\N	t	2024-10-22 18:07:48.582851+01	\N	f
+85	1	1	266	23	\N	t	2024-10-22 18:17:36.857024+01	\N	f
+86	1	1	267	37	\N	t	2024-10-22 18:17:36.857024+01	\N	f
+87	1	1	268	46	\N	t	2024-10-22 18:17:36.857024+01	\N	f
+89	1	1	269	27	19	t	2024-10-28 17:08:12.647641+01	\N	f
+84	1	1	265	26	\N	t	2024-10-22 18:07:48.582851+01	\N	f
+90	1	1	269	28	20	t	2024-10-28 17:08:12.647641+01	\N	f
+88	1	1	269	26	18	t	2024-10-22 18:17:36.857024+01	\N	f
+91	1	1	269	23	21	t	2024-10-28 17:17:15.137376+01	\N	f
 \.
 
 
@@ -1745,6 +1782,16 @@ COPY public.policy_type (id, name, icon, created_at, updated_at, deleted, descri
 9	Despesas Finais	seg-resp-civil.png	2024-10-19 20:13:11.444421+01	\N	f	Apólice específica para cobrir custos finais, como funeral e dívidas pendentes.
 10	Conjunto	seg-resp-civil.png	2024-10-19 20:13:14.651137+01	\N	f	Apólice que cobre vários indivíduos ou bens de forma integrada.
 11	Ipotecário	seg-resp-civil.png	2024-10-19 20:13:19.190246+01	\N	f	Seguro vinculado a um empréstimo imobiliário, garantindo o pagamento do saldo devedor em caso de imprevistos.
+12	Inteira	seg-resp-civil.png	2024-10-19 20:13:19.190246+01	\N	f	Seguro vinculado a um empréstimo imobiliário, garantindo o pagamento do saldo devedor em caso de imprevistos.
+13	Universal	seg-resp-civil.png	2024-10-19 20:13:19.190246+01	\N	f	Seguro vinculado a um empréstimo imobiliário, garantindo o pagamento do saldo devedor em caso de imprevistos.
+14	Variável	seg-resp-civil.png	2024-10-19 20:13:19.190246+01	\N	f	Seguro vinculado a um empréstimo imobiliário, garantindo o pagamento do saldo devedor em caso de imprevistos.
+15	Universal Variável	seg-resp-civil.png	2024-10-19 20:13:19.190246+01	\N	f	Seguro vinculado a um empréstimo imobiliário, garantindo o pagamento do saldo devedor em caso de imprevistos.
+16	Indexado	seg-resp-civil.png	2024-10-19 20:13:19.190246+01	\N	f	Seguro vinculado a um empréstimo imobiliário, garantindo o pagamento do saldo devedor em caso de imprevistos.
+17	Despesas Finais (ou Funeral)	seg-resp-civil.png	2024-10-19 20:13:19.190246+01	\N	f	Seguro vinculado a um empréstimo imobiliário, garantindo o pagamento do saldo devedor em caso de imprevistos.
+18	Sobrevivência	seg-resp-civil.png	2024-10-19 20:13:19.190246+01	\N	f	Para Casais
+19	Hipotecário	seg-resp-civil.png	2024-10-19 20:13:19.190246+01	\N	f	Seguro vinculado a um empréstimo imobiliário, garantindo o pagamento do saldo devedor em caso de imprevistos.
+20	Grupo	seg-resp-civil.png	2024-10-19 20:13:19.190246+01	\N	f	para colaboradores
+21	Empresa 	seg-resp-civil.png	2024-10-19 20:13:19.190246+01	\N	f	geral para a organização
 \.
 
 
@@ -1799,7 +1846,7 @@ COPY public.rate (id, value, created_at, updated_at, deleted) FROM stdin;
 42	100	2024-10-28 17:11:28.615269+01	\N	f
 43	77	2024-10-28 17:11:35.449901+01	\N	f
 44	46	2024-10-28 17:11:40.976847+01	\N	f
-45	-5	2024-10-28 17:11:40.976847+01	\N	f
+46	3	2024-10-28 17:11:40.976847+01	\N	f
 \.
 
 
@@ -1821,7 +1868,7 @@ COPY public.route (id, insurance_id, name, created_at, updated_at, deleted) FROM
 -- Name: category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: simulator_user
 --
 
-SELECT pg_catalog.setval('public.category_id_seq', 5, true);
+SELECT pg_catalog.setval('public.category_id_seq', 9, true);
 
 
 --
@@ -1830,7 +1877,7 @@ SELECT pg_catalog.setval('public.category_id_seq', 5, true);
 -- Name: ciip_id_seq; Type: SEQUENCE SET; Schema: public; Owner: simulator_user
 --
 
-SELECT pg_catalog.setval('public.ciip_id_seq', 3, true);
+SELECT pg_catalog.setval('public.ciip_id_seq', 7, true);
 
 
 --
@@ -1839,7 +1886,7 @@ SELECT pg_catalog.setval('public.ciip_id_seq', 3, true);
 -- Name: ciip_pt_id_seq; Type: SEQUENCE SET; Schema: public; Owner: simulator_user
 --
 
-SELECT pg_catalog.setval('public.ciip_pt_id_seq', 4, true);
+SELECT pg_catalog.setval('public.ciip_pt_id_seq', 14, true);
 
 
 --
@@ -1857,7 +1904,7 @@ SELECT pg_catalog.setval('public.company_id_seq', 3, true);
 -- Name: condition_id_seq; Type: SEQUENCE SET; Schema: public; Owner: simulator_user
 --
 
-SELECT pg_catalog.setval('public.condition_id_seq', 17, true);
+SELECT pg_catalog.setval('public.condition_id_seq', 21, true);
 
 
 --
@@ -1875,7 +1922,7 @@ SELECT pg_catalog.setval('public.insurance_id_seq', 2, true);
 -- Name: insurance_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: simulator_user
 --
 
-SELECT pg_catalog.setval('public.insurance_type_id_seq', 4, true);
+SELECT pg_catalog.setval('public.insurance_type_id_seq', 6, true);
 
 
 --
@@ -1893,7 +1940,7 @@ SELECT pg_catalog.setval('public.o_type_id_seq', 4, true);
 -- Name: ogo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: simulator_user
 --
 
-SELECT pg_catalog.setval('public.ogo_id_seq', 531, true);
+SELECT pg_catalog.setval('public.ogo_id_seq', 535, true);
 
 
 --
@@ -1902,7 +1949,7 @@ SELECT pg_catalog.setval('public.ogo_id_seq', 531, true);
 -- Name: option_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: simulator_user
 --
 
-SELECT pg_catalog.setval('public.option_group_id_seq', 18, true);
+SELECT pg_catalog.setval('public.option_group_id_seq', 20, true);
 
 
 --
@@ -1911,7 +1958,7 @@ SELECT pg_catalog.setval('public.option_group_id_seq', 18, true);
 -- Name: option_id_seq; Type: SEQUENCE SET; Schema: public; Owner: simulator_user
 --
 
-SELECT pg_catalog.setval('public.option_id_seq', 265, true);
+SELECT pg_catalog.setval('public.option_id_seq', 269, true);
 
 
 --
@@ -1929,7 +1976,7 @@ SELECT pg_catalog.setval('public.option_option_id_seq', 48, true);
 -- Name: orc_id_seq; Type: SEQUENCE SET; Schema: public; Owner: simulator_user
 --
 
-SELECT pg_catalog.setval('public.orc_id_seq', 84, true);
+SELECT pg_catalog.setval('public.orc_id_seq', 91, true);
 
 
 --
@@ -1938,7 +1985,7 @@ SELECT pg_catalog.setval('public.orc_id_seq', 84, true);
 -- Name: policy_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: simulator_user
 --
 
-SELECT pg_catalog.setval('public.policy_type_id_seq', 11, true);
+SELECT pg_catalog.setval('public.policy_type_id_seq', 21, true);
 
 
 --
@@ -1947,7 +1994,7 @@ SELECT pg_catalog.setval('public.policy_type_id_seq', 11, true);
 -- Name: rate_id_seq; Type: SEQUENCE SET; Schema: public; Owner: simulator_user
 --
 
-SELECT pg_catalog.setval('public.rate_id_seq', 45, true);
+SELECT pg_catalog.setval('public.rate_id_seq', 46, true);
 
 
 --
@@ -2220,7 +2267,7 @@ ALTER TABLE ONLY public.route
     ADD CONSTRAINT route_insurance_id_fkey FOREIGN KEY (insurance_id) REFERENCES public.insurance(id);
 
 
--- Completed on 2024-11-19 16:27:19
+-- Completed on 2024-11-27 08:47:45
 
 --
 -- PostgreSQL database dump complete
