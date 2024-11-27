@@ -62,7 +62,7 @@ class Validation extends Controller
     {
         $validator = Validator::make($data, [
             'user.name' => 'required|string',
-            'user.nif' => 'required|string|max:20',
+           /*  'user.nif' => 'required|string|max:20', */
             'user.gender' => 'required|in:M,F',
             'user.birth_date' => 'required|date|before:today',
             'user.email' => 'nullable|email',
@@ -70,8 +70,8 @@ class Validation extends Controller
             'coverage_duration' => 'required|integer|min:1',
             'coverage_ids' => 'required|array|min:1',
             'coverage_ids.*' => 'integer',
-            'aggravation_ids' => 'required|array|min:1',
-            'aggravation_ids.*' => 'integer',
+            /* 'aggravation_ids' => 'required|array|min:1',
+            'aggravation_ids.*' => 'integer', */
             'insurance_type_id' => 'required|integer',
             'category_id' => 'required|integer',
             'insurance_id' => 'required|integer',
@@ -121,7 +121,7 @@ class Validation extends Controller
             'company_ids.*' => 'integer|exists:companies,id',
 
             'user.name' => 'required|string|max:255',
-            'user.nif' => 'required|string|max:20',
+            /* 'user.nif' => 'required|string|max:20', */
             'user.phone_number' => 'required|string|max:15',
             'user.email' => 'required|email',
 
@@ -258,6 +258,7 @@ class Validation extends Controller
             'destination',
             'claim_history_id',
             'franchise_id',
+            'min_franchise_id',
             'receber',
         ];
         $Params = [];
