@@ -19,7 +19,7 @@ class DadosPdfContrlloers extends Controller
         $horaAtual = $dataAtual->format('H:i:s');
 
         // Calcular a duração em meses
-        $coverage_duration_months = $data_lefe['duration'] * 12; // Duração em meses
+        //$coverage_duration_months = $data_lefe['duration'] * 12; // Duração em meses
         $dataTermino = $dataFinal->format('Y-m-d'); // Data de término formatada
         // Formatação dos valores
         $coverage_value_formatted = number_format($data_lefe['value'], 0, ',', '.');
@@ -52,7 +52,7 @@ class DadosPdfContrlloers extends Controller
 
             'idade' => $idade,
             'coverage_value' => $coverage_value_formatted,
-            'coverage_duration' => $coverage_duration_months,
+            'coverage_duration' => $data_lefe['duration'],
             'data_inicio' => $dataAtual->format('Y-m-d'), // Data de início
             'hora_inicio' => $horaAtual, // Hora de início
             'data_termo' => $dataTermino, // Data de término

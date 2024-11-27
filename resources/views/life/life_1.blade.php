@@ -199,7 +199,7 @@
                         <tr class="tabela_row">
                             <td>
                                 <strong>Duração</strong>
-                                <p style="margin:0;">{{ $dados['coverage_duration'] }}</p>
+                                <p style="margin:0;">{{ $dados['coverage_duration'] }} Meses</p>
                             </td>
                             <td>
                                 <strong>Data Fim:</strong>
