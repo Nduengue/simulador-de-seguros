@@ -75,6 +75,8 @@ class SimulationMtControllers extends Controller
             $date_params = [
                 "value" => $request->value,
                 "body" => $simulater_mt['body'],
+
+                
                 "duration" => $request->duration,
                 'origin'=> $request->origin,
                 'destination'=> $request->destination,
@@ -87,9 +89,7 @@ class SimulationMtControllers extends Controller
                 return response()->json(
                     [
                         'success' => true,
-                        'mensage' =>
-                            'Dados da simulação Mt salvos com sucesso!',
-                        //'dados' => $simulater_mt,
+                        'mensage' => 'Dados da simulação Mt salvos com sucesso!',
                         'pdf' => $date_pdf_site_mt,
                     ],
                     200
@@ -259,6 +259,12 @@ class SimulationMtControllers extends Controller
             $option_franchise->option_id = $data['franchise']['id'];
             $option_franchise->option_group_id = $data['franchise']['option_group_id'];
             $option_franchise->save();
+
+            $option_min_franchise = new Option();
+            $option_min_franchise->simulation_id = $simulation_id;
+            $option_min_franchise->option_id = $data['min_franchise']['id'];
+            $option_min_franchise->option_group_id = $data['min_franchise']['option_group_id'];
+            $option_min_franchise->save();
 
 
             foreach ($data['ways']['options'] as $value) {

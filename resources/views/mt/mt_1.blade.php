@@ -464,7 +464,7 @@
             </div>
             <div class="article-content">
                 <div class="follow-up">
-                    {{ $dados['franchise'] }} dos prejuízos indemnizáveis, no mínimo de AOA 1 000 000,00.
+                    {{ $dados['franchise'] }} dos prejuízos indemnizáveis, no mínimo de {{ $dados['min_franchise'] }}.
                 </div>
             </div>
         </article>
@@ -480,7 +480,7 @@
             <div class="article-content">
                 <div class="follow-up">
                     <ul style="margin: 0; padding:0; list-style-type: none;">
-                        <li>Fracionamento Semestral: AOA 7 083 145,80;</li>
+                        <li>Fracionamento Semestral: AOA {{ $dados['preco_apagar_semestral'] }};</li>
                         <li>Premio Anual Não Estornável: AOA {{ $dados['preco_apagar'] }} </li>
                     </ul>
                 </div>

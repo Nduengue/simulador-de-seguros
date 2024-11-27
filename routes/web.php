@@ -20,7 +20,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 Route::get('/', function () {
 
 
-    $pdf = PDF::loadView('giante',);
-    return $pdf->stream('invoice.pdf');
-    //return view('giante');
+    //$pdf = PDF::loadView('giante',);
+    //return $pdf->stream('invoice.pdf');
+    return view('teste.parceiros');
 });

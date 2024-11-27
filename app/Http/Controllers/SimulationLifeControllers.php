@@ -36,7 +36,7 @@ class SimulationLifeControllers extends Controller{
                     return response()->json([
                         'error' => 'Campos inválidos',
                         'Campos' => $validatefields
-                    ], 422);
+                    ], status: 422);
                 }
         
  
@@ -81,7 +81,6 @@ class SimulationLifeControllers extends Controller{
                     "value"=> $request->coverage_value,
                     "duration" => $request->coverage_duration,
                     "body"=> $simulaterLife['body'],
-                    'email' => $request->user['email'],
                 ];
 
                if($request->receber === "site"){
