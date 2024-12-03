@@ -25,7 +25,7 @@ class MtSimulator_Controller(Resource):
                 "insurance_id",
                 "insurance_type_id",
                 "policy_type_id",
-                "merchandise_id",
+                "merchandise_ids",
                 "way_ids",
                 "condition_ids",
                 "packaging_id",
@@ -155,7 +155,6 @@ class MtSimulator_Controller(Resource):
                 "option_group_id": group_ids[group_name],
             }
 
-        merchandise = get_option_and_group(datas["merchandise_id"], "merchandise")
         packaging = get_option_and_group(datas["packaging_id"], "packaging")
         coverage = get_option_and_group(datas["coverage_id"], "coverage")
         ways = Option.get_options_og_id(datas["way_ids"], group_ids["ways"])
@@ -164,6 +163,8 @@ class MtSimulator_Controller(Resource):
         )
         franchise = get_option_and_group(datas["franchise_id"], "franchises")
         min_franchise = get_option_and_group(datas["min_franchise_id"], "min_franchises")
+
+        merchandise = Option.get_options_og_id(datas["merchandise_ids"], group_ids["merchandise"])
 
         transport_scope = Option.get_options_og_id(
             selected_from_to, group_ids["from_tos"]
@@ -187,14 +188,20 @@ class MtSimulator_Controller(Resource):
             if not company:
                 continue
 
+            # verify the biggest rate in merchandise_ids
+            biggest_rate = 0
+            merchandise_id = -1
+            for id_ in datas["merchandise_ids"]:
+                rate = Rate.get_by_option(*params, id_)
+                if rate and rate.value > biggest_rate:
+                    biggest_rate = rate.value
+                    merchandise_id = id_
+
             rates = []
             for option_id, group_name in [
-                (datas["merchandise_id"], "merchandise"),
+                (merchandise_id, "merchandise"),
                 (datas["packaging_id"], "packaging"),
                 (datas["condition_ids"], "conditions"),
-                # (datas["coverage_id"], "coverage"),
-                # (datas["claim_history_id"], "claim_histories"),
-                # (datas["franchise_id"], "franchises"),
             ]:
                 if isinstance(option_id, list):
                     rates_ = []
@@ -257,14 +264,13 @@ class MtSimulator_Controller(Resource):
                 )
             
             rate = Rate.get_by_option(*params, option_value_id, interval_value=datas["value"])
-            if rate:
-                discount_rates.append(
-                    {
-                        "id": rate.id,
-                        "value": rate.value,
-                        "option_group_id": group_ids["value"],
-                    }
-                )
+            discount_rates.append(
+                {
+                    "id": rate.id if rate else None,
+                    "value": rate.value if rate else None,
+                    "option_group_id": group_ids["value"],
+                }
+            )
 
             company_simulations.append(
                 {
