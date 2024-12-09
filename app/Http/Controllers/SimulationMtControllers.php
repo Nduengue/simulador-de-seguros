@@ -229,13 +229,7 @@ class SimulationMtControllers extends Controller
     public function Options($data, $simulation_id, )
     {
         try {
-
-            $option_merchandise = new Option();
-            $option_merchandise->simulation_id = $simulation_id;
-            $option_merchandise->option_id = $data['merchandise']['id'];
-            $option_merchandise->option_group_id = $data['merchandise']['option_group_id'];
-            $option_merchandise->save();
-
+        
             $option_packaging = new Option();
             $option_packaging->simulation_id = $simulation_id;
             $option_packaging->option_id = $data['packaging']['id'];
@@ -265,6 +259,15 @@ class SimulationMtControllers extends Controller
             $option_min_franchise->option_id = $data['min_franchise']['id'];
             $option_min_franchise->option_group_id = $data['min_franchise']['option_group_id'];
             $option_min_franchise->save();
+
+            foreach ($data['merchandise']['options'] as $value) {
+
+                $option_merchandise = new Option();
+                $option_merchandise->simulation_id = $simulation_id;
+                $option_merchandise->option_id = $value['id'];
+                $option_merchandise->option_group_id = $data['merchandise']['option_group_id'];
+                $option_merchandise->save();
+            }
 
 
             foreach ($data['ways']['options'] as $value) {

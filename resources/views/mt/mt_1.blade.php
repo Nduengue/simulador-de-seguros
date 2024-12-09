@@ -6,187 +6,187 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proposta de Seguro de Responsabilidade Civil</title>
     <style>
-        @page {
-            margin: 0;
-        }
+    @page {
+        margin: 0;
+    }
 
-        html {
-            width: 210mm;
-            margin: auto;
-            background-color: #333;
-        }
+    html {
+        width: 210mm;
+        margin: auto;
+        background-color: #333;
+    }
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 12pt;
-            font-weight: 50;
-            padding: 0;
-            margin: 0;
-            background-color: #fff;
-            color: #595959;
-            box-sizing: border-box;
-            page-break-after: always;
-            position: relative;
-        }
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12pt;
+        font-weight: 50;
+        padding: 0;
+        margin: 0;
+        background-color: #fff;
+        color: #595959;
+        box-sizing: border-box;
+        page-break-after: always;
+        position: relative;
+    }
 
-        .cover {
-            position: relative;
-            width: 210mm;
-            height: 297mm;
-            background-image: url('img/bg1.png');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-            page-break-after: always;
-        }
+    .cover {
+        position: relative;
+        width: 210mm;
+        height: 297mm;
+        background-image: url('img/bg1.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        page-break-after: always;
+    }
 
-        .cover .title {
-            font-family: 'Times New Roman', Times, serif;
-            font-size: 16pt;
-            position: absolute;
-            width: 300px;
-            align-items: center;
-            color: #fff;
-            font-weight: bold;
-            left: 80px;
-            bottom: 340px;
-        }
+    .cover .title {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 16pt;
+        position: absolute;
+        width: 300px;
+        align-items: center;
+        color: #fff;
+        font-weight: bold;
+        left: 80px;
+        bottom: 340px;
+    }
 
-        header {
-            width: 100%;
-            position: fixed;
-            top: 30px;
-            left: 0;
-            z-index: 1000;
-        }
+    header {
+        width: 100%;
+        position: fixed;
+        top: 30px;
+        left: 0;
+        z-index: 1000;
+    }
 
-        header>div {
-            width: 100%;
-            width: 210mm;
-            margin: auto;
-            top: 30px;
-            left: 80px;
-        }
+    header>div {
+        width: 100%;
+        width: 210mm;
+        margin: auto;
+        top: 30px;
+        left: 80px;
+    }
 
-        header img {
-            width: 400px;
-            margin-left: 80px;
-        }
+    header img {
+        width: 400px;
+        margin-left: 80px;
+    }
 
-        .page-break {
-            page-break-before: always;
-        }
+    .page-break {
+        page-break-before: always;
+    }
 
-        section {
-            padding: 0 20.5mm 55mm 20.5mm;
-            line-height: 1.6;
-            position: relative;
-            box-sizing: border-box;
-            top: 100px;
-            bottom: 500px;
-        }
+    section {
+        padding: 0 20.5mm 55mm 20.5mm;
+        line-height: 1.6;
+        position: relative;
+        box-sizing: border-box;
+        top: 100px;
+        bottom: 500px;
+    }
 
-        article {
-            margin-top: 14px;
-            /*page-break-inside: avoid;*/
-        }
+    article {
+        margin-top: 14px;
+        /*page-break-inside: avoid;*/
+    }
 
-        .article-title {
-            font-family: 'Times New Roman', Times, serif !important;
-            font-size: 12pt;
-            font-weight: bold;
-            color: #1F3864;
-            height: 50px;
-            background-image: url('img/gg3.jpg');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-            margin-bottom: 7px;
-            page-break-inside: avoid;
+    .article-title {
+        font-family: 'Times New Roman', Times, serif !important;
+        font-size: 12pt;
+        font-weight: bold;
+        color: #1F3864;
+        height: 50px;
+        background-image: url('img/gg3.jpg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        margin-bottom: 7px;
+        page-break-inside: avoid;
 
-        }
+    }
 
-        .article-content {
-            text-align: justify;
-        }
+    .article-content {
+        text-align: justify;
+    }
 
-        .page-number {
-            position: fixed;
-            bottom: 10mm;
-            right: 10mm;
-            font-size: 12px;
-        }
+    .page-number {
+        position: fixed;
+        bottom: 10mm;
+        right: 10mm;
+        font-size: 12px;
+    }
 
-        .article-content .follow-up {
-            display: block;
-            margin: 0;
-            padding: 0;
-            margin-left: 59px;
-            margin-right: 19px;
-        }
+    .article-content .follow-up {
+        display: block;
+        margin: 0;
+        padding: 0;
+        margin-left: 59px;
+        margin-right: 19px;
+    }
 
-        table td {
-            padding: 0;
-        }
+    table td {
+        padding: 0;
+    }
 
-        footer {
-            width: 100%;
-            height: 80px;
-            color: #fff;
-            text-align: center;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            box-sizing: border-box;
-            z-index: 1000;
-            font-size: 7pt;
-            text-align: left;
-        }
+    footer {
+        width: 100%;
+        height: 80px;
+        color: #fff;
+        text-align: center;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        box-sizing: border-box;
+        z-index: 1000;
+        font-size: 7pt;
+        text-align: left;
+    }
 
-        footer div.ff {
-            width: 210mm;
-            margin: auto;
-        }
+    footer div.ff {
+        width: 210mm;
+        margin: auto;
+    }
 
-        footer div.ff>div {
-            margin: auto;
-            width: 605px;
-            height: 37px;
-            left: 100px;
-            padding: 0 33px;
-            background-color: #89cce4;
-            border-radius: 0 40px 40px 25px;
-            padding-top: 5px;
-        }
+    footer div.ff>div {
+        margin: auto;
+        width: 605px;
+        height: 37px;
+        left: 100px;
+        padding: 0 33px;
+        background-color: #89cce4;
+        border-radius: 0 40px 40px 25px;
+        padding-top: 5px;
+    }
 
-        footer p {
-            margin: 0;
-        }
+    footer p {
+        margin: 0;
+    }
 
-        footer>p {
-            margin-top: 5px;
-        }
+    footer>p {
+        margin-top: 5px;
+    }
 
-        .m-0 {
-            margin: 0 !important;
-        }
+    .m-0 {
+        margin: 0 !important;
+    }
 
-        .pt-0 {
-            padding-top: 0 !important;
-        }
+    .pt-0 {
+        padding-top: 0 !important;
+    }
 
-        .w-100 {
-            width: 100%;
-        }
+    .w-100 {
+        width: 100%;
+    }
 
-        .text-right {
-            text-align: right;
-        }
+    .text-right {
+        text-align: right;
+    }
 
-        .spacoo {
-            margin-left: 1rem;
-            margin-top: 5rem;
-        }
+    .spacoo {
+        margin-left: 1rem;
+        margin-top: 5rem;
+    }
     </style>
 </head>
 
@@ -254,10 +254,19 @@
             <div class="article-content" style="padding-left: 20px;">
                 <table>
                     <tbody>
+                        @foreach ($dados['merchandise']['options'] as $key => $values)
                         <tr>
-                            <td style="vertical-align: text-top; padding-right: 20px;">3.1.</td>
+
                             <td>
-                                {{ $dados['merchandise']['name'] }} - {{ $dados['packaging']['name'] }};
+                                3.{{ $key + 1 }}. 
+                                {{ $values['name'] }}
+                            </td>
+                        </tr>
+
+                        @endforeach
+                        <tr>
+                            <td>
+                                Produtos {{ $dados['packaging']['name'] }};
                             </td>
                         </tr>
                     </tbody>
@@ -300,28 +309,28 @@
                     em transporte
 
                     @foreach ($dados['ways']['options'] as $options)
-                        {{ $options['name'] }},
+                    {{ $options['name'] }},
                     @endforeach
 
                     @foreach ($dados['states_from']['options'] as $options)
-                        {{ $options['name'] }},
+                    {{ $options['name'] }},
                     @endforeach
                     -
                     efectuado entre
                     @foreach ($dados['countries_from']['options'] as $options)
-                        {{ $options['name'] }},
+                    {{ $options['name'] }},
                     @endforeach
 
                     /
 
                     @foreach ($dados['states_to']['options'] as $options)
-                        {{ $options['name'] }},
+                    {{ $options['name'] }},
                     @endforeach
 
                     -
 
                     @foreach ($dados['countries_to']['options'] as $options)
-                        {{ $options['name'] }},
+                    {{ $options['name'] }},
                     @endforeach
 
                 </div>
@@ -351,11 +360,11 @@
                                 <td>Duração:</td>
                                 <td class="text-right">
                                     @if (isset($dados['duration']))
-                                        Temporria;
+                                    Temporria;
                                     @else
-                                        Anual;
+                                    Anual;
                                     @endif
-                                    
+
                                 </td>
                             </tr>
                             <tr>
@@ -445,7 +454,11 @@
                         <tr>
                             <td style="vertical-align: text-top; padding-right: 20px;">9.1.</td>
                             <td>
-                                {{ $dados['merchandise']['name'] }} - {{ $dados['packaging']['name'] }} - AOA 
+                                @foreach ($dados['merchandise']['options'] as $options)
+                                {{ $options['name'] }}
+                                /
+                                @endforeach
+                                - {{ $dados['packaging']['name'] }} - AOA
                                 {{ $dados['value'] }};
                             </td>
                         </tr>

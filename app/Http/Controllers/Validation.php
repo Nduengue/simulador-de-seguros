@@ -132,7 +132,7 @@ class Validation extends Controller
             'insurance_type_id' => 'required|integer',
             'policy_type_id' => 'required|integer',
 
-            'merchandise_id' => 'required|integer',
+            'merchandise_ids' => 'required|integer',
             'way_ids' => 'required|array|min:1',
             'way_ids.*' => 'integer',
 
@@ -189,7 +189,7 @@ class Validation extends Controller
             'policy_type_id.required' => 'O tipo de apólice é obrigatório.',
             'policy_type_id.exists' => 'O tipo de apólice selecionado é inválido.',
 
-            'merchandise_id.required' => 'O ID da mercadoria é obrigatório.',
+            'merchandise_ids.required' => 'O ID da mercadoria é obrigatório.',
             'merchandise_id.exists' => 'A mercadoria selecionada é inválida.',
 
             'way_ids.required' => 'É necessário selecionar ao menos um meio de transporte.',
@@ -243,7 +243,7 @@ class Validation extends Controller
             'insurance_id',
             'insurance_type_id',
             'policy_type_id',
-            'merchandise_id',
+            'merchandise_ids',
             'way_ids',
             'country_from_ids',
             'state_from_ids',
