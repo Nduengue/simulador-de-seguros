@@ -1,6 +1,6 @@
 import logging
 from logging.handlers import RotatingFileHandler
-from flask import Flask
+from flask import Flask, jsonify
 from flask_restful import Api
 from flask_cors import CORS
 
