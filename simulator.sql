@@ -5,7 +5,7 @@
 -- Dumped from database version 16.2
 -- Dumped by pg_dump version 16.2
 
--- Started on 2024-11-27 08:47:33
+-- Started on 2024-12-13 16:47:13
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1316,16 +1316,10 @@ COPY public.ogo (id, option_group_id, option_id, created_at, updated_at, deleted
 --
 
 COPY public.option (id, name, description, abbreviation, required, created_at, updated_at, deleted, auto_select, selected) FROM stdin;
-2	Invalidez Total e Permanente	\N	ITP	f	2024-10-19 20:50:10.147396+01	\N	f	f	f
-3	Doenças Críticas	\N	DC	f	2024-10-19 20:50:15.540007+01	\N	f	f	f
 5	Produtos perecíveis	\N	\N	f	2024-10-19 20:51:38.593295+01	\N	f	f	f
 7	Produtos perigosos	\N	\N	f	2024-10-19 21:11:03.001856+01	\N	f	f	f
-39	Hipertensão Controlada	Pressão arterial elevada controlada com medicação	\N	f	2024-10-19 21:15:57.529977+01	\N	f	f	f
-40	Hipertensão Não Controlada	Pressão arterial elevada sem controle adequado	\N	f	2024-10-19 21:16:07.613093+01	\N	f	f	f
 41	Diabetes Tipo 2 Controlada	Diabetes controlada com dieta e medicação	\N	f	2024-10-19 21:16:28.632186+01	\N	f	f	f
-42	Diabetes Tipo 2 Não Controlada	Diabetes sem controle adequado	\N	f	2024-10-19 21:16:37.153535+01	\N	f	f	f
-25	Cobertura para Avaria/Perda Total	\N	\N	f	2024-10-19 21:11:03.224963+01	\N	f	f	f
-26	Roubo/Pirataria (marítimo)	\N	\N	f	2024-10-19 21:11:03.235934+01	\N	f	f	f
+4	Mercadorias gerais	\N	\N	f	2024-10-19 20:50:38.006118+01	\N	f	f	t
 59	Barbados	\N	\N	f	2024-10-21 13:03:31.848009+01	\N	f	f	f
 28	Embalados profissionalmente	\N	\N	f	2024-10-19 21:11:03.25987+01	\N	f	f	t
 9	Terrestre	Rodoviário ou Ferroviário	\N	f	2024-10-19 21:11:03.023796+01	\N	f	f	f
@@ -1334,17 +1328,15 @@ COPY public.option (id, name, description, abbreviation, required, created_at, u
 12	Aéreo	Internacional ou Interprovincial	\N	f	2024-10-19 21:11:03.06121+01	\N	f	f	f
 24	Sem Transbordo	\N	\N	f	2024-10-19 21:11:03.210003+01	\N	f	f	t
 23	Com Transbordo	\N	\N	f	2024-10-19 21:11:03.198036+01	\N	f	f	f
+39	Hipertensão Controlada	Pressão arterial elevada controlada com medicação	\N	f	2024-10-19 21:15:57.529977+01	\N	f	f	f
 1	Morte por qualquer causa	\N	M	t	2024-10-19 20:45:48.592748+01	\N	f	t	t
 33	Valor total das mercadorias transportadas acima de 100 M	\N	\N	f	2024-10-19 21:11:03.33467+01	\N	f	t	f
 32	Valor total das mercadorias transportadas acima de 50 M até 100 M	\N	\N	f	2024-10-19 21:11:03.324696+01	\N	f	t	f
 31	Valor total das mercadorias transportadas até 50 M	\N	\N	f	2024-10-19 21:11:03.295774+01	\N	f	t	f
 34	Frequência dos transportes	\N	\N	f	2024-10-19 21:11:03.371571+01	\N	f	t	f
-27	Cobertura para eventos climáticos severos	Inundações ou Tempestades	\N	f	2024-10-19 21:11:03.247909+01	\N	f	f	f
 8	Produtos de alto valor	Joias, Eletrónicos	\N	f	2024-10-19 21:11:03.011828+01	\N	f	f	f
-30	Riscos Geopolíticos (Áreas de conflito)	\N	\N	f	2024-10-19 21:11:03.285801+01	\N	f	f	f
 37	Cláusula B	\N	\N	f	2024-10-19 21:11:03.409469+01	\N	f	f	f
 38	Cláusula C	\N	\N	f	2024-10-19 21:11:03.420442+01	\N	f	f	f
-4	Mercadorias gerais	\N	\N	f	2024-10-19 20:50:38.006118+01	\N	f	f	f
 43	Afeganistão	\N	\N	f	2024-10-21 13:03:22.882934+01	\N	f	f	f
 44	África do Sul	\N	\N	f	2024-10-21 13:03:31.552661+01	\N	f	f	f
 45	Albânia	\N	\N	f	2024-10-21 13:03:31.573605+01	\N	f	f	f
@@ -1408,6 +1400,14 @@ COPY public.option (id, name, description, abbreviation, required, created_at, u
 35	Sem histórico de sinistros	\N	\N	f	2024-10-19 21:11:03.383539+01	\N	f	f	f
 36	Cláusula A	\N	\N	f	2024-10-19 21:11:03.395507+01	\N	f	f	t
 29	Sem proteção ou embalagem inadequada	\N	\N	f	2024-10-19 21:11:03.275827+01	\N	f	f	f
+40	Hipertensão Não Controlada	Pressão arterial elevada sem controle adequado	\N	f	2024-10-19 21:16:07.613093+01	\N	f	f	t
+42	Diabetes Tipo 2 Não Controlada	Diabetes sem controle adequado	\N	f	2024-10-19 21:16:37.153535+01	\N	f	f	t
+2	Invalidez Total e Permanente	\N	ITP	f	2024-10-19 20:50:10.147396+01	\N	f	f	t
+3	Doenças Críticas	\N	DC	f	2024-10-19 20:50:15.540007+01	\N	f	f	t
+25	Cobertura para Avaria/Perda Total	\N	\N	f	2024-10-19 21:11:03.224963+01	\N	f	f	t
+26	Roubo/Pirataria (marítimo)	\N	\N	f	2024-10-19 21:11:03.235934+01	\N	f	f	t
+27	Cobertura para eventos climáticos severos	Inundações ou Tempestades	\N	f	2024-10-19 21:11:03.247909+01	\N	f	f	t
+30	Riscos Geopolíticos (Áreas de conflito)	\N	\N	f	2024-10-19 21:11:03.285801+01	\N	f	f	t
 103	Estados Unidos	\N	\N	f	2024-10-21 13:03:32.613607+01	\N	f	f	f
 104	Estônia	\N	\N	f	2024-10-21 13:03:32.62757+01	\N	f	f	f
 105	Eswatini	\N	\N	f	2024-10-21 13:03:32.643528+01	\N	f	f	f
@@ -1571,13 +1571,13 @@ COPY public.option (id, name, description, abbreviation, required, created_at, u
 262	20%	\N	\N	f	2024-10-25 16:54:56.837744+01	\N	f	f	f
 261	15%	\N	\N	f	2024-10-25 16:54:44.746409+01	\N	f	f	f
 260	10%	\N	\N	f	2024-10-25 16:54:22.375858+01	\N	f	f	f
-259	5%	\N	\N	f	2024-10-25 16:54:05.104915+01	\N	f	f	f
 264	Sim	Sim, se a entidade transportadora possui um ou mais históricos de sinistros.	Y	f	2024-10-25 16:54:05.104915+01	\N	f	f	f
-265	Não	Não, se a entidade não tem nenhum histórico de sinistro.	N	f	2024-10-25 16:54:05.104915+01	\N	f	f	f
 268	AOA 1 500 000,00	\N	\N	f	2024-10-21 13:05:57.493342+01	\N	f	f	f
 267	AOA 750 000,00	\N	\N	f	2024-10-21 13:05:57.493342+01	\N	f	f	f
 266	AOA 150 000,00	\N	\N	f	2024-10-21 13:05:57.493342+01	\N	f	f	t
 269	tran_value	\N	\N	f	2024-10-19 21:11:03.235934+01	\N	f	f	f
+265	Não	Não, se a entidade não tem nenhum histórico de sinistro.	N	f	2024-10-25 16:54:05.104915+01	\N	f	f	t
+259	5%	\N	\N	f	2024-10-25 16:54:05.104915+01	\N	f	f	t
 \.
 
 
@@ -1650,18 +1650,6 @@ COPY public.option_option (id, option_id, other_id, created_at, updated_at, dele
 34	37	36	2024-10-25 17:52:39.037897+01	\N	f
 35	36	38	2024-10-25 17:52:39.04988+01	\N	f
 36	36	37	2024-10-25 17:52:39.06193+01	\N	f
-37	4	5	2024-10-29 11:28:42.915649+01	\N	f
-38	4	7	2024-10-29 11:28:43.097339+01	\N	f
-39	4	8	2024-10-29 11:28:43.124546+01	\N	f
-40	5	4	2024-10-29 11:28:43.137215+01	\N	f
-41	5	7	2024-10-29 11:28:43.152222+01	\N	f
-42	5	8	2024-10-29 11:28:43.170242+01	\N	f
-43	7	4	2024-10-29 11:28:43.180288+01	\N	f
-44	7	5	2024-10-29 11:28:43.196026+01	\N	f
-45	7	8	2024-10-29 11:28:43.205615+01	\N	f
-46	8	4	2024-10-29 11:28:43.220195+01	\N	f
-47	8	5	2024-10-29 11:28:43.240844+01	\N	f
-48	8	7	2024-10-29 11:28:43.254817+01	\N	f
 \.
 
 
@@ -2267,7 +2255,7 @@ ALTER TABLE ONLY public.route
     ADD CONSTRAINT route_insurance_id_fkey FOREIGN KEY (insurance_id) REFERENCES public.insurance(id);
 
 
--- Completed on 2024-11-27 08:47:45
+-- Completed on 2024-12-13 16:47:27
 
 --
 -- PostgreSQL database dump complete
