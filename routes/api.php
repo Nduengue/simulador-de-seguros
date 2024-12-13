@@ -32,6 +32,6 @@ Route::post('/search/simulator',[SearchControllers::class,'SearchSimulator'])->n
 
 
 /* Routas para inserir selectd all simulator */
-Route::post('/selectedAll/simulator',[SearchControllers::class,'SelectedAllSimulator'])->name('selected_all_simulator');
-Route::post('/selectedAll/simulator/mt',[SearchControllers::class,'SelectedAllSimulatorAll'])->name('selected_all_simulator');
+Route::put('/selectedAll/simulator',[SearchControllers::class,'SelectedAllSimulator'])->name('selected_all_simulator');
+Route::put('/selectedAll/simulator/mt',[SearchControllers::class,'SelectedAllSimulatorAll'])->name('selected_all_simulator');
 /* Routas para inserir selectd da simulator */

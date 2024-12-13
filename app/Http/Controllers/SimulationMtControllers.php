@@ -152,8 +152,6 @@ class SimulationMtControllers extends Controller
 
         } catch (\Throwable $th) {
             // Aqui você pode registrar o erro, se quiser
-            Log::error('Erro ao salvar dados da simulação: ' . $th->getMessage());
-
             return [
                 'success' => false,
                 'mensagem' => 'Erro ao salvar dados da simulação',
