@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('rates', function (Blueprint $table) {
             $table->id();
-            $table->integer('rate_id');
+            $table->integer('rate_id')->nullable();
             $table->unsignedBigInteger('compania_id');
             $table->foreign('compania_id')->references('id')->on('companias')->onDelete('cascade');
             $table->integer('group_id');

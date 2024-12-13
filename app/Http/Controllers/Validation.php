@@ -156,7 +156,7 @@ class Validation extends Controller
 
             'transhipment_id' => 'required|integer|min:1',
 
-            'value' => 'required|numeric|min:1',
+            'value' => 'required|integer|min:0',
             'receber' => 'required|string',
             'origin'=> 'required|string',
             'destination'=> 'required|string',

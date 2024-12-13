@@ -56,7 +56,7 @@ class SimulationMtControllers extends Controller
                 $this->date_error[] = $simulater;
             }
 
-            $compania = $this->Company($request->company_ids, $simulater_mt['body'], $simulater['simulator_id']);
+            $compania = $this->Company( $simulater_mt['body'], $simulater['simulator_id']);
             if (!$compania['success']) {
                 $this->date_error[] = $compania;
             }
@@ -115,7 +115,7 @@ class SimulationMtControllers extends Controller
 
         } catch (\Throwable $e) {
             return response()->json([
-                'mensasgem' => 'Erro ao salvar dados da simulação',
+                'mensasgem' => 'Erro ao salvar dados da simulação Mercadoria Transportada',
                 'erros' => $e->getMessage()
             ], 500);
         }
@@ -127,7 +127,6 @@ class SimulationMtControllers extends Controller
         try {
 
             $codigo = $validation->gerarCodigoSimulacao();
-
 
             $simulator = new Simulation();
             $simulator->user_id = $user_id['id'];
@@ -154,13 +153,13 @@ class SimulationMtControllers extends Controller
             // Aqui você pode registrar o erro, se quiser
             return [
                 'success' => false,
-                'mensagem' => 'Erro ao salvar dados da simulação',
+                'mensagem' => 'Erro ao salvar dados na tabela simulação ',
                 'erros' => $th->getMessage()
             ];
         }
     }
 
-    public function Company($data, $corpo, $simulation_id)
+    public function Company($corpo, $simulation_id)
     {
         try {
 
@@ -212,14 +211,12 @@ class SimulationMtControllers extends Controller
                    
                 }
             }
-
-
-            return ['success' => true,];
+            return ['success' => true, 'mensagem' => 'Dados da Company e taxas salvos com sucesso!'];
 
         } catch (\Throwable $th) {
             return [
                 'success' => false,
-                'mensagem' => 'Erro ao salvar dados da Company',
+                'mensagem' => 'Erro ao salvar dados da Company e taxas',
                 'erros' => $th->getMessage()
             ];
         }
