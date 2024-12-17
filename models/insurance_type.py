@@ -1,3 +1,4 @@
+from flask_restful import abort
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import Column, String, Integer, Boolean, DateTime, and_
 from .db_connection import Base, DB_Session, engine, logger, Base
@@ -24,24 +25,45 @@ class InsuranceType(Base):
         }
 
     @staticmethod  # done
-    def get(get_str):
+    def get(get_str=None, insurance_id=None, category_id=None):
         with DB_Session() as db_session:
-            insurance_type = (
-                db_session.query(InsuranceType)
-                .filter(
-                    (
-                        (InsuranceType.id == get_str)
-                        if type(get_str) == int
-                        else InsuranceType.name == get_str
-                    ),
-                    InsuranceType.deleted == False,
+            if get_str:
+                insurance_type = (
+                    db_session.query(InsuranceType)
+                    .filter(
+                        (
+                            (InsuranceType.id == get_str)
+                            if type(get_str) == int
+                            else InsuranceType.name == get_str
+                        ),
+                        InsuranceType.deleted == False,
+                    )
+                    .first()
                 )
-                .first()
-            )
-            return insurance_type
+                return insurance_type
+            
+            from .ciip import Ciip
+
+            with DB_Session() as db_session:
+                insurance_types = (
+                    db_session.query(InsuranceType)
+                    .outerjoin(
+                        Ciip,
+                        InsuranceType.id == Ciip.insurance_type_id,
+                    )
+                    .filter(
+                        (Ciip.insurance_id == insurance_id if insurance_id else True),
+                        (Ciip.category_id == category_id if category_id else True),
+                        InsuranceType.deleted == False,
+                        Ciip.deleted == False if insurance_id or category_id else True,
+                    )
+                    .order_by(InsuranceType.id)
+                    .all()
+                )
+                return insurance_types
 
     @staticmethod  # done
-    def put(name, icon=None):
+    def post(name, description=None, icon=None):
         with DB_Session() as db_session:
             insurance_type = InsuranceType.get(name)
             if insurance_type:
@@ -52,6 +74,7 @@ class InsuranceType(Base):
                 }
             insurance_type = InsuranceType(
                 name=name,
+                description=description,
                 icon=icon,
                 created_at=current_date_time(),
             )
@@ -61,26 +84,54 @@ class InsuranceType(Base):
             return {"status": "success", "insurance_type": insurance_type.to_dict()}
 
     @staticmethod  # done
-    def post(insurance_id=None, category_id=None):
-        from .ciip import Ciip
-
+    def put(id, name, description, icon):
         with DB_Session() as db_session:
-            insurance_types = (
+            # verify if insurance_type name already exists
+            insurance_type = (
                 db_session.query(InsuranceType)
-                .outerjoin(
-                    Ciip,
-                    InsuranceType.id == Ciip.insurance_type_id,
-                )
                 .filter(
-                    (Ciip.insurance_id == insurance_id if insurance_id else True),
-                    (Ciip.category_id == category_id if category_id else True),
+                    InsuranceType.id != id,
+                    InsuranceType.name == name,
                     InsuranceType.deleted == False,
-                    Ciip.deleted == False if insurance_id or category_id else True,
                 )
-                .order_by(InsuranceType.id)
-                .all()
+                .first()
             )
-            return insurance_types
+            if insurance_type:
+                return {
+                    "status": "error",
+                    "message": "InsuranceType already exists",
+                    "insurance_type": insurance_type.to_dict(),
+                }
+            insurance_type = (
+                db_session.query(InsuranceType)
+                .filter(InsuranceType.id == id, InsuranceType.deleted == False)
+                .first()
+            )
+            if insurance_type:
+                insurance_type.name = name
+                insurance_type.description = description
+                insurance_type.icon = icon
+                insurance_type.updated_at = current_date_time()
+                db_session.commit()
+            else:
+                abort(404, message="InsuranceType not found")
+            return {"status": "success", "insurance_type": insurance_type.to_dict()}
+
+    @staticmethod  # done
+    def delete(id):
+        with DB_Session() as db_session:
+            insurance_type = (
+                db_session.query(InsuranceType)
+                .filter(InsuranceType.id == id, InsuranceType.deleted == False)
+                .first()
+            )
+            if not insurance_type:
+                abort(404, message="InsuranceType not found")
+
+            insurance_type.deleted = True
+            db_session.commit()
+            return {"status": "success", "message": "InsuranceType delete successfully"}
+        
 
 
 try:

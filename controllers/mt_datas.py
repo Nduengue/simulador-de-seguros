@@ -17,7 +17,7 @@ class MtDatas_Controller(Resource):
         def get_options(option_group_name):
             return [
                 s.to_dict()
-                for s in Option.post(
+                for s in Option.get(
                     insurance_id=datas["insurance_id"],
                     option_group_name=option_group_name,
                 )
@@ -34,12 +34,12 @@ class MtDatas_Controller(Resource):
         claim_histories = get_options("claim_histories")
         min_franchises = get_options("Franquia Mínima")
 
-        countries = Option.post(option_group_name="countries")
+        countries = Option.get(option_group_name="countries")
         countries = [
             {**c.to_dict(), "groups": Option.get_groups(c.id)} for c in countries
         ]
         # get Angola states
-        states = Option.post(option_group_name="states")
+        states = Option.get(option_group_name="states")
         states = [s.to_dict() for s in states]
         return {
             "merchandises": merchandises,

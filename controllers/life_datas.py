@@ -9,12 +9,12 @@ class LifeDatas_Controller(Resource):
         datas = request.get_json()
         missing_fields(datas, ["insurance_id"])
 
-        coverages = Option.post(
+        coverages = Option.get(
             insurance_id=datas["insurance_id"], option_group_name="coverages"
         )
         coverages = [s.to_dict() for s in coverages]
 
-        aggravations = Option.post(
+        aggravations = Option.get(
             insurance_id=datas["insurance_id"], option_group_name="aggravations"
         )
         aggravations = [s.to_dict() for s in aggravations]

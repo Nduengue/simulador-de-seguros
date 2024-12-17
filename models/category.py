@@ -1,3 +1,4 @@
+from flask_restful import abort
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import Column, String, Integer, Boolean, DateTime
 from .db_connection import Base, DB_Session, engine, logger, Base
@@ -24,24 +25,33 @@ class Category(Base):
         }
 
     @staticmethod  # done
-    def get(get_str):
+    def get(get_str=None):
         with DB_Session() as db_session:
-            category = (
-                db_session.query(Category)
-                .filter(
-                    (
-                        (Category.id == get_str)
-                        if type(get_str) == int
-                        else Category.name == get_str
-                    ),
-                    Category.deleted == False,
+            if get_str:
+                category = (
+                    db_session.query(Category)
+                    .filter(
+                        (
+                            (Category.id == get_str)
+                            if type(get_str) == int
+                            else Category.name == get_str
+                        ),
+                        Category.deleted == False,
+                    )
+                    .first()
                 )
-                .first()
+                return category
+            
+            categories = (
+                db_session.query(Category)
+                .filter(Category.deleted == False)
+                .order_by(Category.id)
+                .all()
             )
-            return category
+            return categories
 
     @staticmethod  # done
-    def put(name, description=None):
+    def post(name, description=None, icon=None):
         with DB_Session() as db_session:
             category = Category.get(name)
             if category:
@@ -54,6 +64,7 @@ class Category(Base):
             category = Category(
                 name=name,
                 description=description,
+                icon=icon,
                 created_at=datetime,
             )
             db_session.add(category)
@@ -66,15 +77,91 @@ class Category(Base):
             }
 
     @staticmethod  # done
-    def post():
+    def put(id, name, description, icon):
         with DB_Session() as db_session:
-            categories = (
+            # verify if category name already exists
+            category = (
                 db_session.query(Category)
-                .filter(Category.deleted == False)
-                .order_by(Category.id)
-                .all()
+                .filter(
+                    Category.id != id,
+                    Category.name == name,
+                    Category.deleted == False,
+                )
+                .first()
             )
-            return categories
+            if category:
+                return {
+                    "status": "error",
+                    "message": "Category already exists",
+                    "category": category.to_dict(),
+                }
+            category = (
+                db_session.query(Category)
+                .filter(Category.id == id, Category.deleted == False)
+                .first()
+            )
+            if category:
+                category.name = name
+                category.description = description
+                category.icon = icon
+                category.updated_at = current_date_time()
+                db_session.commit()
+            else:
+                abort(404, message="Category not found")
+            return {"status": "success", "category": category.to_dict()}
+        
+    @staticmethod
+    def patch(id, name, description, icon):
+        with DB_Session() as db_session:
+            # Verifica se a categoria existe
+            category = (
+                db_session.query(Category)
+                .filter(Category.id == id, Category.deleted == False)
+                .first()
+            )
+
+            if not category:
+                abort(404, message="Category not found")
+            # Verifica se o nome da categoria já existe
+            if name:
+                existing_category = (
+                    db_session.query(Category)
+                    .filter(Category.id != id, Category.name == name, Category.deleted == False)
+                    .first()
+                )
+                if existing_category:
+                    return {
+                        "status": "error",
+                        "message": "Category name already exists",
+                        "category": existing_category.to_dict(),
+                    }
+                # Atualiza o nome se fornecido
+                category.name = name
+            # Atualiza os outros campos somente se fornecidos
+            if description is not None:
+                category.description = description
+            if icon is not None:
+                category.icon = icon
+            
+            category.updated_at = current_date_time()
+            db_session.commit()
+
+            return {"status": "success", "category": category.to_dict(), "message": "Category updated successfully"}
+
+
+    @staticmethod  # done
+    def delete(id):
+        with DB_Session() as db_session:
+            category = (
+                db_session.query(Category)
+                .filter(Category.id == id, Category.deleted == False)
+                .first()
+            )
+            if not category:
+                abort(404, message="Category not found")
+            category.deleted = True
+            db_session.commit()
+            return {"status": "success", "message": "Category deleted successfully"}
 
 
 try:

@@ -19,36 +19,52 @@ class OptionGroup(Base):
     def to_dict(self):
         from models import Option
 
-        options = Option.post(option_group_id=self.id)
-        options = [option.to_dict() for option in options]
+        # options = Option.post(option_group_id=self.id)
+        # options = [option.to_dict() for option in options]
         return {
             "id": self.id,
             "insurance_id": self.insurance_id,
             "name": self.name,
             "required": self.required,
-            "options": options,
+            # "options": options,
         }
 
     @staticmethod
-    def get(get_attr, insurance_id=None):
+    def get(get_attr=None, insurance_id=None):
         with DB_Session() as db_session:
-            option_group = (
+            if get_attr:
+                option_group = (
+                    db_session.query(OptionGroup)
+                    .filter(
+                        (
+                            OptionGroup.id == get_attr
+                            if isinstance(get_attr, int)
+                            else OptionGroup.name == get_attr
+                        ),
+                        (
+                            OptionGroup.insurance_id == insurance_id
+                            if insurance_id
+                            else True
+                        ),
+                        OptionGroup.deleted == False,
+                    )
+                    .first()
+                )
+                return option_group
+
+            option_groups = (
                 db_session.query(OptionGroup)
                 .filter(
-                    (
-                        OptionGroup.id == get_attr
-                        if isinstance(get_attr, int)
-                        else OptionGroup.name == get_attr
-                    ),
                     OptionGroup.insurance_id == insurance_id if insurance_id else True,
                     OptionGroup.deleted == False,
                 )
-                .first()
+                .order_by(OptionGroup.id)
+                .all()
             )
-            return option_group
+            return option_groups
 
     @staticmethod  # done
-    def put(insurance_id, name, required=False):
+    def post(insurance_id, name, required=False):
         with DB_Session() as db_session:
             # verify if category insurance exists
             option_group = (
@@ -93,19 +109,53 @@ class OptionGroup(Base):
                 "option_group": option_group.to_dict(),
             }
 
-    @staticmethod
-    def post(insurance_id):
+    @staticmethod  # done
+    def put(id, insurance_id, name):
         with DB_Session() as db_session:
-            option_groups = (
+            # verify if option_group name already exists
+            option_group = (
                 db_session.query(OptionGroup)
                 .filter(
-                    OptionGroup.insurance_id == insurance_id,
+                    OptionGroup.id != id,
+                    OptionGroup.name == name,
                     OptionGroup.deleted == False,
                 )
-                .order_by(OptionGroup.id)
-                .all()
+                .first()
             )
-            return option_groups
+            if option_group:
+                return {
+                    "status": "error",
+                    "message": "OptionGroup already exists",
+                    "option_group": option_group.to_dict(),
+                }
+            option_group = (
+                db_session.query(OptionGroup)
+                .filter(OptionGroup.id == id, OptionGroup.deleted == False)
+                .first()
+            )
+            if option_group:
+                option_group.insurance_id = insurance_id
+                option_group.name = name
+                option_group.updated_at = current_date_time()
+                db_session.commit()
+            else:
+                abort(404, message="OptionGroup not found")
+            return {"status": "success", "option_group": option_group.to_dict(), "message": "OptionGroup updated successfully"}
+
+    @staticmethod  # done
+    def delete(id):
+        with DB_Session() as db_session:
+            option_group = (
+                db_session.query(OptionGroup)
+                .filter(OptionGroup.id == id, OptionGroup.deleted == False)
+                .first()
+            )
+            if not option_group:
+                abort(404, message="OptionGroup not found")
+
+            option_group.deleted = True
+            db_session.commit()
+            return {"status": "success", "message": "OptionGroup delete successfully"}
 
 
 try:
