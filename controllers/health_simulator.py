@@ -1,7 +1,16 @@
 from datetime import datetime
 from .imports import *
 from .users_api_requests import user_put
-from models import OptionGroup, Option, Rate, Company
+from models import (
+    OptionGroup,
+    Option,
+    Rate,
+    Company,
+    Category,
+    Insurance,
+    InsuranceType,
+    PolicyType,
+)
 
 
 class HealthSimulator_Controller(Resource):
@@ -201,8 +210,18 @@ class HealthSimulator_Controller(Resource):
                 }
             )
 
+        # get simulation datas
+        category = Category.get(datas["category_id"]).to_dict()
+        insurance = Insurance.get(datas["insurance_id"]).to_dict()
+        insurance_type = InsuranceType.get(datas["insurance_type_id"]).to_dict()
+        policy_type = PolicyType.get(datas["policy_type_id"]).to_dict()
+
         response = {
             "status": "success",
+            "category": category,
+            "insurance": insurance,
+            "insurance_type": insurance_type,
+            "policy_type": policy_type,
             "user": user,
             "coverages": coverages,
             "add_coverages": add_coverages,
