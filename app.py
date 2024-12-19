@@ -2,7 +2,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 from flask import Flask
 from flask_restful import Api
-from flask_cors import CORS
+from flask_cors import CORS 
 
 from controllers import *
 
@@ -114,6 +114,12 @@ api.add_resource(LifeDatas_Controller, "/life_datas")
 
 # ==============================================================================
 api.add_resource(LifeSimulator_Controller, "/simulator/life/save")
+
+# ==============================================================================
+api.add_resource(HealthDatas_Controller, "/health_datas")
+
+# ==============================================================================
+api.add_resource(HealthSimulator_Controller, "/simulator/health/save")
 
 
 @app.errorhandler(404)

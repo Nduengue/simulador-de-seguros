@@ -322,47 +322,6 @@ ALTER SEQUENCE public.insurance_type_id_seq OWNED BY public.insurance_type.id;
 
 
 --
--- TOC entry 226 (class 1259 OID 298777)
--- Name: o_type; Type: TABLE; Schema: public; Owner: simulator_user
---
-
-CREATE TABLE public.o_type (
-    id integer NOT NULL,
-    value character varying,
-    created_at timestamp with time zone,
-    updated_at timestamp with time zone,
-    deleted boolean
-);
-
-
-ALTER TABLE public.o_type OWNER TO simulator_user;
-
---
--- TOC entry 225 (class 1259 OID 298776)
--- Name: o_type_id_seq; Type: SEQUENCE; Schema: public; Owner: simulator_user
---
-
-CREATE SEQUENCE public.o_type_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.o_type_id_seq OWNER TO simulator_user;
-
---
--- TOC entry 4959 (class 0 OID 0)
--- Dependencies: 225
--- Name: o_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: simulator_user
---
-
-ALTER SEQUENCE public.o_type_id_seq OWNED BY public.o_type.id;
-
-
---
 -- TOC entry 236 (class 1259 OID 298916)
 -- Name: ogo; Type: TABLE; Schema: public; Owner: simulator_user
 --
@@ -764,14 +723,6 @@ ALTER TABLE ONLY public.insurance_type ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
--- TOC entry 4714 (class 2604 OID 298780)
--- Name: o_type id; Type: DEFAULT; Schema: public; Owner: simulator_user
---
-
-ALTER TABLE ONLY public.o_type ALTER COLUMN id SET DEFAULT nextval('public.o_type_id_seq'::regclass);
-
-
---
 -- TOC entry 4721 (class 2604 OID 298919)
 -- Name: ogo id; Type: DEFAULT; Schema: public; Owner: simulator_user
 --
@@ -957,20 +908,6 @@ COPY public.insurance_type (id, name, icon, created_at, updated_at, deleted, des
 4	Grupo	seg-resp-civil.png	2024-10-19 20:01:56.493535+01	\N	f	Variante do seguro coletivo com foco em pequenas comunidades ou grupos específicos.
 5	Conjunto	seg-resp-civil.png	2024-10-19 20:01:56.493535+01	\N	f	Variante do seguro coletivo com foco em pequenas comunidades ou grupos específicos.
 6	Benefícios Empresariais	seg-resp-civil.png	2024-10-19 20:01:56.493535+01	\N	f	Variante do seguro coletivo com foco em pequenas comunidades ou grupos específicos.
-\.
-
-
---
--- TOC entry 4926 (class 0 OID 298777)
--- Dependencies: 226
--- Data for Name: o_type; Type: TABLE DATA; Schema: public; Owner: simulator_user
---
-
-COPY public.o_type (id, value, created_at, updated_at, deleted) FROM stdin;
-1	Coverage	2024-10-19 20:38:39.227567+01	\N	f
-2	Aggravation	2024-10-19 20:39:20.753018+01	\N	f
-3	Countries	2024-10-21 13:02:10.175618+01	\N	f
-4	Angola States	2024-10-21 13:05:43.184938+01	\N	f
 \.
 
 
@@ -1914,15 +1851,6 @@ SELECT pg_catalog.setval('public.insurance_type_id_seq', 6, true);
 
 
 --
--- TOC entry 4975 (class 0 OID 0)
--- Dependencies: 225
--- Name: o_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: simulator_user
---
-
-SELECT pg_catalog.setval('public.o_type_id_seq', 4, true);
-
-
---
 -- TOC entry 4976 (class 0 OID 0)
 -- Dependencies: 235
 -- Name: ogo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: simulator_user
@@ -2055,15 +1983,6 @@ ALTER TABLE ONLY public.insurance
 
 ALTER TABLE ONLY public.insurance_type
     ADD CONSTRAINT insurance_type_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 4738 (class 2606 OID 298782)
--- Name: o_type o_type_pkey; Type: CONSTRAINT; Schema: public; Owner: simulator_user
---
-
-ALTER TABLE ONLY public.o_type
-    ADD CONSTRAINT o_type_pkey PRIMARY KEY (id);
 
 
 --

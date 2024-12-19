@@ -16,18 +16,21 @@ class OptionGroup(Base):
     updated_at = Column(DateTime(timezone=True))
     deleted = Column(Boolean, default=False)
 
-    def to_dict(self):
+    def to_dict(self, options=False):
         from models import Option
 
-        # options = Option.post(option_group_id=self.id)
-        # options = [option.to_dict() for option in options]
-        return {
+        res = {
             "id": self.id,
             "insurance_id": self.insurance_id,
             "name": self.name,
-            "required": self.required,
-            # "options": options,
+            "required": self.required
         }
+        if options:
+            options = Option.get(option_group_id=self.id)
+            options = [option.to_dict() for option in options]
+            res["options"] = options
+        
+        return res
 
     @staticmethod
     def get(get_attr=None, insurance_id=None):

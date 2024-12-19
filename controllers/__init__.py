@@ -21,4 +21,6 @@ from .route import Route_Controller
 from .mt_datas import MtDatas_Controller
 from .mt_simulator import MtSimulator_Controller
 from .life_datas import LifeDatas_Controller
+from .health_datas import HealthDatas_Controller
+from .health_simulator import HealthSimulator_Controller
 from .env import *

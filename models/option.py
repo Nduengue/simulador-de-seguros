@@ -27,18 +27,23 @@ class Option(Base):
     deleted = Column(Boolean, default=False)
 
     def to_dict(self):
-        from .option_option import Option_Option
 
-        return {
+        res = {
             "id": self.id,
             "name": self.name,
             "description": self.description,
             "abbreviation": self.abbreviation,
             "required": self.required,
             "auto_select": self.auto_select,
-            "selected": self.selected,
-            "taggle_ids": Option_Option.post(self.id),
+            "selected": self.selected
         }
+
+        from .option_option import Option_Option
+        taggle_ids = Option_Option.post(self.id)
+        if len(taggle_ids) > 0:
+            res["taggle_ids"] = taggle_ids
+
+        return res
 
     @staticmethod
     def get(
