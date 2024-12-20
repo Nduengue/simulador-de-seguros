@@ -35,7 +35,7 @@ class Option(Base):
             "abbreviation": self.abbreviation,
             "required": self.required,
             "auto_select": self.auto_select,
-            "selected": self.selected
+            "selected": self.selected,
         }
 
         from .option_option import Option_Option
@@ -44,7 +44,7 @@ class Option(Base):
         taggle_ids = Option_Option.post(self.id)
         if len(taggle_ids) > 0:
             res["taggle_ids"] = taggle_ids
-        
+
         if option_group_id:
             ogo = OGO.get(option_id=self.id, option_group_id=option_group_id)
             if ogo:
@@ -72,16 +72,27 @@ class Option(Base):
                 )
                 return option
 
-            from models import OGO
-            from models import OptionGroup
+            from models import OGO, OptionGroup, IOG
 
             options = (
                 db_session.query(Option)
                 .outerjoin(OGO, Option.id == OGO.option_id)
-                .outerjoin(OptionGroup, OGO.option_group_id == OptionGroup.id)
+                .outerjoin(IOG, OGO.iog_id == IOG.id)
+                .outerjoin(OptionGroup, IOG.option_group_id == OptionGroup.id)
                 .filter(
-                    OptionGroup.insurance_id == insurance_id if insurance_id else True,
-                    OptionGroup.id == option_group_id if option_group_id else True,
+                    (
+                        and_(IOG.insurance_id == insurance_id, IOG.deleted == False)
+                        if insurance_id
+                        else True
+                    ),
+                    (
+                        and_(
+                            OptionGroup.id == option_group_id,
+                            OptionGroup.deleted == False,
+                        )
+                        if option_group_id
+                        else True
+                    ),
                     (
                         OptionGroup.name == option_group_name
                         if option_group_name
@@ -125,9 +136,7 @@ class Option(Base):
                 .filter(
                     Option.name == name,
                     (
-                        and_(
-                            OGO.option_group_id == option_group_id, OGO.deleted == False
-                        )
+                        and_(OGO.iog_id == option_group_id, OGO.deleted == False)
                         if option_group_id
                         else True
                     ),
@@ -216,7 +225,11 @@ class Option(Base):
                     option.selected = selected
                 option.updated_at = current_date_time()
                 db_session.commit()
-            return {"status": "success", "option": option.to_dict(), "message": "Option updated successfully"}
+            return {
+                "status": "success",
+                "option": option.to_dict(),
+                "message": "Option updated successfully",
+            }
 
     @staticmethod
     def get_groups(option_id):
@@ -226,7 +239,7 @@ class Option(Base):
         with DB_Session() as db_session:
             ogs = (
                 db_session.query(OptionGroup)
-                .outerjoin(OGO, OGO.option_group_id == OptionGroup.id)
+                .outerjoin(OGO, OGO.iog_id == OptionGroup.id)
                 .filter(
                     OGO.option_id == option_id,
                     OptionGroup.deleted == False,

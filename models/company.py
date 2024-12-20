@@ -33,15 +33,19 @@ class Company(Base):
     @staticmethod
     def get(id):
         with DB_Session() as db_session:
-            company = (
-                db_session.query(Company)
-                .filter(Company.id == id, Company.deleted == False)
-                .first()
-            )
-            return company
+            if id:
+                company = (
+                    db_session.query(Company)
+                    .filter(Company.id == id, Company.deleted == False)
+                    .first()
+                )
+                return company
+            
+            companies = db_session.query(Company).filter(Company.deleted == False).all()
+            return companies
 
     @staticmethod
-    def put(name, email):
+    def post(name, email):
         with DB_Session() as db_session:
             # verify if company exists
             company = (
@@ -65,12 +69,6 @@ class Company(Base):
                 "message": "Seguradora registada com sucesso.",
                 "company": company.to_dict(),
             }
-
-    @staticmethod
-    def post():
-        with DB_Session() as db_session:
-            companies = db_session.query(Company).filter(Company.deleted == False).all()
-            return companies
 
     @staticmethod
     def patch(id, name, email):

@@ -12,14 +12,14 @@ class Company_Controller(Resource):
         return {"status": "success", "company": company.to_dict()}
 
     def post(self):
-        companies = Company.post()
+        companies = Company.get()
         companies = [company.to_dict() for company in companies]
         return {"status": "success", "companies": companies}
 
     def put(self):
         datas = request.get_json()
         missing_fields(datas, ["name", "email"])
-        res = Company.put(datas["name"], datas["email"])
+        res = Company.post(datas["name"], datas["email"])
         return res
 
     def patch(self):

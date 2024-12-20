@@ -75,7 +75,7 @@ class Condition(Base):
                     Condition.id == ORC.condition_id,
                 )
                 .filter(
-                    ORC.option_id == option_id,
+                    ORC.ogo_id == option_id,
                     ORC.deleted == False,
                     Condition.deleted == False,
                 )

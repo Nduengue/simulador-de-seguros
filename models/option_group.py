@@ -1,6 +1,6 @@
 from flask_restful import abort
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import Column, ForeignKey, Integer, Boolean, DateTime, String
+from sqlalchemy import Column, ForeignKey, Integer, Boolean, DateTime, String, and_
 from .db_connection import Base, DB_Session, engine, logger, Base
 from .methods import current_date_time
 
@@ -9,7 +9,6 @@ class OptionGroup(Base):
     __tablename__ = "option_group"
 
     id = Column(Integer, primary_key=True)
-    insurance_id = Column(Integer, ForeignKey("insurance.id"))
     name = Column(String)
     required = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True))
@@ -19,25 +18,23 @@ class OptionGroup(Base):
     def to_dict(self, options=False):
         from models import Option
 
-        res = {
-            "id": self.id,
-            "insurance_id": self.insurance_id,
-            "name": self.name,
-            "required": self.required
-        }
+        res = {"id": self.id, "name": self.name, "required": self.required}
         if options:
             options = Option.get(option_group_id=self.id)
             options = [option.to_dict() for option in options]
             res["options"] = options
-        
+
         return res
 
     @staticmethod
     def get(get_attr=None, insurance_id=None):
+        from .iog import IOG
+
         with DB_Session() as db_session:
             if get_attr:
                 option_group = (
                     db_session.query(OptionGroup)
+                    .outerjoin(IOG, IOG.option_group_id == OptionGroup.id)
                     .filter(
                         (
                             OptionGroup.id == get_attr
@@ -45,7 +42,7 @@ class OptionGroup(Base):
                             else OptionGroup.name == get_attr
                         ),
                         (
-                            OptionGroup.insurance_id == insurance_id
+                            and_(IOG.insurance_id == insurance_id, IOG.deleted == False)
                             if insurance_id
                             else True
                         ),
@@ -57,8 +54,13 @@ class OptionGroup(Base):
 
             option_groups = (
                 db_session.query(OptionGroup)
+                .outerjoin(IOG, IOG.option_group_id == OptionGroup.id)
                 .filter(
-                    OptionGroup.insurance_id == insurance_id if insurance_id else True,
+                    (
+                        and_(IOG.insurance_id == insurance_id, IOG.deleted == False)
+                        if insurance_id
+                        else True
+                    ),
                     OptionGroup.deleted == False,
                 )
                 .order_by(OptionGroup.id)
@@ -143,7 +145,11 @@ class OptionGroup(Base):
                 db_session.commit()
             else:
                 abort(404, message="OptionGroup not found")
-            return {"status": "success", "option_group": option_group.to_dict(), "message": "OptionGroup updated successfully"}
+            return {
+                "status": "success",
+                "option_group": option_group.to_dict(),
+                "message": "OptionGroup updated successfully",
+            }
 
     @staticmethod  # done
     def delete(id):

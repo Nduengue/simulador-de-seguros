@@ -11,7 +11,7 @@ class ORC(Base):
     id = Column(Integer, primary_key=True)
     ciip_pt_id = Column(Integer, ForeignKey("ciip_pt.id"))
     company_id = Column(Integer, ForeignKey("company.id"))
-    option_id = Column(Integer, ForeignKey("option.id"))
+    ogo_id = Column(Integer, ForeignKey("ogo.id"))
     rate_id = Column(Integer, ForeignKey("rate.id"))
     condition_id = Column(Integer, ForeignKey("condition.id"))
     valid = Column(Boolean, default=True)
@@ -20,7 +20,7 @@ class ORC(Base):
     deleted = Column(Boolean, default=False)
 
     @staticmethod  # done
-    def put(ciip_pt_id, company_id, option_id, rate_id, condition_id=None):
+    def put(ciip_pt_id, company_id, ogo_id, rate_id, condition_id=None):
         with DB_Session() as db_session:
             # verify if category insurance exists
             orc = (
@@ -28,7 +28,7 @@ class ORC(Base):
                 .filter(
                     ORC.ciip_pt_id == ciip_pt_id,
                     ORC.company_id == company_id,
-                    ORC.option_id == option_id,
+                    ORC.ogo_id == ogo_id,
                     ORC.rate_id == rate_id,
                     ORC.condition_id == condition_id,
                     ORC.deleted == False,
@@ -40,7 +40,7 @@ class ORC(Base):
             # verify if category and insurance exists
             from .ciip_pt import Ciip_Pt
             from .company import Company
-            from .option import Option
+            from .ogo import OGO
             from .rate import Rate
             from .condition import Condition
 
@@ -48,7 +48,7 @@ class ORC(Base):
                 abort(404, message="Ciip_Pt não encontrado.")
             elif not Company.get(company_id):
                 abort(404, message="Seguradora não encontrada.")
-            elif option_id and not Option.get(option_id):
+            elif ogo_id and not OGO.get(ogo_id):
                 abort(404, message="Opção não encontrada.")
             elif not Rate.get(rate_id):
                 abort(404, message="Taxa não encontrada.")
@@ -59,7 +59,7 @@ class ORC(Base):
             orc = ORC(
                 ciip_pt_id=ciip_pt_id,
                 company_id=company_id,
-                option_id=option_id,
+                option_id=ogo_id,
                 rate_id=rate_id,
                 condition_id=condition_id,
                 created_at=datetime,

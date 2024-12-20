@@ -81,7 +81,7 @@ class Rate(Base):
                 db_session.query(Rate)
                 .outerjoin(ORC, ORC.rate_id == Rate.id)
                 .filter(
-                    ORC.option_id == option_id,
+                    ORC.ogo_id == option_id,
                     ORC.company_id == company_id if company_id else True,
                     ORC.deleted == False,
                     Rate.deleted == False,
@@ -102,10 +102,7 @@ class Rate(Base):
         interval_value=None,
     ):
         with DB_Session() as db_session:
-            from models import ORC
-            from models import Condition
-            from models import Ciip_Pt
-            from models import Ciip
+            from models import ORC, Condition, Ciip_Pt, Ciip, OGO, Option
 
             rate = (
                 db_session.query(Rate)
@@ -113,10 +110,12 @@ class Rate(Base):
                 .outerjoin(Condition, ORC.condition_id == Condition.id)
                 .outerjoin(Ciip_Pt, ORC.ciip_pt_id == Ciip_Pt.id)
                 .outerjoin(Ciip, Ciip_Pt.ciip_id == Ciip.id)
+                .outerjoin(OGO, ORC.ogo_id == OGO.id)
+                # .outerjoin(Option, OGO.option_id == Option.id)
                 .filter(
                     ORC.company_id == company_id,
                     (
-                        ORC.option_id == option_id
+                        OGO.option_id == option_id
                         if type(option_id) == int
                         else (Condition.second_value == option_id)
                     ),

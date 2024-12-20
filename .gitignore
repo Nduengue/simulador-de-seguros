@@ -7,3 +7,4 @@ __pycache__/
 controllers/env.py
 db_modification.py
 run_code.py
+public.sql

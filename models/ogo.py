@@ -9,7 +9,7 @@ class OGO(Base):
     __tablename__ = "ogo"
 
     id = Column(Integer, primary_key=True)
-    option_group_id = Column(Integer, ForeignKey("option_group.id"))
+    iog_id = Column(Integer, ForeignKey("iog_id.id"))
     option_id = Column(Integer, ForeignKey("option.id"))
     taxed = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True))
@@ -18,15 +18,19 @@ class OGO(Base):
 
     @staticmethod
     def get(id=None, option_group_id=None, option_id=None):
+        
+        from models import IOG
+
         with DB_Session() as db_session:
             ogo = (
                 db_session.query(OGO)
+                .outerjoin(IOG, IOG.id == OGO.iog_id)
                 .filter(
                     or_(
                         OGO.id == id if id else False,
                         (
                             and_(
-                                OGO.option_group_id == option_group_id,
+                                IOG.option_group_id == option_group_id,
                                 OGO.option_id == option_id,
                             )
                             if option_group_id and option_id
@@ -40,13 +44,13 @@ class OGO(Base):
             return ogo
 
     @staticmethod  # done
-    def put(option_group_id, option_id):
+    def put(iog_id, option_id):
         with DB_Session() as db_session:
             # verify if category option_group exists
             ogo = (
                 db_session.query(OGO)
                 .filter(
-                    OGO.option_group_id == option_group_id,
+                    OGO.iog_id == iog_id,
                     OGO.option_id == option_id,
                     OGO.deleted == False,
                 )
@@ -58,14 +62,14 @@ class OGO(Base):
             from .option_group import OptionGroup
             from .option import Option
 
-            if not OptionGroup.get(option_group_id):
+            if not OptionGroup.get(iog_id):
                 abort(404, message="Grupo de opções não encontrado.")
             elif not Option.get(option_id):
                 abort(404, message="Opção não encontrada.")
 
             datetime = current_date_time()
             ogo = OGO(
-                option_group_id=option_group_id,
+                option_group_id=iog_id,
                 option_id=option_id,
                 created_at=datetime,
             )

@@ -19,7 +19,7 @@ class LifeDatas_Controller(Resource):
         )
         aggravations = [s.to_dict() for s in aggravations]
 
-        companies = Company.post()
+        companies = Company.get()
         companies = [s.to_dict() for s in companies]
 
         return {
