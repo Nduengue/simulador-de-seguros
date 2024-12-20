@@ -194,6 +194,13 @@ class HealthSimulator_Controller(Resource):
                 else:
                     if option_id == -1:
                         continue
+                    option = Option.get(option_id)
+                    if not option:
+                        continue
+                    option = option.to_dict(option_group_id=group_ids[group_name])
+                    if not option["taxed"]:
+                        continue
+
                     rate = Rate.get_by_option(*params, option_id)
                     rates.append(
                         {

@@ -5,3 +5,5 @@ __pycache__/
 *.txt
 *note*.txt
 controllers/env.py
+db_modification.py
+run_code.py

@@ -26,7 +26,7 @@ class Option(Base):
     updated_at = Column(DateTime(timezone=True))
     deleted = Column(Boolean, default=False)
 
-    def to_dict(self):
+    def to_dict(self, option_group_id=None):
 
         res = {
             "id": self.id,
@@ -39,9 +39,16 @@ class Option(Base):
         }
 
         from .option_option import Option_Option
+        from .ogo import OGO
+
         taggle_ids = Option_Option.post(self.id)
         if len(taggle_ids) > 0:
             res["taggle_ids"] = taggle_ids
+        
+        if option_group_id:
+            ogo = OGO.get(option_id=self.id, option_group_id=option_group_id)
+            if ogo:
+                res["taxed"] = ogo.taxed
 
         return res
 

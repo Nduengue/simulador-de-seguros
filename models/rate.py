@@ -122,11 +122,6 @@ class Rate(Base):
                     ),
                     (
                         and_(
-                            # explain: ignore interval_value condition if interval_value is None
-                            # cast(Condition.first_value, Integer) <= interval_value,
-                            # cast(Condition.second_value, Integer) >= interval_value,
-                            # cast(func.regexp_replace(Condition.first_value, '[^0-9]', ''), Integer) <= interval_value,
-                            # cast(func.regexp_replace(Condition.second_value, '[^0-9]', ''), Integer) >= interval_value,
                             func.regexp_match(Condition.first_value, r'^[0-9]+$') != None,
                             func.regexp_match(Condition.second_value, r'^[0-9]+$') != None,
                             cast(func.regexp_replace(Condition.first_value, '[^0-9]', '', 'g'), BIGINT) <= interval_value,

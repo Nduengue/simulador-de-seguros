@@ -1,6 +1,6 @@
 from flask_restful import abort
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import Column, ForeignKey, Integer, Boolean, DateTime
+from sqlalchemy import Column, ForeignKey, Integer, Boolean, DateTime, and_, or_
 from .db_connection import Base, DB_Session, engine, logger, Base
 from .methods import current_date_time
 
@@ -11,17 +11,28 @@ class OGO(Base):
     id = Column(Integer, primary_key=True)
     option_group_id = Column(Integer, ForeignKey("option_group.id"))
     option_id = Column(Integer, ForeignKey("option.id"))
+    taxed = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True))
     updated_at = Column(DateTime(timezone=True))
     deleted = Column(Boolean, default=False)
 
     @staticmethod
-    def get(id):
+    def get(id=None, option_group_id=None, option_id=None):
         with DB_Session() as db_session:
             ogo = (
                 db_session.query(OGO)
                 .filter(
-                    OGO.id == id,
+                    or_(
+                        OGO.id == id if id else False,
+                        (
+                            and_(
+                                OGO.option_group_id == option_group_id,
+                                OGO.option_id == option_id,
+                            )
+                            if option_group_id and option_id
+                            else False
+                        ),
+                    ),
                     OGO.deleted == False,
                 )
                 .first()
