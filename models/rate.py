@@ -108,7 +108,7 @@ class Rate(Base):
                 db_session.query(Rate)
                 .outerjoin(ORC, ORC.rate_id == Rate.id)
                 .outerjoin(Condition, ORC.condition_id == Condition.id)
-                .outerjoin(Ciip_Pt, ORC.ciip_pt_id == Ciip_Pt.id)
+                .outerjoin(Ciip_Pt, ORC.ciip_id == Ciip_Pt.id)
                 .outerjoin(Ciip, Ciip_Pt.ciip_id == Ciip.id)
                 .outerjoin(OGO, ORC.ogo_id == OGO.id)
                 # .outerjoin(Option, OGO.option_id == Option.id)

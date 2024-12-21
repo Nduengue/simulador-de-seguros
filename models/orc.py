@@ -9,7 +9,7 @@ class ORC(Base):
     __tablename__ = "orc"
 
     id = Column(Integer, primary_key=True)
-    ciip_pt_id = Column(Integer, ForeignKey("ciip_pt.id"))
+    ciip_id = Column(Integer, ForeignKey("ciip.id"))
     company_id = Column(Integer, ForeignKey("company.id"))
     ogo_id = Column(Integer, ForeignKey("ogo.id"))
     rate_id = Column(Integer, ForeignKey("rate.id"))
@@ -20,13 +20,13 @@ class ORC(Base):
     deleted = Column(Boolean, default=False)
 
     @staticmethod  # done
-    def put(ciip_pt_id, company_id, ogo_id, rate_id, condition_id=None):
+    def post(ciip_id, company_id, ogo_id, rate_id, condition_id=None):
         with DB_Session() as db_session:
             # verify if category insurance exists
             orc = (
                 db_session.query(ORC)
                 .filter(
-                    ORC.ciip_pt_id == ciip_pt_id,
+                    ORC.ciip_id == ciip_id,
                     ORC.company_id == company_id,
                     ORC.ogo_id == ogo_id,
                     ORC.rate_id == rate_id,
@@ -38,14 +38,14 @@ class ORC(Base):
             if orc:
                 return orc
             # verify if category and insurance exists
-            from .ciip_pt import Ciip_Pt
+            from .ciip import Ciip
             from .company import Company
             from .ogo import OGO
             from .rate import Rate
             from .condition import Condition
 
-            if not Ciip_Pt.get(ciip_pt_id):
-                abort(404, message="Ciip_Pt não encontrado.")
+            if not Ciip.get(ciip_id):
+                abort(404, message="Ciip não encontrado.")
             elif not Company.get(company_id):
                 abort(404, message="Seguradora não encontrada.")
             elif ogo_id and not OGO.get(ogo_id):
@@ -57,7 +57,7 @@ class ORC(Base):
 
             datetime = current_date_time()
             orc = ORC(
-                ciip_pt_id=ciip_pt_id,
+                ciip_id=ciip_id,
                 company_id=company_id,
                 option_id=ogo_id,
                 rate_id=rate_id,

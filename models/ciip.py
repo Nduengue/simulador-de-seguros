@@ -12,6 +12,7 @@ class Ciip(Base):
     category_id = Column(Integer, ForeignKey("category.id"))
     insurance_id = Column(Integer, ForeignKey("insurance.id"))
     insurance_type_id = Column(Integer, ForeignKey("insurance_type.id"))
+    policy_type_id = Column(Integer, ForeignKey("policy_type.id"))
     created_at = Column(DateTime(timezone=True))
     updated_at = Column(DateTime(timezone=True))
     deleted = Column(Boolean, default=False)
@@ -30,7 +31,7 @@ class Ciip(Base):
             return ciip
 
     @staticmethod  # done
-    def put(category_id, insurance_id, insurance_type_id):
+    def post(category_id, insurance_id, insurance_type_id, policy_type_id):
         with DB_Session() as db_session:
             # verify if category insurance exists
             ciip = (
@@ -39,6 +40,7 @@ class Ciip(Base):
                     Ciip.category_id == category_id,
                     Ciip.insurance_id == insurance_id,
                     Ciip.insurance_type_id == insurance_type_id,
+                    Ciip.policy_type_id == policy_type_id,
                     Ciip.deleted == False,
                 )
                 .first()
@@ -49,18 +51,22 @@ class Ciip(Base):
             from .category import Category
             from .insurance import Insurance
             from .insurance_type import InsuranceType
+            from .policy_type import PolicyType
             if not Category.get(category_id):
                 abort(404, message="Categoria não encontrada")
             elif not Insurance.get(insurance_id):
                 abort(404, message="Seguro não encontrado")
             elif not InsuranceType.get(insurance_type_id):
                 abort(404, message="Tipo de Seguro não encontrado")
+            elif not PolicyType.get(policy_type_id):
+                abort(404, message="Tipo de Política não encontrado")
 
             datetime = current_date_time()
             ciip = Ciip(
                 category_id=category_id,
                 insurance_id=insurance_id,
                 insurance_type_id=insurance_type_id,
+                policy_type_id=policy_type_id,
                 created_at=datetime,
             )
             db_session.add(ciip)

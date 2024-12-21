@@ -4,12 +4,12 @@ from models import ORC
 
 class ORC_Controler(Resource):
 
-    def put(self):
+    def post(self):
         datas = request.get_json()
-        missing_fields(datas, ["ciip_pt_id", "company_id", "option_id", "rate_id"])
+        missing_fields(datas, ["ciip_id", "company_id", "option_id", "rate_id"])
         condition_id = datas.get("condition_id", None)
-        ORC.put(
-            datas["ciip_pt_id"],
+        ORC.post(
+            datas["ciip_id"],
             datas["company_id"],
             datas["option_id"],
             datas["rate_id"],

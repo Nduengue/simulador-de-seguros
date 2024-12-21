@@ -31,7 +31,7 @@ class Company(Base):
         }
 
     @staticmethod
-    def get(id):
+    def get(id=None):
         with DB_Session() as db_session:
             if id:
                 company = (
