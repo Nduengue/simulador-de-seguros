@@ -150,6 +150,20 @@ class DadosPdfContrlloers extends Controller
             'taxa_total'=> $taxa_total,
         ];
     }
+    public function DadosPdfAt($data_site_pdf,$values){
+        try {
+            return [
+                'user' => $data_site_pdf['body']['user'],
+                'msm' => $data_site_pdf['msm'],
+                'activity' => $data_site_pdf['body']['activity'],
+                'codigo' => $data_site_pdf['codigo'],
+                'activity_rate'=> $values['activity_rate']['value'],
+            ];
+            
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+        }
+    }
 
     public function FormatrNumber($valor,$casa_decimal){
         return number_format($valor,$casa_decimal,',','.');

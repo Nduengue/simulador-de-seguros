@@ -298,6 +298,30 @@ class Validation extends Controller
         return $Params;
     }
 
+    public function ValidParamsAT($data_params){
+        $allParams = [
+            'company_ids',
+            'user',
+            'msm',
+            'category_id',
+            'insurance_id',
+            'insurance_type_id',
+            'policy_type_id',
+            'country_ids',
+            'activity_id',
+            'receber'
+        ];
+        $Params = [];
+
+        // Verificar quais parâmetros estão faltando
+        foreach ($allParams as $param) {
+            if (!array_key_exists($param, $data_params)) {
+                $Params[] = $param;
+            }
+        }
+        return $Params;
+    }
+
     function gerarCodigoSimulacao()
     {
         do {

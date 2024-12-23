@@ -75,8 +75,6 @@ class SimulationMtControllers extends Controller
             $date_params = [
                 "value" => $request->value,
                 "body" => $simulater_mt['body'],
-
-                
                 "duration" => $request->duration,
                 'origin'=> $request->origin,
                 'destination'=> $request->destination,

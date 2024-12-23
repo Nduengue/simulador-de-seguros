@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SimulationATControllres;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
@@ -15,7 +16,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-
+Route::get('/', function () {
+    return view('welcome');
+});
 
 /* Routas para inserir dados da simulação vida*/
 Route::post('/simulator/life/save',[SimulationLifeControllers::class,'SalvarSimulacaoLife'])->name('salvar_simulacao_life');
@@ -25,6 +28,9 @@ Route::post('/simulator/life/save',[SimulationLifeControllers::class,'SalvarSimu
 Route::post('/simulator/mt/save',[SimulationMtControllers::class,'SalvarSimulacaoMt'])->name('salvar_simulacao_mt');
 /* Routas para inserir dados da simulação fim*/
 
+/** */
+Route::post('/simulator/at/save',[SimulationATControllres::class,'SalvarSimulacaoAT'])->name('salvar_simulacao_at');
+/** */
 
 /* Routas para inserir serch da simulator */
 Route::post('/search/simulator',[SearchControllers::class,'SearchSimulator'])->name('search_simulator');
