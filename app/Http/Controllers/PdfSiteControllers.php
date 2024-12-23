@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\DadosPdfContrlloers;
+use Illuminate\Support\Carbon;
 use Log;
 
 class PdfSiteControllers extends Controller
@@ -58,6 +59,9 @@ class PdfSiteControllers extends Controller
     public function PdfSiteAt($data_site_pdf)
     {
         try {
+
+            $dataAtual = Carbon::now();
+            $formatada =$dataAtual->translatedFormat('d \d\e F \d\e Y');
             foreach ($data_site_pdf['body']['company_simulations'] as $values) {
 
                 //$data_pdf = (new DadosPdfContrlloers)->DadosPdfAt($data_site_pdf, $values);
@@ -67,6 +71,7 @@ class PdfSiteControllers extends Controller
                     'activity' => $data_site_pdf['body']['activity'],
                     'codigo' => $data_site_pdf['codigo'],
                     'activity_rate_value'=> $values['activity_rate']['value'],
+                    'data' => $formatada,   
                 ];
 
                 $pdf = PDF::loadView('at.at_' . $values['company']['id'], ['dados' => $data_pdf]);

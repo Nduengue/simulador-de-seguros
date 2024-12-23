@@ -76,7 +76,6 @@ class PdfEmailControllers extends Controller{
         try {
 
             $dataAtual = Carbon::now();
-           // $formatada = self::FormatoDate($dataAtual);
             $formatada =$dataAtual->translatedFormat('d \d\e F \d\e Y');
             foreach ($data_email_pdf['body']['company_simulations'] as $values) {
 
