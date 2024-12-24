@@ -60,19 +60,11 @@ class PdfSiteControllers extends Controller
     {
         try {
 
-            $dataAtual = Carbon::now();
-            $formatada =$dataAtual->translatedFormat('d \d\e F \d\e Y');
+            //$dataAtual = Carbon::now();
+            //$formatada =$dataAtual->translatedFormat('d \d\e F \d\e Y');
             foreach ($data_site_pdf['body']['company_simulations'] as $values) {
 
-                //$data_pdf = (new DadosPdfContrlloers)->DadosPdfAt($data_site_pdf, $values);
-                $data_pdf = [
-                    'user' => $data_site_pdf['body']['user'],
-                    'msm' => $data_site_pdf['msm'],
-                    'activity' => $data_site_pdf['body']['activity'],
-                    'codigo' => $data_site_pdf['codigo'],
-                    'activity_rate_value'=> $values['activity_rate']['value'],
-                    'data' => $formatada,   
-                ];
+                $data_pdf = (new DadosPdfContrlloers)->DadosPdfAt($data_site_pdf, $values);
 
                 $pdf = PDF::loadView('at.at_' . $values['company']['id'], ['dados' => $data_pdf]);
                 $pdfContent = $pdf->output();

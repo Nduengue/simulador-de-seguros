@@ -321,6 +321,39 @@ class Validation extends Controller
         }
         return $Params;
     }
+    public function ValidParamsHealth($data_params){
+        $allParams = [
+            'company_ids',
+            'user',
+            'add_coverage_ids',
+            'category_id',
+            'insurance_id',
+            'insurance_type_id',
+            'policy_type_id',
+            'coverage_ids',
+            'add_coverage_ids',
+            'geo_area_id',
+            'deductible_policy_id',
+            'deductible_fixed_value_id',
+            'deductible_percentage_insured_value_id',
+            'deductible_percentage_loss_id',
+            'copayment_policy_id',
+            'copayment_percentage_id',
+            'reimbursement_policy_id',
+            'reimbursement_percentage_id',
+            'receber'
+        ];
+        $Params = [];
+
+        // Verificar quais parâmetros estão faltando
+        foreach ($allParams as $param) {
+            if (!array_key_exists($param, $data_params)) {
+                $Params[] = $param;
+            }
+        }
+        return $Params;
+    }
+
 
     function gerarCodigoSimulacao()
     {

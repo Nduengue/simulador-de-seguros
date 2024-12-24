@@ -75,21 +75,9 @@ class PdfEmailControllers extends Controller{
     public function PdfEmailAt($data_email_pdf){
         try {
 
-            $dataAtual = Carbon::now();
-            $formatada =$dataAtual->translatedFormat('d \d\e F \d\e Y');
             foreach ($data_email_pdf['body']['company_simulations'] as $values) {
 
-                //$data_env_view = (new DadosPdfContrlloers)->DadosPdfMt($data_email_pdf, $values);
-                $data_env_view = [
-                    'nome' => "Global Nduengue, LDA",
-                    'texto' => "Obrigado por escolher a Global Nduengue, LDA para a sua segurança.",
-                    'user' => $data_email_pdf['body']['user'],
-                    'msm' => $data_email_pdf['msm'],
-                    'activity' => $data_email_pdf['body']['activity'],
-                    'codigo' => $data_email_pdf['codigo'],
-                    'activity_rate_value'=> $values['activity_rate']['value'],
-                    'data' => $formatada,                    
-                ];
+                $data_env_view = (new DadosPdfContrlloers)->DadosPdfAt($data_email_pdf, $values);
 
                 $views_mt = "at.at_".$values['company']['id'];
                 $filePath = $this->DocumentPdf($data_env_view, $views_mt,$values['company']['name']);

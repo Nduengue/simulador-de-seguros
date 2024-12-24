@@ -66,7 +66,7 @@ class SimulationATControllres extends Controller
                     'error' => $this->date_error,
                 ], 500);
             }
-            // main
+
             $date_params = [
                 "msm" => $request->msm,
                 "body" => $simulater_at['body'],
@@ -99,13 +99,10 @@ class SimulationATControllres extends Controller
             $simulator = new Simulation();
             $simulator->user_id = $user_id;
             $simulator->value = $dados_simulater['msm'];
-            /* $simulator->duraction = null; */
             $simulator->category_id = $dados_simulater['category_id'];
             $simulator->insurance_id = $dados_simulater['insurance_id'];
             $simulator->innsurance_type_id = $dados_simulater['insurance_type_id'];
             $simulator->polici_type_id = $dados_simulater['policy_type_id'];
-          /*   $simulator->origin = "";
-            $simulator->destination = ""; */
             $simulator->receber = $dados_simulater['receber'];
             $simulator->codigo = $codigo;
 

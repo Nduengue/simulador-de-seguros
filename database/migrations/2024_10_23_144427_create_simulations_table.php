@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('simulations', function (Blueprint $table) {
             $table->id();
             $table->string('user_id');
-            $table->decimal('value', 40, 2);
+            $table->decimal('value', 40, 2)->nullable();
             $table->integer('duraction')->nullable();
             $table->integer('category_id');
             $table->integer('insurance_id');

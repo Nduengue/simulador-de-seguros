@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\SimulationATControllres;
+use App\Http\Controllers\SimulationHealthControllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
@@ -24,18 +25,22 @@ Route::get('/', function () {
 Route::post('/simulator/life/save',[SimulationLifeControllers::class,'SalvarSimulacaoLife'])->name('salvar_simulacao_life');
 /* Routas para inserir dados da simulação fim*/
 
-/* Routas para inserir dados da simulação vida*/
+/* Routas para inserir dados da simulação Mercadoria Transportada */
 Route::post('/simulator/mt/save',[SimulationMtControllers::class,'SalvarSimulacaoMt'])->name('salvar_simulacao_mt');
 /* Routas para inserir dados da simulação fim*/
 
-/** */
+/** Routas para inserir dados da simulação Acidente de Trabalho */
 Route::post('/simulator/at/save',[SimulationATControllres::class,'SalvarSimulacaoAT'])->name('salvar_simulacao_at');
-/** */
+/** Routas para inserir dados da simulação fim */
+
+/* Routas para inserir dados da simulação Saúde */
+Route::post('/simulator/health/save',[SimulationHealthControllers::class,'SalvarSimulacaoHealth'])->name('salvar_simulacao_health');
+/* Routas para inserir dados da simulação Saúde */
+
 
 /* Routas para inserir serch da simulator */
 Route::post('/search/simulator',[SearchControllers::class,'SearchSimulator'])->name('search_simulator');
 /* Routas para inserir serch da simulator */
-
 
 /* Routas para inserir selectd all simulator */
 Route::put('/selectedAll/simulator',[SearchControllers::class,'SelectedAllSimulator'])->name('selected_all_simulator');

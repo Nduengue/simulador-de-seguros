@@ -66,7 +66,7 @@ class DadosPdfContrlloers extends Controller
         // Lógica para obter os dados necessários
 
         $dataAtual = Carbon::now();
-        $dataFinal = $dataAtual->copy()->addYears($data_site_pdf['duration']); 
+        $dataFinal = $dataAtual->copy()->addYears($data_site_pdf['duration']);
         $horaAtual = $dataAtual->format('H:i:s');
 
         // Calcular a duração em meses
@@ -78,14 +78,14 @@ class DadosPdfContrlloers extends Controller
 
         $coverage_rate_count = isset($values['coverage_rate']['value']) ? $values['coverage_rate']['value'] : 0;
 
-        $discount_rate_count = 0; 
+        $discount_rate_count = 0;
         if (isset($values['discounts_rates']) && is_array($values['discounts_rates'])) {
             foreach ($values['discounts_rates'] as $discounts_Rates) {
                 $discount_rate_count += isset($discounts_Rates['value']) ? $discounts_Rates['value'] : 0;
             }
         }
 
-        $rate_count = 0; 
+        $rate_count = 0;
         if (isset($values['rates']) && is_array($values['rates'])) {
 
             foreach ($values['rates'] as $routas) {
@@ -108,13 +108,13 @@ class DadosPdfContrlloers extends Controller
 
         $result_rate = $result_rate * $data_site_pdf['value'];
 
-        $result_rate = self::FormatrNumber($result_rate,casa_decimal: 2);
-        $value = self::FormatrNumber($data_site_pdf['value'],2); 
-        $taxa_total = self::FormatrNumber($taxa_total,2); 
-        
+        $result_rate = self::FormatrNumber($result_rate, casa_decimal: 2);
+        $value = self::FormatrNumber($data_site_pdf['value'], 2);
+        $taxa_total = self::FormatrNumber($taxa_total, 2);
+
         $textoEmail = self::TextoEmailBoasVindas();
         $preco_apagar_semestral = str_replace(',', '.', str_replace('.', '', $result_rate));
-        $preco_apagar_semestral = self::FormatrNumber((float)$preco_apagar_semestral / 2,2);
+        $preco_apagar_semestral = self::FormatrNumber((float) $preco_apagar_semestral / 2, 2);
         $formatada = self::FormatoDate($dataAtual);
 
         return [
@@ -145,40 +145,52 @@ class DadosPdfContrlloers extends Controller
             'states_to' => $data_site_pdf['body']['states_to'],
             'origin' => $data_site_pdf['origin'],
             'destination' => $data_site_pdf['destination'],
-            'franchise'=> $data_site_pdf['body']['franchise']['name'],
-            'min_franchise'=> $data_site_pdf['body']['min_franchise']['name'],
-            'taxa_total'=> $taxa_total,
+            'franchise' => $data_site_pdf['body']['franchise']['name'],
+            'min_franchise' => $data_site_pdf['body']['min_franchise']['name'],
+            'taxa_total' => $taxa_total,
         ];
     }
-    public function DadosPdfAt($data_site_pdf,$values){
+    public function DadosPdfAt($data_site_pdf, $values)
+    {
         try {
+
+            $dataAtual = Carbon::now();
+            $formatada = self::FormatoDate($dataAtual);
+            $textoEmail = self::TextoEmailBoasVindas();
+            
             return [
+                'nome' => $textoEmail['nome'],
+                'texto' => $textoEmail['texto'],
                 'user' => $data_site_pdf['body']['user'],
                 'msm' => $data_site_pdf['msm'],
                 'activity' => $data_site_pdf['body']['activity'],
                 'codigo' => $data_site_pdf['codigo'],
-                'activity_rate'=> $values['activity_rate']['value'],
+                'activity_rate_value' => $values['activity_rate']['value'],
+                'data' => $formatada,
             ];
-            
+
         } catch (\Throwable $th) {
             return $th->getMessage();
         }
     }
 
-    public function FormatrNumber($valor,$casa_decimal){
-        return number_format($valor,$casa_decimal,',','.');
+    public function FormatrNumber($valor, $casa_decimal)
+    {
+        return number_format($valor, $casa_decimal, ',', '.');
     }
 
-    public function FormatoDate($dataAtual){
+    public function FormatoDate($dataAtual)
+    {
         //return date('d M Y',strtotime($dataAtual));
         //return $formatada = $dataAtual->translatedFormat('l, d M Y');
         return $dataAtual->translatedFormat('d \d\e F \d\e Y');
     }
 
-    public function TextoEmailBoasVindas(){
-        return[
-            'nome'=> 'Global Nduengue, LDA',
-            'texto'=> 'Olá, Muito Obrigado Por Simular Aqui?',
+    public function TextoEmailBoasVindas()
+    {
+        return [
+            'nome' => 'Global Nduengue, LDA',
+            'texto' => 'Olá, Muito Obrigado Por Simular Aqui?',
         ];
     }
 
