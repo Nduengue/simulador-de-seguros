@@ -239,14 +239,6 @@ class SimulationATControllres extends Controller
             $activity->option_group_id = $data['activity']['option_group_id'];
             $activity->save();
 
-            /* foreach ($data['countries']['options'] as $value) {
-                $option_countries_from = new Option();
-                $option_countries_from->simulation_id = $simulation_id;
-                $option_countries_from->option_id = $value['id'];
-                $option_countries_from->option_group_id = $data['countries']['option_group_id'];
-                $option_countries_from->save();
-            } */
-
             return ['success' => true,];
 
         } catch (\Throwable $e) {
