@@ -16,14 +16,14 @@ return new class extends Migration
             $table->string('user_id');
             $table->decimal('value', 40, 2)->nullable();
             $table->integer('duraction')->nullable();
-            $table->integer('category_id');
-            $table->integer('insurance_id');
-            $table->integer('innsurance_type_id');
-            $table->integer('polici_type_id');
+            $table->integer('category_id')->nullable();
+            $table->integer('insurance_id')->nullable();
+            $table->integer('innsurance_type_id')->nullable();
+            $table->integer('polici_type_id')->nullable();
             $table->string('origin')->nullable();
             $table->string('destination')->nullable();
-            $table->string('receber');
-            $table->integer('codigo');
+            $table->string('receber')->nullable();
+            $table->integer('codigo')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

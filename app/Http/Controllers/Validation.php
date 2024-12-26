@@ -62,7 +62,7 @@ class Validation extends Controller
     {
         $validator = Validator::make($data, [
             'user.name' => 'required|string',
-           /*  'user.nif' => 'required|string|max:20', */
+            /*  'user.nif' => 'required|string|max:20', */
             'user.gender' => 'required|in:M,F',
             'user.birth_date' => 'required|date|before:today',
             'user.email' => 'nullable|email',
@@ -78,7 +78,7 @@ class Validation extends Controller
             'policy_type_id' => 'required|integer',
             'company_ids' => 'required|array|min:1',
             'company_ids.*' => 'integer',
-            'receber'=>'required|string',
+            'receber' => 'required|string',
         ], [
             'user.name.required' => 'O nome do usuário é obrigatório.',
             'user.nif.required' => 'O NIF do usuário é obrigatório.',
@@ -109,7 +109,7 @@ class Validation extends Controller
             'company_ids.*.exists' => 'Uma das companhias selecionadas é inválida.',
             'receber.required' => 'campo obrigatorio é obrigatório.',
         ]);
-        return $validator->fails();       
+        return $validator->fails();
     }
 
 
@@ -158,10 +158,10 @@ class Validation extends Controller
 
             'value' => 'required|integer|min:0',
             'receber' => 'required|string',
-            'origin'=> 'required|string',
-            'destination'=> 'required|string',
-            'claim_history_id'=> 'required.numeric',
-            'franchise_id'=> 'required.numeric',
+            'origin' => 'required|string',
+            'destination' => 'required|string',
+            'claim_history_id' => 'required.numeric',
+            'franchise_id' => 'required.numeric',
 
         ], [
             'company_ids.required' => 'É necessário selecionar ao menos uma companhia.',
@@ -220,11 +220,11 @@ class Validation extends Controller
             'value.required' => 'O valor é obrigatório.',
             'value.numeric' => 'O valor deve ser numérico.',
             'receber.required' => 'O valor deve ser string.',
-            'origin.required'=> 'campos obrigatorio',
-            'destination.required'=> 'campos obrigatorio',
-            'claim_history_id.required'=> 'campos obrigatorio',
+            'origin.required' => 'campos obrigatorio',
+            'destination.required' => 'campos obrigatorio',
+            'claim_history_id.required' => 'campos obrigatorio',
             'claim_history_id.numeric' => 'O valor deve ser numérico.',
-            'franchise_id.required'=> 'campos obrigatorio',
+            'franchise_id.required' => 'campos obrigatorio',
             'franchise_id.numeric' => 'O valor deve ser numérico.',
 
         ]);
@@ -298,18 +298,25 @@ class Validation extends Controller
         return $Params;
     }
 
-    public function ValidParamsAT($data_params){
+    public function ValidParamsAT($data_params)
+    {
         $allParams = [
-            'company_ids',
             'user',
+            'policy_duration',
+            'policy_duration_month_number',
+            'salary_volume',
+            'payment_times',
             'msm',
+            'activity_id',
+            'has_offshore_employees',
+            'get_employees_by',
+            'offshore_number',
+            'onshore_number',
+            'company_ids',
             'category_id',
             'insurance_id',
             'insurance_type_id',
-            'policy_type_id',
-            'country_ids',
-            'activity_id',
-            'receber'
+            'receber',
         ];
         $Params = [];
 
@@ -321,7 +328,8 @@ class Validation extends Controller
         }
         return $Params;
     }
-    public function ValidParamsHealth($data_params){
+    public function ValidParamsHealth($data_params)
+    {
         $allParams = [
             'company_ids',
             'user',

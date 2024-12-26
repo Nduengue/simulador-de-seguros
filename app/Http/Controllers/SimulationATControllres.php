@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Compania;
+use App\Models\DynamicValues;
 use App\Models\Option;
 use App\Models\Rate;
 use App\Models\Simulation;
@@ -43,7 +44,6 @@ class SimulationATControllres extends Controller
                 ], 204);
             }
 
-
             $codigo = $validation->gerarCodigoSimulacao();
             $simulater = $this->Simulator($request->all(), $simulater_at['body'], $codigo);
             if (!$simulater['success']) {
@@ -53,6 +53,11 @@ class SimulationATControllres extends Controller
             $compania = $this->Company($request->company_ids, $simulater_at['body'], $simulater['simulator_id']);
             if (!$compania['success']) {
                 $this->date_error[] = $compania;
+            }
+
+            $dynamicValues = $this->DynamicValues( $simulater_at['body'], $simulater['simulator_id']);
+            if (!$dynamicValues['success']) {
+                $this->date_error[] = $dynamicValues;
             }
 
             $option = $this->Options($simulater_at['body'], $simulater['simulator_id']);
@@ -102,7 +107,6 @@ class SimulationATControllres extends Controller
             $simulator->category_id = $dados_simulater['category_id'];
             $simulator->insurance_id = $dados_simulater['insurance_id'];
             $simulator->innsurance_type_id = $dados_simulater['insurance_type_id'];
-            $simulator->polici_type_id = $dados_simulater['policy_type_id'];
             $simulator->receber = $dados_simulater['receber'];
             $simulator->codigo = $codigo;
 
@@ -168,6 +172,63 @@ class SimulationATControllres extends Controller
             ];
         }
     }
+    public function DynamicValues($data, $simulation_id)
+    {
+        try {
+            $data_values = [
+                [
+                    'value' => $data['policy_duration'],
+                    'description' => "policy_duration",
+                ],
+                [
+                    'value' => $data['policy_duration_month_number'],
+                    'description' => "policy_duration_month_number",
+                ],
+                [
+                    'value' => $data['salary_volume'],
+                    'description' => "salary_volume",
+                ],
+                [
+                    'value' => $data['activity_id'],
+                    'description' => "activity_id",
+                ],
+                [
+                    'value' => $data['payment_times'],
+                    'description' => "payment_times",
+                ],
+                [
+                    'value' => $data['has_offshore_employees'],
+                    'description' => "has_offshore_employees",
+                ],
+                [
+                    'value' => $data['get_employees_by'],
+                    'description' => "get_employees_by",
+                ],
+                [
+                    'value' => $data['offshore_number'],
+                    'description' => "offshore_number",
+                ],
+                [
+                    'value' => $data['onshore_number'],
+                    'description' => "onshore_number",
+                ],
+            ];
+
+            foreach ($data_values as $value) {
+                if (empty($value['value'])) {
+                    continue; 
+                }
+                $dynamic_values = new DynamicValues();
+                $dynamic_values->simulation_id = $simulation_id;
+                $dynamic_values->value = $value['value'];
+                $dynamic_values->description = $value['description'];
+                $dynamic_values->save();
+            }
+            return ['success' => true,];
+        } catch (\Throwable $th) {
+            return ['success' => false, 'message' => $th->getMessage()];
+        }
+    }
     public function Options($data, $simulation_id, )
     {
         try {
@@ -178,13 +239,13 @@ class SimulationATControllres extends Controller
             $activity->option_group_id = $data['activity']['option_group_id'];
             $activity->save();
 
-            foreach ($data['countries']['options'] as $value) {
+            /* foreach ($data['countries']['options'] as $value) {
                 $option_countries_from = new Option();
                 $option_countries_from->simulation_id = $simulation_id;
                 $option_countries_from->option_id = $value['id'];
                 $option_countries_from->option_group_id = $data['countries']['option_group_id'];
                 $option_countries_from->save();
-            }
+            } */
 
             return ['success' => true,];
 

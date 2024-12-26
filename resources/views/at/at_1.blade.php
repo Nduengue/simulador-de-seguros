@@ -406,7 +406,7 @@
                 <div class="follow-up">
                     Taxa Encargos: 20,00% <br>
                     Taxa IVA: 14,00% (Imposto sobre o Valor Acrescentado)<br>
-                    Taxa Simples: 3,096% <br>
+                    Taxa Simples:  {{ number_format(((($dados['activity_rate_value'] ?? 0) / 1.14) / 1.2), 2, ',', '.') }}% <br>
                     Taxa Total: {{ number_format(($dados['activity_rate_value'] ?? 0), 2, ',', '.') }}%<br>
 
                 </div>
