@@ -213,8 +213,6 @@
         </div>
     </header>
 
-    <!-- Primeira Página -->
-    <!-- Corpo do PDF -->
     <section>
 
         <article class="m-0 pt-0">
@@ -346,12 +344,12 @@
                 <div style="height: 10px;"></div>
                 <div style="margin-left: 20px">
                     <span class="number">7</span>
-                    <span class="text" style="margin-left: 25px;">CAPITAL (MASSA SALARIAL MENSAL x 13)</span>
+                    <span class="text" style="margin-left: 25px;">CAPITAL (MASSA SALARIAL MENSAL x {{ $dados['payment_times'] }})</span>
                 </div>
             </div>
             <div class="article-content">
                 <div class="follow-up">
-                {{ number_format(($dados['msm'] ?? 0) * 13, 2, ',', '.') }} AOA
+                {{ $dados['salario']}} AOA
                 </div>
             </div>
         </article>
@@ -386,9 +384,9 @@
             </div>
             <div class="article-content">
                 <div class="follow-up">
-                    Prémio Anual: {{ number_format(($dados['msm'] ?? 0) * 13 * ($dados['activity_rate_value'] ?? 0), 2,',','.') }} AOA<br>
-                    Prémio Semestral: {{ number_format((($dados['msm'] ?? 0) * 13 * ($dados['activity_rate_value'] ?? 0)) / 6, 2,',','.') }} AOA<br>
-                    Prémio Trimestral: {{ number_format((($dados['msm'] ?? 0) * 13 * ($dados['activity_rate_value'] ?? 0)) / 4, 2,',','.') }} AOA<br>
+                    Prémio Anual: {{ $dados['premio_anual'] }} AOA<br>
+                    Prémio Semestral: {{ $dados['premio_simestral'] }} AOA<br>
+                    Prémio Trimestral: {{ $dados['premio_trimestral'] }} AOA<br>
 
                 </div>
             </div>
@@ -406,8 +404,8 @@
                 <div class="follow-up">
                     Taxa Encargos: 20,00% <br>
                     Taxa IVA: 14,00% (Imposto sobre o Valor Acrescentado)<br>
-                    Taxa Simples:  {{ number_format(((($dados['activity_rate_value'] ?? 0) / 1.14) / 1.2), 2, ',', '.') }}% <br>
-                    Taxa Total: {{ number_format(($dados['activity_rate_value'] ?? 0), 2, ',', '.') }}%<br>
+                    Taxa Simples:  {{ $dados['taxa_simples'] }}% <br>
+                    Taxa Total: {{ $dados['taxa_total'] }}%<br>
 
                 </div>
             </div>

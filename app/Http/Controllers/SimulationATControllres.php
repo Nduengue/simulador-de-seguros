@@ -81,10 +81,10 @@ class SimulationATControllres extends Controller
 
             if ($request->receber === "site") {
                  $date_pdf_site_life = $pdfSiteControllers->PdfSiteAt($date_params);
-                 return response()->json(['success' => true, 'mensage' => 'Dados da simulação Life salvos com sucesso!', 'pdf' => $date_pdf_site_life], 200);
+                 return response()->json(['success' => true, 'mensage' => 'Dados da simulação Acidente de Trabalho salvos com sucesso!', 'pdf' => $date_pdf_site_life], 200);
             } else if ($request->receber === "email") {
                  $date_pdf_email_life = $pdfEmailControllers->PdfEmailAt($date_params);
-                 return response()->json(['success' => true, 'mensage' => 'Dados da simulação Life salvos com sucesso!', 'dados' => $simulater_at, 'email' => $date_pdf_email_life], 200);
+                 return response()->json(['success' => true, 'mensage' => 'Dados da simulação Acidente de Trabalho salvos com sucesso!', 'dados' => $simulater_at, 'email' => $date_pdf_email_life], 200);
             }
   
 

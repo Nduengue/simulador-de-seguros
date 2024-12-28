@@ -60,8 +60,6 @@ class PdfSiteControllers extends Controller
     {
         try {
 
-            //$dataAtual = Carbon::now();
-            //$formatada =$dataAtual->translatedFormat('d \d\e F \d\e Y');
             foreach ($data_site_pdf['body']['company_simulations'] as $values) {
 
                 $data_pdf = (new DadosPdfContrlloers)->DadosPdfAt($data_site_pdf, $values);

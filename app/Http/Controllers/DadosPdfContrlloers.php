@@ -157,15 +157,45 @@ class DadosPdfContrlloers extends Controller
             $dataAtual = Carbon::now();
             $formatada = self::FormatoDate($dataAtual);
             $textoEmail = self::TextoEmailBoasVindas();
+            $salario = 0;
+            $premio_anual = 0;
+            $premio_simestral = 0;
+            $premio_trimestral = 0;
+
+            if($data_site_pdf['body']['salary_volume'] == "Mensal"){
+                $salario = ($data_site_pdf['msm'] ?? 0 ) * ($data_site_pdf['body']['payment_times'] ?? 13);
+            }else if($data_site_pdf['body']['salary_volume'] == "Anual"){
+                $salario = $data_site_pdf['msm'] ?? 0;
+            }
+           
+            $premio_anual = ($salario * $values['activity_rate']['value']) / 100;
+            $taxa_simples = (($values['activity_rate']['value'] ?? 0) / 1.14) / 1.2;
+
+            $premio_simestral = $premio_anual / 2;
+            $premio_trimestral = $premio_anual / 4;
+
+            $taxa_total = $values['activity_rate']['value'] ?? 0;
+            $taxa_simples = self::FormatrNumber($taxa_simples, 3);
+            $salario = self::FormatrNumber($salario, 2);
+            $premio_anual = self::FormatrNumber($premio_anual, 2);
+            $premio_simestral = self::FormatrNumber($premio_simestral, 2);
+            $premio_trimestral = self::FormatrNumber($premio_trimestral , 2);
             
             return [
                 'nome' => $textoEmail['nome'],
                 'texto' => $textoEmail['texto'],
                 'user' => $data_site_pdf['body']['user'],
                 'msm' => $data_site_pdf['msm'],
+                'salario' => $salario,
+                'payment_times' => $data_site_pdf['body']['payment_times'],
+                'salary_volume' => $data_site_pdf['body']['salary_volume'],
                 'activity' => $data_site_pdf['body']['activity'],
                 'codigo' => $data_site_pdf['codigo'],
-                'activity_rate_value' => $values['activity_rate']['value'],
+                'premio_anual'=> $premio_anual,
+                'premio_simestral'=> $premio_simestral,
+                'premio_trimestral'=> $premio_trimestral,
+                'taxa_simples' => $taxa_simples,
+                'taxa_total' => $taxa_total,
                 'data' => $formatada,
             ];
 
